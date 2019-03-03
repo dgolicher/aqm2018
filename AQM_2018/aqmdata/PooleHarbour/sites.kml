@@ -1,0 +1,1461 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document><Folder><name>sites</name>
+<Schema name="sites" id="sites">
+	<SimpleField name="Name" type="string"></SimpleField>
+	<SimpleField name="Description" type="string"></SimpleField>
+	<SimpleField name="Site" type="int"></SimpleField>
+	<SimpleField name="X" type="int"></SimpleField>
+	<SimpleField name="Y" type="int"></SimpleField>
+	<SimpleField name="sector" type="string"></SimpleField>
+	<SimpleField name="Sediment1" type="int"></SimpleField>
+	<SimpleField name="Sediment2" type="int"></SimpleField>
+	<SimpleField name="AlgaeCover" type="int"></SimpleField>
+	<SimpleField name="HedisteDensity" type="float"></SimpleField>
+	<SimpleField name="HedisteBiomass" type="float"></SimpleField>
+	<SimpleField name="HedistePresent" type="int"></SimpleField>
+	<SimpleField name="CerastodermaDensity" type="float"></SimpleField>
+	<SimpleField name="CerastodermaBiomass" type="float"></SimpleField>
+	<SimpleField name="CerastodermaPresent" type="int"></SimpleField>
+</Schema>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">1</SimpleData>
+		<SimpleData name="X">394598</SimpleData>
+		<SimpleData name="Y">87489</SimpleData>
+		<SimpleData name="sector">&quot;DP019&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">1</SimpleData>
+		<SimpleData name="HedisteDensity">1171.3808</SimpleData>
+		<SimpleData name="HedisteBiomass">7.7952818107</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.077832573730192,50.687027606236391</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">2</SimpleData>
+		<SimpleData name="X">394550</SimpleData>
+		<SimpleData name="Y">88048</SimpleData>
+		<SimpleData name="sector">&quot;DP019&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">891.268</SimpleData>
+		<SimpleData name="HedisteBiomass">8.2728185809</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.078520468007193,50.692054073965302</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">3</SimpleData>
+		<SimpleData name="X">394435</SimpleData>
+		<SimpleData name="Y">88459</SimpleData>
+		<SimpleData name="sector">&quot;DP019&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">1018.592</SimpleData>
+		<SimpleData name="HedisteBiomass">6.4129273662</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.080154871042957,50.69574896319277</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">4</SimpleData>
+		<SimpleData name="X">394932</SimpleData>
+		<SimpleData name="Y">87593</SimpleData>
+		<SimpleData name="sector">&quot;DP019&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">1044.0568</SimpleData>
+		<SimpleData name="HedisteBiomass">11.7084228923</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.073106015809044,50.687965920211248</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">5</SimpleData>
+		<SimpleData name="X">395021</SimpleData>
+		<SimpleData name="Y">87989</SimpleData>
+		<SimpleData name="sector">&quot;DP019&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">814.8736</SimpleData>
+		<SimpleData name="HedisteBiomass">2.3684623757</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.071851589254889,50.691527819987606</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">6</SimpleData>
+		<SimpleData name="X">394930</SimpleData>
+		<SimpleData name="Y">88485</SimpleData>
+		<SimpleData name="sector">&quot;DP018&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">1145.916</SimpleData>
+		<SimpleData name="HedisteBiomass">4.5571304703</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.0009741672</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.073146846380808,50.695987397393544</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">7</SimpleData>
+		<SimpleData name="X">395169</SimpleData>
+		<SimpleData name="Y">89036</SimpleData>
+		<SimpleData name="sector">&quot;DP018&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">789.4088</SimpleData>
+		<SimpleData name="HedisteBiomass">7.0482058326</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">8.8948e-05</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.06977035932983,50.70094445576192</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">8</SimpleData>
+		<SimpleData name="X">395006</SimpleData>
+		<SimpleData name="Y">89481</SimpleData>
+		<SimpleData name="sector">&quot;DP018&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">2</SimpleData>
+		<SimpleData name="HedisteDensity">1273.24</SimpleData>
+		<SimpleData name="HedisteBiomass">8.8388221742</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.072084585142225,50.704944793687119</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">9</SimpleData>
+		<SimpleData name="X">395532</SimpleData>
+		<SimpleData name="Y">87664</SimpleData>
+		<SimpleData name="sector">&quot;DP017&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">331.0424</SimpleData>
+		<SimpleData name="HedisteBiomass">2.8605684542</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.0646132826449,50.688609439459704</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">10</SimpleData>
+		<SimpleData name="X">395502</SimpleData>
+		<SimpleData name="Y">87983</SimpleData>
+		<SimpleData name="sector">&quot;DP017&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">1426.0288</SimpleData>
+		<SimpleData name="HedisteBiomass">1.737380873</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.0088097839</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.065041951755956,50.691477877438174</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">11</SimpleData>
+		<SimpleData name="X">395492</SimpleData>
+		<SimpleData name="Y">88515</SimpleData>
+		<SimpleData name="sector">&quot;DP017&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">2</SimpleData>
+		<SimpleData name="HedisteDensity">2368.2264</SimpleData>
+		<SimpleData name="HedisteBiomass">4.7771811683</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.0009741672</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.065190180236751,50.69626191762277</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">12</SimpleData>
+		<SimpleData name="X">395510</SimpleData>
+		<SimpleData name="Y">89059</SimpleData>
+		<SimpleData name="sector">&quot;DP018&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">254.648</SimpleData>
+		<SimpleData name="HedisteBiomass">0.7792173383</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.064942110083735,50.701154088425398</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">13</SimpleData>
+		<SimpleData name="X">395521</SimpleData>
+		<SimpleData name="Y">89544</SimpleData>
+		<SimpleData name="sector">&quot;DP018&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">10</SimpleData>
+		<SimpleData name="HedisteDensity">1476.9584</SimpleData>
+		<SimpleData name="HedisteBiomass">8.1213375662</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">1.2893319356</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.064792384829585,50.705515630746376</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">14</SimpleData>
+		<SimpleData name="X">395516</SimpleData>
+		<SimpleData name="Y">90035</SimpleData>
+		<SimpleData name="sector">&quot;DP015&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">1</SimpleData>
+		<SimpleData name="HedisteDensity">2291.832</SimpleData>
+		<SimpleData name="HedisteBiomass">8.75102004</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.0885610101</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.064869308865401,50.709930999314267</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">15</SimpleData>
+		<SimpleData name="X">395494</SimpleData>
+		<SimpleData name="Y">90494</SimpleData>
+		<SimpleData name="sector">&quot;DP015&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">90</SimpleData>
+		<SimpleData name="HedisteDensity">2852.0576</SimpleData>
+		<SimpleData name="HedisteBiomass">34.9039159376</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">3.3469677742</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.065186634433342,50.714058463957123</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">16</SimpleData>
+		<SimpleData name="X">396086</SimpleData>
+		<SimpleData name="Y">88629</SimpleData>
+		<SimpleData name="sector">&quot;DP017&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">1</SimpleData>
+		<SimpleData name="HedisteDensity">687.5496</SimpleData>
+		<SimpleData name="HedisteBiomass">5.5925525185</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.056781261740241,50.697291504429081</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">17</SimpleData>
+		<SimpleData name="X">395991</SimpleData>
+		<SimpleData name="Y">89570</SimpleData>
+		<SimpleData name="sector">&quot;DP018&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">1833.4656</SimpleData>
+		<SimpleData name="HedisteBiomass">9.3147783808</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">4.4128618056</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.058136860370261,50.705752964741812</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">18</SimpleData>
+		<SimpleData name="X">395978</SimpleData>
+		<SimpleData name="Y">90016</SimpleData>
+		<SimpleData name="sector">&quot;DP015&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">203.7184</SimpleData>
+		<SimpleData name="HedisteBiomass">0.8184782244</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">152.7888</SimpleData>
+		<SimpleData name="CerastodermaBiomass">11.1494860136</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.058325956946352,50.709763610143717</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">19</SimpleData>
+		<SimpleData name="X">396054</SimpleData>
+		<SimpleData name="Y">90496</SimpleData>
+		<SimpleData name="sector">&quot;DP015&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">20</SimpleData>
+		<SimpleData name="HedisteDensity">432.9016</SimpleData>
+		<SimpleData name="HedisteBiomass">4.9129684672</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.057254882337465,50.714080632142533</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">20</SimpleData>
+		<SimpleData name="X">396500</SimpleData>
+		<SimpleData name="Y">89000</SimpleData>
+		<SimpleData name="sector">&quot;DP017&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">1426.0288</SimpleData>
+		<SimpleData name="HedisteBiomass">9.5248792685</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.050923136288328,50.700630517253018</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">21</SimpleData>
+		<SimpleData name="X">396539</SimpleData>
+		<SimpleData name="Y">90061</SimpleData>
+		<SimpleData name="sector">&quot;DP015&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">203.7184</SimpleData>
+		<SimpleData name="HedisteBiomass">0.218138709</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.050381180055968,50.710172002960618</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">22</SimpleData>
+		<SimpleData name="X">396495</SimpleData>
+		<SimpleData name="Y">90462</SimpleData>
+		<SimpleData name="sector">&quot;DP014&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">101.8592</SimpleData>
+		<SimpleData name="HedisteBiomass">1.754505412</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">10.6166865534</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.0510082730258,50.713777795330195</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">23</SimpleData>
+		<SimpleData name="X">396824</SimpleData>
+		<SimpleData name="Y">86547</SimpleData>
+		<SimpleData name="sector">&quot;DP032&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">1909.86</SimpleData>
+		<SimpleData name="HedisteBiomass">8.9630138831</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.046313500193453,50.678573310239486</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">24</SimpleData>
+		<SimpleData name="X">397088</SimpleData>
+		<SimpleData name="Y">89476</SimpleData>
+		<SimpleData name="sector">&quot;DP012&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.0008852192</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.042601052479004,50.704914398737635</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">25</SimpleData>
+		<SimpleData name="X">397030</SimpleData>
+		<SimpleData name="Y">90570</SimpleData>
+		<SimpleData name="sector">&quot;DP014&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">305.5776</SimpleData>
+		<SimpleData name="HedisteBiomass">0.7171474103</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">127.324</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.0103618072</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.043431542525891,50.714752090633432</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">26</SimpleData>
+		<SimpleData name="X">397007</SimpleData>
+		<SimpleData name="Y">91013</SimpleData>
+		<SimpleData name="sector">&quot;DP013&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">25.4648</SimpleData>
+		<SimpleData name="HedisteBiomass">0.0178889553</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">8.8948e-05</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.043761048696274,50.71873572252273</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">27</SimpleData>
+		<SimpleData name="X">397000</SimpleData>
+		<SimpleData name="Y">92014</SimpleData>
+		<SimpleData name="sector">&quot;DP016&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">993.1272</SimpleData>
+		<SimpleData name="HedisteBiomass">3.6107222288</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.043868660659278,50.72773734128257</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">28</SimpleData>
+		<SimpleData name="X">397502</SimpleData>
+		<SimpleData name="Y">91500</SimpleData>
+		<SimpleData name="sector">&quot;DP016&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">560.2256</SimpleData>
+		<SimpleData name="HedisteBiomass">3.0425755085</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.0008852192</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.036752677054441,50.723117588597972</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">29</SimpleData>
+		<SimpleData name="X">397487</SimpleData>
+		<SimpleData name="Y">92026</SimpleData>
+		<SimpleData name="sector">&quot;DP016&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">25.4648</SimpleData>
+		<SimpleData name="HedisteBiomass">0.5486597674</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.036968925056223,50.727847660553735</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">30</SimpleData>
+		<SimpleData name="X">398036</SimpleData>
+		<SimpleData name="Y">86089</SimpleData>
+		<SimpleData name="sector">&quot;DP029&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">2</SimpleData>
+		<SimpleData name="HedisteDensity">2342.7616</SimpleData>
+		<SimpleData name="HedisteBiomass">7.9791544601</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.029157241206476,50.674460228845568</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">31</SimpleData>
+		<SimpleData name="X">397880</SimpleData>
+		<SimpleData name="Y">86957</SimpleData>
+		<SimpleData name="sector">&quot;DP031&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">25.4648</SimpleData>
+		<SimpleData name="HedisteBiomass">0.0122844473</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">5.4953642876</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.031370195196704,50.682265344257637</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">32</SimpleData>
+		<SimpleData name="X">398047</SimpleData>
+		<SimpleData name="Y">89032</SimpleData>
+		<SimpleData name="sector">&quot;DP030&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">5</SimpleData>
+		<SimpleData name="HedisteDensity">76.3944</SimpleData>
+		<SimpleData name="HedisteBiomass">0.0050490467</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">76.3944</SimpleData>
+		<SimpleData name="CerastodermaBiomass">10.6168644495</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.029018039299439,50.700925843785278</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">33</SimpleData>
+		<SimpleData name="X">398000</SimpleData>
+		<SimpleData name="Y">90500</SimpleData>
+		<SimpleData name="sector">&quot;DP013&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.029691967544794,50.714126942776481</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">34</SimpleData>
+		<SimpleData name="X">397988</SimpleData>
+		<SimpleData name="Y">92033</SimpleData>
+		<SimpleData name="sector">&quot;DP016&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.029870774949853,50.727912659708366</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">35</SimpleData>
+		<SimpleData name="X">398500</SimpleData>
+		<SimpleData name="Y">86489</SimpleData>
+		<SimpleData name="sector">&quot;DP029&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">5958.7632</SimpleData>
+		<SimpleData name="HedisteBiomass">7.2930459284</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.0010631153</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.022592474775308,50.678058796830683</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">36</SimpleData>
+		<SimpleData name="X">398502</SimpleData>
+		<SimpleData name="Y">86997</SimpleData>
+		<SimpleData name="sector">&quot;DP029&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">1</SimpleData>
+		<SimpleData name="HedisteDensity">3081.2408</SimpleData>
+		<SimpleData name="HedisteBiomass">6.2430298252</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.0008852192</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.022566385176822,50.682627110306683</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">37</SimpleData>
+		<SimpleData name="X">398610</SimpleData>
+		<SimpleData name="Y">87514</SimpleData>
+		<SimpleData name="sector">&quot;DP031&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">1553.3528</SimpleData>
+		<SimpleData name="HedisteBiomass">7.0570408643</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.021039812556551,50.687276638570253</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">38</SimpleData>
+		<SimpleData name="X">398617</SimpleData>
+		<SimpleData name="Y">87994</SimpleData>
+		<SimpleData name="sector">&quot;DP031&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">1</SimpleData>
+		<SimpleData name="HedisteDensity">407.4368</SimpleData>
+		<SimpleData name="HedisteBiomass">1.5708571863</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">3.9605129337</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.020942667817728,50.691593161336435</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">39</SimpleData>
+		<SimpleData name="X">398500</SimpleData>
+		<SimpleData name="Y">89000</SimpleData>
+		<SimpleData name="sector">&quot;DP030&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">30</SimpleData>
+		<SimpleData name="HedisteDensity">254.648</SimpleData>
+		<SimpleData name="HedisteBiomass">0.9597450857</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">76.3944</SimpleData>
+		<SimpleData name="CerastodermaBiomass">32.1320132041</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.022603449952815,50.700639512114279</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">40</SimpleData>
+		<SimpleData name="X">399012</SimpleData>
+		<SimpleData name="Y">86995</SimpleData>
+		<SimpleData name="sector">&quot;DP028&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">10</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">76.3944</SimpleData>
+		<SimpleData name="CerastodermaBiomass">14.2800644284</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.015347622191585,50.682610315270566</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">41</SimpleData>
+		<SimpleData name="X">399001</SimpleData>
+		<SimpleData name="Y">87985</SimpleData>
+		<SimpleData name="sector">&quot;DP027&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">1</SimpleData>
+		<SimpleData name="HedisteDensity">865.8032</SimpleData>
+		<SimpleData name="HedisteBiomass">0.9919371228</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">4.3637628685</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.015506305290246,50.691513089172069</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">42</SimpleData>
+		<SimpleData name="X">399471</SimpleData>
+		<SimpleData name="Y">86058</SimpleData>
+		<SimpleData name="sector">&quot;DP028&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">5</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">76.3944</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.1946802231</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.008849110768387,50.674184811024986</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">43</SimpleData>
+		<SimpleData name="X">399517</SimpleData>
+		<SimpleData name="Y">86960</SimpleData>
+		<SimpleData name="sector">&quot;DP028&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">80</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">127.324</SimpleData>
+		<SimpleData name="CerastodermaBiomass">8.7399001074</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.008199583015295,50.68229630800753</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">44</SimpleData>
+		<SimpleData name="X">399490</SimpleData>
+		<SimpleData name="Y">87532</SimpleData>
+		<SimpleData name="sector">&quot;DP028&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">356.5072</SimpleData>
+		<SimpleData name="HedisteBiomass">0.272883128</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.0008852192</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.008582717211241,50.68744011873914</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">45</SimpleData>
+		<SimpleData name="X">399485</SimpleData>
+		<SimpleData name="Y">91987</SimpleData>
+		<SimpleData name="sector">&quot;DP008&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">5</SimpleData>
+		<SimpleData name="HedisteDensity">585.6904</SimpleData>
+		<SimpleData name="HedisteBiomass">5.0013014366</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">1.7684040106</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.008661101000767,50.727502550046736</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">46</SimpleData>
+		<SimpleData name="X">399602</SimpleData>
+		<SimpleData name="Y">92425</SimpleData>
+		<SimpleData name="sector">&quot;DP009&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">509.296</SimpleData>
+		<SimpleData name="HedisteBiomass">0.2491864609</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">2.1492817326</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.007004061263255,50.73144144871334</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">47</SimpleData>
+		<SimpleData name="X">399982</SimpleData>
+		<SimpleData name="Y">86538</SimpleData>
+		<SimpleData name="sector">&quot;DP028&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">1069.5216</SimpleData>
+		<SimpleData name="HedisteBiomass">8.9130800968</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">101.8592</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.0022004842</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.001617669218848,50.678501666959967</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">48</SimpleData>
+		<SimpleData name="X">399982</SimpleData>
+		<SimpleData name="Y">87077</SimpleData>
+		<SimpleData name="sector">&quot;DP028&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">15</SimpleData>
+		<SimpleData name="HedisteDensity">76.3944</SimpleData>
+		<SimpleData name="HedisteBiomass">0.1778148367</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">10.6166865534</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.001617863265703,50.683348749479208</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">49</SimpleData>
+		<SimpleData name="X">400186</SimpleData>
+		<SimpleData name="Y">90994</SimpleData>
+		<SimpleData name="sector">&quot;DP007&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">80</SimpleData>
+		<SimpleData name="HedisteDensity">25.4648</SimpleData>
+		<SimpleData name="HedisteBiomass">0.0489551708</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.998729563904287,50.7185731695496</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">50</SimpleData>
+		<SimpleData name="X">400003</SimpleData>
+		<SimpleData name="Y">91537</SimpleData>
+		<SimpleData name="sector">&quot;DP007&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">35</SimpleData>
+		<SimpleData name="HedisteDensity">407.4368</SimpleData>
+		<SimpleData name="HedisteBiomass">1.1433458396</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.001321969775463,50.7234561827077</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">51</SimpleData>
+		<SimpleData name="X">399891</SimpleData>
+		<SimpleData name="Y">92010</SimpleData>
+		<SimpleData name="sector">&quot;DP008&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">10</SimpleData>
+		<SimpleData name="HedisteDensity">25.4648</SimpleData>
+		<SimpleData name="HedisteBiomass">0.0040106533</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-2.00290893015816,50.727709679708894</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">52</SimpleData>
+		<SimpleData name="X">400521</SimpleData>
+		<SimpleData name="Y">85510</SimpleData>
+		<SimpleData name="sector">&quot;DP026&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">90</SimpleData>
+		<SimpleData name="HedisteDensity">152.7888</SimpleData>
+		<SimpleData name="HedisteBiomass">0.120409933</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.993990230623542,50.669257000966617</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">53</SimpleData>
+		<SimpleData name="X">400456</SimpleData>
+		<SimpleData name="Y">85992</SimpleData>
+		<SimpleData name="sector">&quot;DP022&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">90</SimpleData>
+		<SimpleData name="HedisteDensity">280.1128</SimpleData>
+		<SimpleData name="HedisteBiomass">5.4873431252</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.994909562759016,50.673591546559706</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">54</SimpleData>
+		<SimpleData name="X">400500</SimpleData>
+		<SimpleData name="Y">86962</SimpleData>
+		<SimpleData name="sector">&quot;DP028&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">30</SimpleData>
+		<SimpleData name="HedisteDensity">305.5776</SimpleData>
+		<SimpleData name="HedisteBiomass">0.573228662</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.994285877831057,50.682314473555323</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">55</SimpleData>
+		<SimpleData name="X">400507</SimpleData>
+		<SimpleData name="Y">91042</SimpleData>
+		<SimpleData name="sector">&quot;DP007&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">76.3944</SimpleData>
+		<SimpleData name="CerastodermaBiomass">14.5206062193</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.994182467483756,50.719004690027752</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">56</SimpleData>
+		<SimpleData name="X">400500</SimpleData>
+		<SimpleData name="Y">91446</SimpleData>
+		<SimpleData name="sector">&quot;DP011&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">50.9296</SimpleData>
+		<SimpleData name="HedisteBiomass">0.0152769584</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">7.8171704735</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.99428120356453,50.72263773336843</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">57</SimpleData>
+		<SimpleData name="X">400533</SimpleData>
+		<SimpleData name="Y">92057</SimpleData>
+		<SimpleData name="sector">&quot;DP011&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">5</SimpleData>
+		<SimpleData name="HedisteDensity">25.4648</SimpleData>
+		<SimpleData name="HedisteBiomass">0.0040106533</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.993813017423829,50.728132227577809</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">58</SimpleData>
+		<SimpleData name="X">400500</SimpleData>
+		<SimpleData name="Y">92500</SimpleData>
+		<SimpleData name="sector">&quot;DP010&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">967.6624</SimpleData>
+		<SimpleData name="HedisteBiomass">5.1729997773</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">5.4134433417</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.994280103279377,50.732115996772528</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">59</SimpleData>
+		<SimpleData name="X">400993</SimpleData>
+		<SimpleData name="Y">86016</SimpleData>
+		<SimpleData name="sector">&quot;DP024&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">50</SimpleData>
+		<SimpleData name="HedisteDensity">76.3944</SimpleData>
+		<SimpleData name="HedisteBiomass">0.1328703192</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.987310038328124,50.673806810125015</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">60</SimpleData>
+		<SimpleData name="X">400956</SimpleData>
+		<SimpleData name="Y">86545</SimpleData>
+		<SimpleData name="sector">&quot;DP022&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">50</SimpleData>
+		<SimpleData name="HedisteDensity">25.4648</SimpleData>
+		<SimpleData name="HedisteBiomass">0.0040106533</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">11.6875088431</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.987832450990725,50.678564023752486</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">61</SimpleData>
+		<SimpleData name="X">401589</SimpleData>
+		<SimpleData name="Y">85023</SimpleData>
+		<SimpleData name="sector">&quot;DP021&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">50</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">4.9443278873</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.978879538137646,50.664875805866494</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">62</SimpleData>
+		<SimpleData name="X">401490</SimpleData>
+		<SimpleData name="Y">85553</SimpleData>
+		<SimpleData name="sector">&quot;DP021&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">40</SimpleData>
+		<SimpleData name="HedisteDensity">25.4648</SimpleData>
+		<SimpleData name="HedisteBiomass">0.3485662898</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.980278328283139,50.669642206987035</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">63</SimpleData>
+		<SimpleData name="X">401500</SimpleData>
+		<SimpleData name="Y">86076</SimpleData>
+		<SimpleData name="sector">&quot;DP021&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">70</SimpleData>
+		<SimpleData name="HedisteDensity">76.3944</SimpleData>
+		<SimpleData name="HedisteBiomass">0.1609948001</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.98013486486004,50.674345389070879</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">64</SimpleData>
+		<SimpleData name="X">401486</SimpleData>
+		<SimpleData name="Y">87000</SimpleData>
+		<SimpleData name="sector">&quot;DP023&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">50</SimpleData>
+		<SimpleData name="HedisteDensity">152.7888</SimpleData>
+		<SimpleData name="HedisteBiomass">1.0261801946</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.980329566009036,50.682654709540934</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">65</SimpleData>
+		<SimpleData name="X">401511</SimpleData>
+		<SimpleData name="Y">87479</SimpleData>
+		<SimpleData name="sector">&quot;DP020&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">101.8592</SimpleData>
+		<SimpleData name="HedisteBiomass">1.3928142672</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.979973896134113,50.686962165557873</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">66</SimpleData>
+		<SimpleData name="X">402027</SimpleData>
+		<SimpleData name="Y">84950</SimpleData>
+		<SimpleData name="sector">&quot;DP021&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">95</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">127.324</SimpleData>
+		<SimpleData name="CerastodermaBiomass">3.2282654041</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.972682615024349,50.664218061046824</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">67</SimpleData>
+		<SimpleData name="X">401970</SimpleData>
+		<SimpleData name="Y">85499</SimpleData>
+		<SimpleData name="sector">&quot;DP021&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">20</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.97348634939576,50.669155266899118</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">68</SimpleData>
+		<SimpleData name="X">402043</SimpleData>
+		<SimpleData name="Y">86021</SimpleData>
+		<SimpleData name="sector">&quot;DP021&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">5</SimpleData>
+		<SimpleData name="HedisteDensity">25.4648</SimpleData>
+		<SimpleData name="HedisteBiomass">0.4464528208</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.97245065141644,50.673849242891229</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">69</SimpleData>
+		<SimpleData name="X">402037</SimpleData>
+		<SimpleData name="Y">86619</SimpleData>
+		<SimpleData name="sector">&quot;DP020&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.972532454099946,50.679226919908629</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">70</SimpleData>
+		<SimpleData name="X">401985</SimpleData>
+		<SimpleData name="Y">86995</SimpleData>
+		<SimpleData name="sector">&quot;DP020&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">127.324</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.0037504292</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.973266529187664,50.682608356186073</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">71</SimpleData>
+		<SimpleData name="X">402007</SimpleData>
+		<SimpleData name="Y">90026</SimpleData>
+		<SimpleData name="sector">&quot;DP004&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">35</SimpleData>
+		<SimpleData name="HedisteDensity">203.7184</SimpleData>
+		<SimpleData name="HedisteBiomass">0.0408639952</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">76.3944</SimpleData>
+		<SimpleData name="CerastodermaBiomass">25.681562831</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.972939607280275,50.709865180546359</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">72</SimpleData>
+		<SimpleData name="X">402499</SimpleData>
+		<SimpleData name="Y">85901</SimpleData>
+		<SimpleData name="sector">&quot;DP021&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">10</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">6.2659330248</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.965998211399909,50.672768424706668</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">73</SimpleData>
+		<SimpleData name="X">402500</SimpleData>
+		<SimpleData name="Y">90500</SimpleData>
+		<SimpleData name="sector">&quot;DP004&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">30</SimpleData>
+		<SimpleData name="HedisteDensity">229.1832</SimpleData>
+		<SimpleData name="HedisteBiomass">0.2275971011</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.965954370414611,50.714125898215443</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">74</SimpleData>
+		<SimpleData name="X">402988</SimpleData>
+		<SimpleData name="Y">85919</SimpleData>
+		<SimpleData name="sector">&quot;DP020&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">1</SimpleData>
+		<SimpleData name="AlgaeCover">10</SimpleData>
+		<SimpleData name="HedisteDensity">509.296</SimpleData>
+		<SimpleData name="HedisteBiomass">1.2024562333</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.959078008653269,50.672928085807094</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">75</SimpleData>
+		<SimpleData name="X">403008</SimpleData>
+		<SimpleData name="Y">90506</SimpleData>
+		<SimpleData name="sector">&quot;DP004&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">2215.4376</SimpleData>
+		<SimpleData name="HedisteBiomass">5.0668027359</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.0042798562</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.958759058714444,50.714177547682752</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">76</SimpleData>
+		<SimpleData name="X">403370</SimpleData>
+		<SimpleData name="Y">86360</SimpleData>
+		<SimpleData name="sector">&quot;DP020&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">1</SimpleData>
+		<SimpleData name="HedisteDensity">101.8592</SimpleData>
+		<SimpleData name="HedisteBiomass">0.0284119131</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">25.4648</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0.2519724952</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.953668252386812,50.676891872535201</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">77</SimpleData>
+		<SimpleData name="X">403498</SimpleData>
+		<SimpleData name="Y">90021</SimpleData>
+		<SimpleData name="sector">&quot;DP004&quot;</SimpleData>
+		<SimpleData name="Sediment1">1</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">127.324</SimpleData>
+		<SimpleData name="HedisteBiomass">0.0218996086</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.951823183269442,50.709813452031753</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">78</SimpleData>
+		<SimpleData name="X">404505</SimpleData>
+		<SimpleData name="Y">87958</SimpleData>
+		<SimpleData name="sector">&quot;DP001&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">1</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.937585966233324,50.691254786967058</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">79</SimpleData>
+		<SimpleData name="X">404650</SimpleData>
+		<SimpleData name="Y">88462</SimpleData>
+		<SimpleData name="sector">&quot;DP001&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">0</SimpleData>
+		<SimpleData name="HedisteDensity">305.5776</SimpleData>
+		<SimpleData name="HedisteBiomass">1.3208142125</SimpleData>
+		<SimpleData name="HedistePresent">1</SimpleData>
+		<SimpleData name="CerastodermaDensity">50.9296</SimpleData>
+		<SimpleData name="CerastodermaBiomass">2.9057895785</SimpleData>
+		<SimpleData name="CerastodermaPresent">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.935527012452364,50.695785998736966</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#sites">
+		<SimpleData name="Site">80</SimpleData>
+		<SimpleData name="X">404615</SimpleData>
+		<SimpleData name="Y">88966</SimpleData>
+		<SimpleData name="sector">&quot;DP001&quot;</SimpleData>
+		<SimpleData name="Sediment1">0</SimpleData>
+		<SimpleData name="Sediment2">0</SimpleData>
+		<SimpleData name="AlgaeCover">2</SimpleData>
+		<SimpleData name="HedisteDensity">0</SimpleData>
+		<SimpleData name="HedisteBiomass">0</SimpleData>
+		<SimpleData name="HedistePresent">0</SimpleData>
+		<SimpleData name="CerastodermaDensity">0</SimpleData>
+		<SimpleData name="CerastodermaBiomass">0</SimpleData>
+		<SimpleData name="CerastodermaPresent">0</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-1.93601641498508,50.700318591295137</coordinates></Point>
+  </Placemark>
+</Folder></Document></kml>

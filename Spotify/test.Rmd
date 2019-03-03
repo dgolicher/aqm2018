@@ -1,0 +1,67 @@
+---
+title: "Hurn"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source_code: embed
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+
+
+```{r}
+load("/home/aqm/data/dt.rob")
+library(lubridate)
+library(xts)
+library(dplyr)
+d<-read.csv("/home/aqm/data/met_office.csv")
+d$date<-as.Date(d$date)
+d$month<-month(d$date,label=TRUE) ## Makes an ordered labaled factor
+library(dygraphs)
+
+library(lubridate)
+
+
+```
+
+# Temperatures {.tabset}
+
+
+```{r}
+d %>% filter(station=="hurn")->dd
+Maxt<-xts(x = dd$tmax, order.by = dd$date)
+Mint<-xts(x = dd$tmin, order.by = dd$date)
+tmps<-cbind(Maxt,Mint)
+ dygraph(tmps,group = "Hurn") %>% dyRangeSelector() 
+```
+
+
+
+# Rain
+
+```{r}
+xts(x = dd$rain, order.by = dd$date) %>% dygraph(group = "Hurn") %>% dyRangeSelector()
+```
+
+# 12 Month rolling average rain
+
+```{r}
+xts(x = dd$rain, order.by = dd$date) %>% dygraph(group = "Hurn") %>% dyRangeSelector() %>%  dyRoller(rollPeriod = 12)
+```
+
+# 5 year rolling average tmax
+
+```{r}
+xts(x = dd$tmax, order.by = dd$date) %>% dygraph(group = "Hurn") %>% dyRangeSelector() %>%  dyRoller(rollPeriod = 12*5)
+```
+
+
+# Raw data
+```{r}
+dt(dd)
+```
+

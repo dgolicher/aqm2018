@@ -1,0 +1,71 @@
+---
+title: "AQM class 5 solution"
+author: "Duncan Golicher"
+date: "2/26/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercise
+
+A researcher is interested in whether dark corrugated iron strips are used more frequently by sand lizards than plain corrugated iron. The researcher has 20 pieces of iron of each type and places them on five different sites at Arne. The strips are inspected every day for two weeks in spring. The total number of sandlizards found under each strip is recorded each day as the response variable (data may also be collected on weather conditions etc.. but you can ignore this).
+
+Design a fake data set that could be used as the template for a simple analysis of the data using an appropriate analysis of variance. Run an analysis on the fake data.
+
+Answer the folowing questions.
+
+1. What feature of the design may be considered to lead to blocking?
+2. How many levels of the factor are there?
+3. How might subsampling be handled?
+4. Which feature of the response variable may cause particular difficulties when working with real life data?
+
+
+## Simulating the data
+
+```{r}
+
+id<-rep(as.factor(c(1:40)),each=14)  ## Make an identifier for each sheet of metal
+site<-rep(rep(c("S1","S2","S3","S4","S5"),each=8),each=14) # Replicate the design 14 times
+treat_type<-rep(rep(c("B","Z"),times=20),each=14) # Nest the treatments within site
+treat_effect<-rep(rep(c(0.2,0),times=20),each=14) # Mean lizard count per sheet associated with treat
+site_effect<-rep(rep(c(0.1,0.2,0.1,0.3,0.4),each=8),each=14) # Additive site effect
+day<-rep(c(1:14),times=8) ## Code the 14 days of the experiment
+overall_effect<-site_effect+treat_effect ## Overall effect is additive
+lizard_count<-unlist(lapply(overall_effect,function(x)rpois(1,x))) ## Simulate counts from poisson
+d<-data.frame(day,id,site,treat_type,lizard_count) ## Form a data frame
+
+```
+
+## Aggregating
+
+There are various options available for working with these data. The simplest (and often the best) involve aggregating the data to form variables that do not suffer from as much pseudo-replication. There are repeated measures on the same sheet, that may include the same individuals counted multiple times. The sum of observations of lizards over the 14 day period may be a reasonable measure of how attractive the sheets are.
+
+```{r}
+library(dplyr)
+library(DT)
+d %>% group_by(id,site,treat_type) %>% summarise(sum=sum(lizard_count)) ->d1
+datatable(d1)
+
+```
+
+Notice that using dplyr it is easy to change the level of aggregation by adding, or dropping, grouping variables.
+
+```{r}
+d %>% group_by(site,treat_type) %>% summarise(sum=sum(lizard_count)) ->d2
+datatable(d2)
+```
+
+```{r}
+d %>% group_by(site) %>% summarise(sum=sum(lizard_count)) ->d3
+datatable(d3)
+```
+
+
+```{r}
+d %>% group_by(treat_type) %>% summarise(sum=sum(lizard_count)) ->d4
+datatable(d4)
+```
+

@@ -1,0 +1,198 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,eval=TRUE,message = FALSE, warning = FALSE)
+```
+
+## Poisson regression
+
+
+
+
+```{r}
+library(rjags)
+library(tidyverse)
+library(rjags)
+library(ggmcmc)
+library(polspline)
+library(propagate)
+d<-read.csv("https://tinyurl.com/aqm-data/marineinverts.csv")
+str(d)
+```
+
+## GGplot
+
+Its easy to add a glm to a ggplot scatterplot. However be careful to add in the methods.args.
+
+```{r}
+library(ggplot2)
+g0<-ggplot(d,aes(x=grain,y=richness))
+glm1<-g0+geom_point()+stat_smooth(method="glm",method.args=list( family="poisson"), se=TRUE) +ggtitle("Poisson regression with log link function")
+glm1
+
+```
+
+
+
+```{r}
+pois_mod<-"
+model{
+
+#Likelihood
+for( i in 1:n)
+{
+  y[i] ~ dpois(lambda[i])
+  log(lambda[i]) <- a + b*x[i]
+
+}
+
+a~dnorm(0, tau1)
+b~dnorm(0, tau2)
+tau1 ~dunif(0,100)
+tau2 ~dunif(0,100)
+
+}"
+
+```
+
+```{r}
+
+dat<-list(
+  n=length(d$richness),
+  x=d$grain,
+  y=d$richness)
+
+mod <- jags.model(textConnection(pois_mod), data = dat, n.chains = 2)
+update(mod, 10000)
+dic1<- dic.samples(model = mod, variable.names = c("a","b","pd","deviance"), n.iter = 10000)
+
+mod_sim <- coda.samples(model = mod, variable.names = c("a","b"), n.iter = 10000)
+```
+
+
+```{r}
+ms <-ggs(mod_sim) 
+ms %>% spread(Parameter, value) -> ms
+
+
+x<-seq(min(d$grain),max(d$grain),length=100)
+
+pred<-function(x=x,mt=ms){
+      pred<-exp(mt$a + mt$b * x)
+      return(list(quantile(pred,c(0.025,0.5,0.975))))
+}
+    
+pred_mod<-data.frame(x=x,do.call("rbind",sapply(x,pred)))
+names(pred_mod)<-c("x","lwr","mid","upr")
+
+g1<-g0+ geom_point() + geom_point()+stat_smooth(method="glm",method.args=list( family="poisson"), se=TRUE)
+
+g1+  geom_line(data=pred_mod,aes(x=x,y=lwr),col="blue") + geom_line(data=pred_mod,aes(x=x,y=upr),col="red") + geom_line(data=pred_mod,aes(x=x,y=mid),col="black")
+
+
+```
+
+
+## Over dispersed Poisson
+
+
+```{r}
+od_pois_mod<-"
+model{
+
+#Likelihood
+for( i in 1:n)
+{
+  
+  y[i] ~ dgamma( ((mu[i]^2)/sig), (mu[i]/sig)) ## Reparameterised gamma
+  mu[i] ~ dpois(lambda[i])
+  log(lambda[i]) <- a + b*x[i]
+
+}
+
+#priors
+a~dnorm(0, 0.00001)
+b~dnorm(0, 0.00001)
+sig~dunif(0,100)
+}"
+
+################ Not working
+
+nb_mod<-"
+model{
+
+#Likelihood
+for( i in 1:n)
+{
+  
+  y[i] ~ dnegbin(p[i],r)
+  p[i] <- r/(r+lambda[i]) 
+  log(lambda[i]) <- a + b*x[i]
+
+}
+
+#priors
+a~dnorm(0,0.00001)
+b~dnorm(0, 0.00001)
+r ~ dunif(0,50)
+}"
+
+
+
+```
+
+```{r}
+dat<-list(
+  n=length(d$richness),
+  x=d$grain,
+  y=d$richness)
+
+mod <- jags.model(textConnection(nb_mod), data = dat, n.chains = 2)
+update(mod, 10000)
+dic2<- dic.samples(model = mod, variable.names = c("a","b","pd","deviance"), n.iter = 10000)
+mod_sim <- coda.samples(model = mod, variable.names = c("a","b"), n.iter = 10000)
+plot(mod_sim)
+```
+
+
+```{r}
+ms <-ggs(mod_sim) 
+ms %>% spread(Parameter, value) -> ms
+
+
+x<-seq(min(d$grain),max(d$grain),length=100)
+
+pred<-function(x=x,mt=ms){
+      pred<-exp(mt$a + mt$b * x)
+      return(list(quantile(pred,c(0.025,0.5,0.975))))
+}
+    
+pred_mod<-data.frame(x=x,do.call("rbind",sapply(x,pred)))
+names(pred_mod)<-c("x","lwr","mid","upr")
+
+#g0+ geom_point() + geom_point() +geom_smooth(method="glm.nb", se=TRUE) +
+g1+ geom_line(data=pred_mod,aes(x=x,y=lwr),col="blue") + geom_line(data=pred_mod,aes(x=x,y=upr),col="red") + geom_line(data=pred_mod,aes(x=x,y=mid),col="black")
+```
+
+
+```{r}
+
+diffdic(dic2,dic1)
+```
+
+
+```{r}
+sum(dic1$deviance)
+```
+
+
+```{r}
+
+```
+

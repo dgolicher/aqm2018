@@ -1,0 +1,38 @@
+---
+title: "Mexican Trees Exercise"
+author: "Duncan Golicher"
+date: "3/26/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message=FALSE,warnings=FALSE)
+```
+
+#### Mexican trees
+
+The first exercise involves data taken from three forest types in Mexico. The abundances are counts of individual trees. What differences are there in species diversity between the forest types?
+
+```{r}
+library(vegan)
+library(reshape)
+library(dplyr)
+library(ggplot2)
+```
+
+
+```{r}
+mexveg<- read.csv("/home/aqm/course/data/mexveg.csv")
+df<-melt(mexveg,id=1:2)
+mexmat<-mexveg[,-c(1,2)]
+```
+
+(
+
+https://www.youtube.com/watch?v=FjZV7orhbq0
+
+
+)
+
+
+)
