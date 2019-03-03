@@ -1,0 +1,18 @@
+---
+title: "Untitled"
+author: "Duncan Golicher"
+date: "03/03/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Place data in aqm2018/aqmdata folder. Then this should work anywhere after git push.
+
+```{r}
+d<- read.csv("http://tinyurl.com/aqm2018-data/Crows.csv")
+str(d)
+```
+
