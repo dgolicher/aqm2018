@@ -1,0 +1,36 @@
+---
+title: "Bayes normal"
+author: "Duncan Golicher"
+date: "1/28/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(rjags)
+library(ggmcmc)
+mod <-"model {
+	for (i in 1:N) {
+		y[i] ~ dnorm(mu, tau)
+	}
+	mu ~ dunif(0, 10)
+	tau <- pow(sigma, -2)
+	sigma ~ dunif(0, 100)
+}"
+
+y=c(1,2,3)
+N=length(y)
+data<-list(N=N,y=y)
+model<-jags.model(textConnection(mod),data=data)
+
+update(model,n.iter=1000)
+output=coda.samples(model=model,variable.names=c("mu"),n.iter=100000,thin=10)
+update(model,n.iter=1000)
+output=coda.samples(model=model,variable.names=c("mu"),n.iter=100000)
+plot(output)
+summary(output)
+```
+

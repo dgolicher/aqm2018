@@ -1,0 +1,385 @@
+---
+title: "Analysing diversity"
+author: "Duncan Golicher"
+date: "3/24/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message = FALSE,warning = FALSE)
+```
+
+## Analysis of multi-species data
+
+
+One of the commonest tasks that quantitative ecologists face is the analysis of site by species matrices. Such data are routinely produced as a result of many types of ecological survey. Because multiple species are involved such data is always challenging to analyse. There are a lot of questions that can be addressed with multispecies data. Many of these involve analysis of species diversity in some respect.
+
+Species diversity is classically regarded as consisting of three components. 
+
+$gamma=alpha+beta$
+
+Alpha diversity is measured at the scale of some sampling unit (i.e. plot or quadrat). Gamma diversity is the overall diversity over the whole area that is being measured. Beta diversity is the difference between the two. Or is it? The issues involved in analysing diversity are extremely complex and could form the basis of a whole taught unit.
+
+For the moment let's accept this simplified version of the issue for the pragmatic purpose of finding some methods that will allow us to work with a sites by species matrix.
+
+
+### Working with the sites by species matrix
+
+One approach to working with the species by sites matrix would be to produce a measure that could be used as a response variable in some other model. In this class we will look at some simple measures of species diversity. The next class will apply some more complex methods in order to look at species composition.
+However you first need to become familiar with the format of the matrix in order to work with the data comfortably.
+
+
+#### BCI data
+
+Let's look at some realistically complex data from a classic study of tropical diversity. The Smithsonian institute has a permanent sample plot of 50 hectares of tropical forest located on the Island of Barro Colorado in Panama. 
+
+The data set consists of a grid of completely censused plot of 100m x 100m within which all trees over 5cm in diameter were counted and identified to species.
+
+```{r}
+library(rgdal)
+x<- rep(seq(625754, 626654, by=100),each=5)
+y<- rep(seq(1011569,  1011969, by=100),len=50) 
+coords<-data.frame(x,y)
+dd<-data.frame(coords,id=1:100)
+coordinates(dd)<-~x+y
+proj4string(dd)<-CRS("+init=epsg:32617")
+dd<-spTransform(dd, CRS("+init=epsg:4326"))
+library(mapview)
+m<-mapview(dd)
+library(leaflet.extras)
+m@map %>% addFullscreenControl()
+```
+
+
+```{r}
+
+library(vegan)
+library(reshape)
+data(BCI)
+```
+
+You can look at this matrix using 
+
+```{r}
+str(BCI)
+```
+
+```{r}
+dim(BCI)
+```
+
+
+The researchers therefore found 225 species in the 50 plots. The area is quite homogeneous, but there is a very high diversity of tree species. There are over 3000 species of tree in Panama.
+
+Whether 225 is considered as a measure of gamma diversity (for the 50 plots) or alpha diversity (for 50 ha plots within an area with a higher gamma diversity clearly depends on the scale at which diversity is being observed and studies. There are complex issues here. 
+
+#### Reshaping the site by species matrix
+
+Note that there are many zeros in the site by species matrix. As we have seen before, this is not strictly a "raw" data format, as it can be derived from a more compact table format. Here is how to interchange the two formats using the reshape package.
+
+```{r}
+
+# Make a data frame with Site ID as one of the columns
+bci<-data.frame(Site=1:50,BCI)
+#Melt the data frame using the Site ID as the identifier.
+bci<-melt(bci,id="Site")
+# Remove zeros
+bci<-bci[bci$value>0,]
+```
+
+To reshape this long format back into a sites by species matrix form, with a column for the site name you can run this line of code.
+
+```{r}
+bci2<-data.frame(cast(bci,Site~variable,fill=0))
+```
+
+Check the format. You may often have to remove some of the columns in order to work with a matrix that only consists of species abundence. In this case 
+
+```{r}
+bcimat<-as.matrix(bci2[,-1])
+```
+
+Let's look at how many species are found in each plot. We can produce a vector of species richness using the specnumber function.
+
+
+```{r}
+S<-specnumber(BCI)
+summary(S)
+hist(S,col="grey")
+```
+
+So, species number could perhaps be used as a response variable if we had some explanatory variables for each sub plot. We will come back to this issue later.
+
+#### Working with apply
+
+Many of the methods for working with quadrat type data work directly on the broad, site by species matrix. 
+
+Although it is usually possible to use data frame objects in R for matrix based operations there is a difference between a data frame and a true matrix. A matrix can only hold numbers, while a data frame can hold any type of values. The "apply" command will work on any matrix, but would produce odd results on some data frames. 
+
+When you ask R to apply a function to a matrix it is like writing a function at the end of a set of columns or rows on an Excel spreadsheet and then dragging them across. This is only going to work if all the columns or rows contain the same sort of values. If we want to apply a function (say sum) to rows of a matrix (say BCI) we use a 1 to refer to rows and write apply(BCI,1,sum). If we want to apply the function to the columns we write apply(BCI,2,sum)
+So, for example to find the abundances of the species. We can sum over all the subplots to produce a vector of abundances.
+
+```{r}
+abun<-apply(BCI,2,sum)
+
+```
+
+A few abundant species contribute a relatively large number of individuals to the total.
+
+```{r}
+head(sort(abun,dec=T))
+```
+
+## Working with the long format data frame
+
+It can be more convenient to use dplyr to produce tables. To do this we need to work with the reshaped long data.  When the matrix was put into the "molten" database form by the reshape operation species name became the variable and the count of individual trees the value. So this code will produce a table.
+
+```{r}
+library(dplyr)
+library(DT)
+bci %>% group_by(variable) %>% summarise(occur=n(),abun=sum(value)) -> abunds
+datatable(abunds)
+```
+
+We can calculate the relative abundances of these top ten species as percentages using R
+
+```{r}
+round(100*head(sort(abun,dec=T))/sum(abun),2)
+```
+
+So even though there are 225 species recorded, 20% of the observations are from only three species. 
+
+```{r}
+summary(abun)
+```
+
+The median abundance is 25. 50% of the species have 25 or fewer individuals. This is a very typical pattern in diversity data, whether in the tropics or elsewhere. Most *individuals* belong to a handful of common species. However, most *species* have few individuals. To put it in a delberately perverse way common species turn out to be rare and rare species are common!
+
+This has generated a huge literature based on attempts to describe this pattern mathematically and find underlying reasons for it. If we plot a histogram of abundances we can see the pattern.
+
+```{r}
+hist(abun,col="grey")
+```
+
+Taking logarithms 
+
+```{r}
+hist(log10(abun),col="grey")
+```
+
+This may explain why there is a difference between the number of species found in each subplot and the total number of species. It is simply chance. As there are so many rare species you would not expect eachsubplot to contain all the species. We can look at the pattern ofaccumulation of species that we obtain if we aggregate plots randomly into larger units using the specaccum function.
+
+```{r}
+AcCurve<-specaccum(BCI,"random")
+plot(AcCurve,ci.type="poly", col="red", lwd=2, ci.lty=0, ci.col="grey")
+boxplot(AcCurve, col="blue", pch="+",add=T)
+specpool(BCI)
+```
+
+So species richness accumulates in a non linear manner. This has been modelled as a hyperbolic function in order to estimate the asymptotic(maximum) species richness. Fitting a Lomolino curve actually produces an estimate of the maximum number of species.
+
+```{r}
+## Fit Lomolino model to the exact accumulation
+AcCurve<-specaccum(BCI,"exact")
+mod1 <- fitspecaccum(AcCurve, "lomolino")
+coef(mod1)
+
+plot(AcCurve)
+## Add Lomolino model using argument 'add'
+plot(mod1, add = TRUE, col=2, lwd=2)
+
+```
+
+
+There are a range of "non parametric" estimators of species richness that claim to do the same thing.
+
+```{r}
+pool<-apply(BCI,2,sum)
+estimateR(pool)
+```
+
+
+However if we look at the accumulation on a log scale we may be less convinced that it is flattening off at all.
+
+```{r}
+plot(AcCurve, ci.type="poly", col="red", lwd=2, ci.lty=0, ci.col="grey",log="x")
+
+```
+
+
+
+The practical implications are that when planning field work you may quickly observe at least half the species that you are going to find in any given area. However rare species will continue to add to the list, and there may be no real limit to this process. 
+
+Because the accumulation is more or less linear on a logarithmic scale there are clearly diminishing returns. If, say, six more species are added by doubling the number of sites, four times the number of sites will be needed to add six more, eight more for the next six and so on.
+
+In this case you should notice that you expect to find around half the total number of species if you draw two sites at random from the data set and count the numbers of species. This may be useful when designing future studies.
+
+The dune meadows data set found in the vegan package uses quadrat cover classes, so the numbers do not represent counts. The default settings will be OK for this sort of data.
+
+```{r}
+data(dune)
+AcCurve<-specaccum(dune)
+plot(AcCurve)
+```
+
+## Resampling individuals 
+
+Some of the methods for resampling species accumulation curves (eg. Colemans, and rarefaction) are based on individuals. 
+We can try an alternative form of resampling at the level of each plot.
+
+```{r}
+resamp2 <-
+function(X, rep=1,plot=FALSE) {
+ require(vegan)
+  Samp <- function(size, Indivs) {  length(table(sample(Indivs, size,
+          replace=F)))  }
+   N<-X[X>0]
+   TotSp <- length(N)
+   TotInds<-sum(N)#### Accumulation curve up to the maximum number of
+   #individuals
+   Sp <- 1:TotSp
+   Inds <- rep(1:TotSp, N)
+   Size <- rep(floor(TotInds*0.25):TotInds, rep) ###Note its(TotInds*0.25):TotInds
+   sp.count <- sapply(Size, Samp, Inds)
+   if(plot)plot(Size,sp.count,xlab="Number of individuals",ylab="Number of species",log="x")
+   Sp.Ac1<-lm(sp.count~log(Size))
+   Sp.Ac2<-lm(sp.count~log2(Size))
+   fa<-fisher.alpha(N)
+   res<-list(Logslope=Sp.Ac1$coefficients[2],Log2slope=Sp.Ac2$coefficients[2],Alpha=fa)
+   return(res)
+}
+```
+
+```{r}
+resamp2(BCI[1,],plot=TRUE)
+
+```
+
+
+```{r}
+ans<-apply(BCI,1,resamp2)
+res<-do.call("rbind",ans)
+datatable(res) %>% formatRound(columns=c(1:3), digits=1)
+```
+
+Once more, this pattern has some useful practical implications and some deeper theoretical ones. By looking at the slope after log transforming to base 2 we obtain an estimate of the number of new species which would be added each time we double the number of individuals counted.
+
+
+### Simpson's and Shannon's indices
+
+Ok, we have seen that species abundance distributions tend to be very highly skewed, with a few common species and many more rare species. The counts of individuals in any one sampling unit will reflect this. Intuitively there is a difference between a sampling unit that contains 10 individuals of species A, 10 of species B and 10 of species C when it is compared to a sampling unit that has 28 of species A and only one individual of each of the other species.
+
+There is a very long tradition in Ecology of measuring diversity using indices that combine measures of both species richness and equitability. There are two widely used indices of diversity, and around 30 that are less well known.
+
+
+#### Simpson's index
+
+The simplest diversity index to understand is Simpson's index.
+
+Let's take the example of an equitable community with ten individuals
+of five species. The proportional abundance for each species is 0.2.
+
+```{r}
+eq<-c(10,10,10,10,10)
+prop<-eq/sum(eq)
+prop
+```
+
+
+
+Now imagine we draw an individual at random from the community. It could be of any one of the five species with an equal probability of 0.2. Let's say that it is species A. If we replace the individual and draw another, what is the probability that it will also be of
+species A? The answer must also be 0.2. So the probability of drawing two individuals of species A is 0.2 x 0.2 = 0.2²
+= 0.04.
+
+The same applies to all the other species.
+
+So the overall probability of drawing two individuals of the same species is given by the sum of p². We can call this D. If we subtract D from 1 we have the probability of drawing two individuals at random that are of different species. Alternatively we can find the reciprocal of D which represents the number of equally abundant species that would provide the probability obtained.
+
+$D=\sum p^{2}$
+
+$simp=1-D$
+
+$invsimp=\frac{1}{D}$
+
+```{r}
+sprop<-prop^2
+sprop
+D<-sum(sprop)
+1-D
+D
+```
+
+Now what do we find for a much less equitable community?
+
+```{r}
+uneq<-c(100,10,2,2,1)
+prop<-uneq/sum(uneq)
+prop
+```
+
+
+In this case we are much more likely to draw an individual of the common species first. We are then very likely to draw another. So the probability of getting two individuals of the same species is much higher. 
+
+```{r}
+sprop<-prop^2
+sprop
+D<-sum(sprop)
+1-D
+1/D
+```
+
+The probability of obtaining two individuals of the same species is higher, as we are likely to draw two individuals of the very common species. Thus the ``effective'' number of species as measured by the inverse of Simpson's index is lower.
+
+Simpson's index is influenced by both the number of species and the equitability of the distribution.
+
+We can obtain a measure of pure equitability that takes a value between zero and 1 by dividing the inverse of simpsons's by the number of species.
+
+```{r}
+Simp<-diversity(BCI,"simp")
+Simp
+InvSimp<-diversity(BCI,"invsimp")
+InvSimp
+Es<-InvSimp/specnumber(BCI)
+Es
+```
+
+
+
+#### Shannon's index
+
+Shannon's index (sometimes called the Shannon-Wienner index) is a commonly used diversity index that is rather similar in practice to Simpson's index. Unfortunately very few users of the index have an intuitive idea of it's meaning, as it is based on some rather obscure information theory.
+
+
+$H=-\sum p.log(p)$
+
+
+The values that H can take tend to vary between 0.8 and 4. Values above 2.5 are high, but there is no simple rule. Fortunately Shannon's index can easily be converted into an index of equitability (or evenness) in a rather similar way to Simpson's by dividing it by the maximum value that it could take, which in this case is log(S). The index downweights rare species rather more than does Simpson's index.
+
+The two indices basically measure the same thing. Simpson's is much simpler to understand and can be used by default. Shannon's is used by tradition as it was thought to be the better measure for many years. Shannon's is therefore always worth calculating and reporting for comparative purposes.
+
+Simpson's and Shannon's indices are always highly correlated. An empirical correlation between species richness per se and evenness also tends to occur, but this is not automatic.
+
+```{r}
+H<-diversity(BCI,"shannon")
+Eh<-H/log(specnumber(BCI))
+div<-data.frame(S,Simp,InvSimp,H,Es,Eh)
+source("https://tinyurl.com/aqm-data/QEScript")
+Xpairs(div)
+```
+
+
+
+
+The main reason that quantitative ecologists calculte diversity indices in most cases is to relate them to environmental variables. The two components of diversity are species richness and equitability (evenness). Either or both of these can take be modelled as functions of environmental variables. A significant reduction in evenness can, in appropriate circumstances, be taken as a symptom of environmental degradation. Low evenness scores can be the result of a community being dominated by a few species that are tolerant to, or favoured by, anthropogenic pollution or disturbance. However scores must be placed in context. The size of the site (quadrat or soil core) can have a great influence on diversity indices and this must always be taken into account.
+
+### Exercises
+
+#### Mexican trees
+
+The first exercise involves data taken from three forest types in Mexico. The abundances are counts of individual trees. What differences are there in species diversity between the forest types?
+
+```{r}
+mexveg<- read.csv("http://tinyurl.com/QEcol2013/mexveg.csv")
+mexmat<-mexveg[,-c(1,2)]
+```
+

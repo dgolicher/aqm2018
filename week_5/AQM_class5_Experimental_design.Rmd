@@ -1,0 +1,441 @@
+---
+title: "Design and analysis of experiments"
+author: "Duncan Golicher"
+date: "20/10/2015"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+## Introduction
+
+Observational studies are much more common in environmental science and ecology than in other fields. When we analyse observational data we are seeking to gain evidence in support of scientific hypotheses. However this evidence tends to be indirect and open to a range of interpretations.
+In contrast, a well designed experiment involves a planned manipulation of nature that should allow us to test hypotheses directly. A statistical hypothesis never completely coincides with the scientific hypothesis, however in an experimental setting the two concepts may be closely linked. 
+
+Experimental studies are rare in ecology because they tend to be costly to set up, may require large areas and may need to run for many years in order to provide convincing data. So we often look for natural experiments that arise on an *ad hoc* basis to provide data. Sometimes unintentional human interventions such as oil spills, hunting, landscape fragmentation etc provide such systems that we can study. Although these rarely follow conventional experimental design, familiarity with experimental concepts may help in the selection of an appropriate analysis.
+
+Many of the analytical methods and concepts used by experimental ecologists and environmental scientist have been derived from agricultural experiments. There are good reasons for this. The most influential statistician of all time, R A Fisher, was employed for many years at Rothamstead agricultural research centre. During that time he developed the theory and practical application of analysis of variance. The language used to describe experimental designs is based around this work. Although this helps to provide a common language it can sometimes be confusing. Terms such as "split plot" can be used for a design with no real plots, "Repeat measures" can occur when the measures are not actually taken on more than one occasion. Blocks may refer to non spatial entities.  The key to understanding experimental design is to realise that the design of the experiment and the design of the statistical model used to analyse it go hand in hand. If you can understand the structure of the data and the model used to analyse it you can either design experiments to produce appropriate data or design surveys that provide observational data that can be analysed using methods designed for experiments.
+
+## Basic concepts of experimental design
+
+#### 1. Replication 
+
+The most important element to recognise when designing any form of experiment that will be analysed using statistical methods is the amount of **replication** involved. This can be easy to determine if the experimental unit is well defined. For example if a treatment is applied to an animal then the number of replicates is usually going to be the number of animals used in the experiment. However if the animals share a single environment, such as a cage or enclosure, then that may become the experimental unit thus possibly reducing the number of replicates. It can be more complex when treatment is applied to plots of land due to spatial auto correlation and lack of independence. Ecological experiments have often been criticised for involving so called "pseudoreplication". This occurs when the true number of independent replicates is much lower than the number claimed by the researcher. One cause of this may be that sub samples taken from what should properly be regarded as a single experimental unit are analysed as if they constitute true replicate samples. This may become clearer after we have looked at some examples.
+The amount of replication needed to establish the significance and size of the effect of some intervention depends to a large extent on the amount of natural variability in the system of study. Some laboratory based experiments can be based on extremely small numbers of replicates. For example, if drugs are administered to a set of genetically identical mice there may be no need for more than three animals in the control and treatment group in order to establish a statsitically significant effect. The reason for this is the response of all the animals without intervention would be very similar and all are likely to respond in identical ways to the treatment. However this experiment would be limited to establishing the effect of the drug on that single genotype. If a set of individuals captured at random from a wild population were used the study would have to be much larger. If the intention was to test the drug on the wild population at large it would have to be even larger in order to account for all the extraneous source of variability in the environment. 
+Similarly if a researcher is interested in the effects of some treatment on plant growth and works with genetically similar plants grown on identical media in a greenhouse, for example using hydroponics or a very uniform potting compost, then the experiment may be need few replicates. However if the plants are grown in fields with varying soil conditions both within and between fields the experimental design will need to take this variability into account. Ecologists and environmental scientists face more challenges than other researcher as a result of the variability in natural systems. At the same time it may be difficult or impossible to find enough naturally ocurring independent replicates to use robust analytical methods.
+
+#### 2. Treatment levels
+
+A second concept is that of **treatment levels**. The most basic type of experiment involves two levels of a treatment. The first level is simply no intervention (control). So, if we wanted to look at the effects of pesticides on pollinator abundance we would design an experiment with replicated units in which no pesticide was applied (control) and others in which the same level was applied. It is easy to see that the two level model could be extended to include more categories, such as high, medium and low levels of application. The classic analyses use fixed, categorical treatment levels. However in an observational context we often obtain continuous measurements. This influences the way we analyse data as we may substitute regression and analysis of covariance for a classic ANOVA. However linear statistical models have an underlying mathematical structure that can be used for either form of data. We can build models with combinations of both types of variables.
+
+#### 3. Randomisation 
+
+The third concept to understand is **randomisation**. When designing an experiment the units should be assigned a treatment level at random which should not depend on their current status and ideally should not even be known by the experimenter. So, for example, in drug trials the participants are assigned a treatment at random. In a blind trial they themselves do not know whether they have been given a new drug or a placebo. In a double blind trial neither does the researcher. If random selection is used there should be no criteria used to choose those that receive the treatment. As you can imagine, this can sometimes raise ethical issues, but is a fundamental feature of statistically rigorous experimental design.
+In many situations involving "natural" experiments there is no randomisation in the application of treatments. For example a forest fire may burn some trees and leave others intact but the selection of trees for treatment by fire is far from random. Parasites may attack hosts that are weakened by some other cause. Often spatial prximity is a key factor in selection for treatment. This leads to spatial autocorrelation and a lack of independence. Once more this makes applying the analytical methods designed for analysing true experiments more challenging when data is derived from observations of the natural system.
+
+#### 4. Interactions
+
+We use the word **interaction** frequently in ecology to refer to effects such as competition, depredation, parasitism and other elements involved in the systems we study. However in statistics the word has a specific meaning that applies to experiments or observational studies involving more than a single factor. An interaction occurs when the effects of the factor are not additive. In other words the level of one factor influence the effect of another. Take for example an experiment in which saplings were grown at two light levels, full sun and 50% shade and two irrigation treatments applied. Let's call them high and low. Plants need both water and light to grow so we might expect the plants grown in full sun with high levels of irrigation to grow faster than those with low levels of irrigation. However what if the plants fail to respond to increased watering at low light levels, or even grow more slowly, perhaps due to waterlogged roots. In this case there would be an interaction as the two effects do not add together. The effect of irrigation is *conditional* on the level of light.
+
+### 5. Fixed and random effects
+
+The distinction between whether we treat factors as having **fixed** or **random** effects is rather subtle and subjective. Simply put fixed effects are those that we are most interested in while random effects represent natural variability that we may wish to quantify and control for, but which is not directly influential on our scientific hypotheses. When we analyse experimental data using R or any other statistical package we can declare some effects to be fixed and others as random. If for example we carried out the same experiment at five different sites that were selected at random from a large set of possible locations we may treat site as random effect, as we are not interested in the specific effect of any single named site. However if we deliberately selected the sites as representing different conditions that we may be interested in then the effect of site would be fixed.
+
+When we include a variable in a model as a random effect we are only interested in the amount of variability, not the specific source of variability at the level of a single observation. So instead of looking at specfic effects we look at the variance or standard deviation of each random effect. These effects may be at a range of levels. For example we might look at the variability in yield between single plants and between fields. If no treatment has been assigned then in both cases we would only be interested in the variances. We usually fit "mixed effects" models however as we are typically interested in some form of fixed effect in addition to random variation.
+
+It can often be rather difficult to decide which effects should be treated as random, and when it is appropriate to do so. The good news is that in many situations it doesn't really matter. The p-values and confidence intervals for the fixed effects that we are most interested in may not be influenced by the choice at all. The bad news is that in other cases the decision can be very important. Failure to declare a random effect as an error term may lead to type one errors, in other words, declaring a result to be statistically significant when it is not. In other situations, involving nested effects at different levels, the use of a mixed effects model is essential. Again, this may become clearer after looking at examples.
+
+
+## Types of design
+
+### Completely randomised design
+
+This is the simplest form of experiment. 
+In this design, all levels of the treatment or all combinations of treatment levels are assigned to experimental units completely at random. Often one of the treatment levels is considered to be a control (i.e. no intervention). If all the factor levels involve some form of treatment one of them can be considered a reference level or baseline. There must be replication of each treatment level. 
+
+The statistical model is a simple one way Anova.
+
+Let's look at a simple experiment of this type. We'll take an agricultural example. A researcher measured soil moisture at a certain depth following irrigation using four different techniques always using the same amount of water. The idea was to find out if there were any differences between them in order to find the most efficient technique in which less moisture was lost through evaporation.
+Let's first assume that the moisture levels were measured once in each plot. The layout looks like this.
+
+![alt text](/home/aqm/course/figures/fig1.png)
+
+
+```{r,message=FALSE,warning=FALSE}
+library(ggplot2)
+library(reshape)
+library(multcomp)
+```
+
+
+```{r}
+d<-read.csv("https://tinyurl.com/aqm-data/irrigation1.csv")
+str(d)
+
+```
+
+## Visualising the data
+
+```{r}
+
+d$plot<-factor(d$plot)
+d$irrigation<-factor(d$irrigation)
+g0<-ggplot(d,aes(x=irrigation,y=moisture))
+g0+geom_point()
+
+```
+
+Plotting the means with confidence intervals is a good way of identifying patterns that can be tested for significance.
+
+```{r}
+g1<-g0+stat_summary(fun.data=mean_cl_normal,geom="point")
+g1+stat_summary(fun.data=mean_cl_normal,geom="errorbar",colour="black")
+```
+
+OK. So we can analyse the experiment using Anova as we have seen previously.
+
+```{r}
+mod<-lm(moisture~irrigation,data=d)
+anova(mod)
+
+```
+
+Nothing new here. You should be able to interpret the table easily.
+
+### Comparisons
+
+The multcomp package provides a useful way of summarising the results by testing the general linear hypothesis for each treatment level. By default this will use the treatment that is lowest in alphabetical order as the "control" or baseline.
+
+
+```{r}
+plot(glht(mod))
+summary(glht(mod))
+```
+
+So, although the anova can be reported as having detected significant variation between treatments (F 3,12 =6.4, p<0.01) there are no significant differences between treatment A and the others.
+
+As no treatment was a natural control the best way to proceed in this case is to look at multiple comparisons to determine where the significant difference lie. We need to make an appropriate adjustment such as Tukey's.
+
+
+```{r}
+plot(glht(mod, linfct = mcp(irrigation = "Tukey")))
+summary(glht(mod, linfct = mcp(irrigation = "Tukey")))
+
+```
+
+So it appears that treatment C leads to significantly lower soil water content than either B or D. This may be the type of irrigation method to reject an inefficient. The other methods were indistinguishable based on the results from this rather small study. A larger study would be needed to detect significant differences.
+
+### Completely randomised design with subsampling
+
+In this case, all levels of the treatment or all combinations of treatment levels are assigned to experimental units completely at random, but measurements are taken by sub sampling within the experimental unit. Ignoring the dependence that comes from sub sampling would lead to a form of pseudo-replication and this can result in falsely claiming significance (type one error). 
+
+In the case of the previous example, it reality the researchers had taken three sub samples from each experimental unit. The previous analysis used the mean that had already been calculated from these three measurements. If the original data were used there may be a temptation to analyse the measurements as if they were all independent. This would be wrong. In fact the sub samples are **nested** within the experimental units.
+
+### Wrong analyisis with subsampling
+
+Any form of sub sampling potentially can lead to type one errors (p-values too small) if it is not recognised for what it is. The reason for this is that the denominator degrees of freedom (the measure of the amount of independent replicatation) in the anova table is too large.
+
+Look carefully at the structure of this data frame. Each level of the factor now has three sub samples. However these are all measures of the same quantity. 
+
+
+```{r}
+irrigation2<-read.csv("https://tinyurl.com/aqm-data/irrigation2.csv")
+d<-irrigation2
+```
+
+
+
+```{r}
+str(d)
+```
+
+This is what happens if we ignore the sub sampling and run an analysis using all the data.
+
+
+```{r}
+
+d$plot<-factor(d$plot)
+mod<-lm(moisture~irrigation,data=d)
+anova(mod)
+
+```
+
+Notice that this leads to a much smaller p-value. There are too many degrees of freedom in the denominator due to the pseudoreplication.
+
+We have already seen a good solution. Just take the means of each set of sub samples and analyse these as measures taken from each experimental unit. This is often by far the simplest approach. It is easy to understand and easy to explain to others.
+
+Another way of dealing with sub sampling is to account for it by adding a random effect for the experimental unit from which sub-samples are taken. 
+
+There are many different ways of doing this in R. If use the aov wrapper to fit linear models for analysis of variance we declare an error term at the plot level and add this to the model formula.
+
+```{r}
+mod<-aov(moisture~irrigation+Error(plot),data=d)
+summary(mod)
+```
+
+You should see that the result is almost identical to that produced through analysing the means, as it should be.
+
+One point to be aware of is that when you have nested sub samples within a single level of the treatment, as occurs here, you can't include plot as a fixed effect in the model. If you try to do this you will find that some coefficients cannot be estimated.
+
+
+```{r}
+mod<-lm(moisture~irrigation+plot,data=d)
+summary(mod)
+
+```
+
+The model can also be fit using either the lmer package or the older nlme package.  The differences between the two are rather technical. In general terms nlme can be more convenient for mixed effects models which involve a response to a continuous variable, particularly if the response is non-linear. The newer lme4 package can fit some very complex model involving multi-layer interactions that nlme cannot. However by default lme4 does not provide p-values due to a deliberate decision made by its author. There is a highly technical academic argument regarding the validity of the calculations. Fortunately, as we will often do want to report p-values, the relevant calculations have been added by the author of the lmerTest package. 
+
+
+```{r,message=FALSE}
+library(lmerTest)
+mod<-lmer(moisture~irrigation+(1|plot),data=d)
+anova(mod)
+```
+
+The p-values are the same as would result from using the means of the sub samples in a one way anova. So there is no obvious advantage in using the raw data rather than pooled means.
+
+In many cases the simplest way to analyse the data is to just take the means of the sub samples and use those, as in the first example. The exception to this is if you are interested in variability **within** the sub samples. Notice that the mixed effect does provide you with an estimate of this.
+
+```{r}
+summary(mod)
+```
+
+We can use the glht function with the output from fitting this model as before, and reach an identical conclusion.
+
+```{r}
+plot(glht(mod, linfct = mcp(irrigation = "Tukey")))
+summary(glht(mod, linfct = mcp(irrigation = "Tukey")))
+
+```
+
+
+**Always watch out for subsampling in any data set.** 
+
+**Never treat subsamples as independent replicates**
+
+### Randomized Complete Block Design
+
+Blocks occur when the variability between the response  within sets of experimental units is expected to be lower than the variability between sets of units. 
+The term block comes from agricultural experiments and is easiest to understand in this context. If different fields have different inherent fertility levels we would expect the yield of wheat from parcels placed within each field to be similar. However the yield would vary between fields. The idea of blocking is to account for this variability in the design of the experiment. This can increase statistical power and reduce the number of experimental units needed. 
+
+Here is an example of a randomised complete block design. Four fields are chosen for an experiment. In each field four plots are selected and allocated a treatment level at random. Let's say the treatment involves planting four different varieties of maize and recording the total yield.  
+
+The fields are blocks. Each field may have a different soil type and thus a different intrinsic fertility. In the case of a blocked experiment we are not interested in the effect of the block. It is a confounding variable. However it adds to the variability between treatment levels and thus may make it harder to spot real differences between them. 
+
+![alt text](/home/aqm/course/figures/CRBlock.png)
+
+Block effects need to be taken into account as if they are not the analysis may have too high a p-value (reduced power or type 2 error). The situation is rather complicated conceptually as we can only estimate the effects of the blocks. We don't really know what they are. 
+
+
+```{r}
+RCB<-read.csv("https://tinyurl.com/aqm-data/RCB.csv")
+d<-RCB
+```
+
+
+
+
+```{r}
+str(d)
+```
+
+## Wrong analysis ignoring the effect of block
+
+Let's first look at all the sources of variability combined at the level of the treatments.
+
+```{r,echo=FALSE}
+g0<-ggplot(d,aes(x=treat,y=yield))
+g0+geom_boxplot()
+```
+
+
+```{r}
+g1<-g0+stat_summary(fun.data=mean_cl_normal,geom="point")
+g1+stat_summary(fun.data=mean_cl_normal,geom="errorbar",colour="black")
+
+```
+
+We can fit a model ignoring the blocking effects.
+
+```{r}
+mod<-lm(yield~treat,data=d)
+anova(mod)
+
+```
+
+Notice that this suggests that there is no significant effect of the treatments.
+
+## Treating block as a random effect
+
+This time we will fit a model with an error term at the block level using aov.
+
+```{r}
+mod<-aov(yield~treat+Error(block),data=d)
+summary(mod)
+```
+
+Again, the same result can be obtained using the more powerful lmerTest package.
+
+
+```{r}
+
+mod<-lmer(yield~treat+(1|block),data=d)
+anova(mod)
+
+```
+
+Just as previously we can look at the pattern of effects using the glht function from the multcomp package.
+
+```{r}
+par(mar=c(4,8,4,2)) 
+plot(glht(mod))
+par(mar=c(4,8,4,2)) 
+plot(glht(mod, linfct = mcp(treat = "Tukey")))
+```
+
+### Treating block as a fixed effect
+
+If we treat block as fixed we obtain identical results for the treatment effects. It may be advantageous to treat the blocks as fixed if we wish to identify differences between them. For example one field may have a very different soil fertility to the others. As blocking effects confound detection of treatment effects even when we allow for them in the statistical model we might decide not to use this block in further trials in order to have a more homogeneous set of initial conditions. The difference between using a fixed and random effect in this situation is arbitrary and depends on circumstances.
+
+
+```{r}
+
+mod<-aov(yield~treat+block,data=d)
+anova(mod)
+summary(mod)
+par(mar=c(4,8,4,2)) 
+plot(glht(mod))
+par(mar=c(4,8,4,2)) 
+plot(glht(mod, linfct = mcp(treat = "Tukey")))
+```
+
+```{r}
+par(mar=c(4,8,4,2)) 
+plot(glht(mod, linfct = mcp(block = "Tukey")))
+```
+
+
+## Illustation of how block effects work
+
+We could handle the block effect "by hand". Each block of four treatments has a mean yield that we can calculate in R and add to our data frame.
+
+```{r}
+d$block_mean<-rep(with(d,tapply(yield,block,mean)),each=4)
+```
+
+Look at the results of this in the data table. Now we can subtract the block mean from the yields and re-plot our confidence intervals.
+
+```{r}
+
+
+d$yield2<-d$yield-d$block_mean
+g0<-ggplot(d,aes(x=treat,y=yield2))
+g0+geom_boxplot()
+g1<-g0+stat_summary(fun.data=mean_cl_normal,geom="point")
+g1+stat_summary(fun.data=mean_cl_normal,geom="errorbar",colour="black")
+
+```
+
+The pattern that we detected using the analysis which took into account blocks is now clearly shown.
+
+Now if we run an Anova you can see that the sum of squares and the mean squares are correct. The residual sum of squares is also correct. The difference is that the denominator degrees of freedom is too high as we have not compensated for the fact that the block means were estimated, by reducing the df by three, The mean squares in the denominator of the F Ratio is therefore slightly too low. Looking closely at the table should help you understand the logic. 
+
+
+```{r}
+mod<-lm(yield2~treat,data=d)
+anova(mod)
+```
+
+Although this produces an identical result in terms of the sum of squares it is preferable to declare the block effect as either an additional additive fixed effect or a random effect in order to clearly show that the block effects are estimated by the model and thus lead to reduced degrees of freedom.
+
+## Observational example
+
+
+A researcher wants to establish if algal mat cover has an effect on species richness. The mat cover is measured once but richness five times at each site. 
+
+This is an examle of a regression with sub-sampling. The issue to be dealt with is the difference in the amount of replication of the measure of algal mat and the measure of richness. It can be handled either by taking means or by using a model with a random effect included to handle nested observations.
+
+
+```{r}
+set.seed(1)
+mat<-rep(sample(1:100,10),each=5)
+mat
+site<-rep(1:10,each=5)
+richness<-round(30-0.1*mat+rnorm(50,0,4),0)
+richness
+plot(mat,richness)
+d<-data.frame(site,mat,richness)
+
+
+```
+
+## Plot the raw data
+
+```{r}
+
+g0<-ggplot(d,aes(x=mat,y=richness))
+g0+geom_point()+geom_smooth(method="lm")
+
+mod1<-lm(richness~mat,data=d)
+summary(mod1)
+```
+
+## Group to take mean richness at each site with same algal coverage
+
+```{r}
+library (dplyr)
+
+d %>% group_by(site,mat) %>% summarise(richness=mean(richness)) ->d2
+
+
+g0<-ggplot(d2,aes(x=mat,y=richness))
+g0+geom_point()+geom_smooth(method="lm")
+mod2<-lm(richness~mat,data=d2)
+summary(mod2)
+```
+## Use raw data with a random effect for site
+
+```{r}
+library(nlme)
+mod3<-lme(richness~mat,random=~1|site,data=d)
+summary(mod3)
+```
+
+```{r}
+
+library(lmerTest)
+mod4<-lmer(richness~mat+(1|site),data=d)
+summary(mod4)
+anova(mod4)
+```
+
+## Summary
+
+Including random effects can allow for subsampling which leads to non-independent repllication. It often will lead to similar results to the simpler technique of taking means of the subsamples. If the number of subsamples actually varies at each observational point then a random effects model is better than one using means, as the mean will be based on a different number of observations and may vary in reliability. A random effects model can take this into account. In other situations the result will be very similar.
+Blocking differs from subsampling as the treatment is repeated within the block (which it isn't in a nested subsampling design). Blocks can be treated as **either** fixed or random effects. The result will be the same. Treat blocks as **fixed** effects if you are interested in them for some reason. Treat them as random effects if you never want to look at individual blocks as such.
+
+**Watch out for subsampling which leads to different amounts of repication for each variable in observational studies!** This often occurs and it can lead to erroneous conclusions.
+
+
+## Exercise
+
+A researcher is interested in whether dark corrugated iron strips are used more frequently by sand lizards than plain corrugated iron. The researcher has 20 pieces of iron of each type and places them on five different sites at Arne. The strips are inspected every day for two weeks in spring. The total number of sandlizards found under each strip is recorded each day as the response variable (data may also be collected on weather conditions etc.. but you can ignore this).
+
+Design a fake data set that could be used as the template for a simple analysis of the data using an appropriate analysis of variance. Run an analysis on the fake data.
+
+Answer the folowing questions.
+
+1. What feature of the design may be considered to lead to blocking?
+2. How many levels of the factor are there?
+3. How might subsampling be handled?
+4. Which feature of the response variable may cause particular difficulties when working with real life data?
+
+
+
+
+
+
+
+
+

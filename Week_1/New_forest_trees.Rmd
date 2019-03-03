@@ -1,0 +1,138 @@
+---
+title: "New forest trees"
+author: "Duncan Golicher"
+date: "1/30/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercise specification
+
+A researcher is interested in looking at the differences in diameters of trees in three different woodland sites in the New Forest. At each site there are several different species. In order to simplify the task we will consider only two types of trees ... conifers and broadleaves. We will also simplify the exercise by assuming that the same number of trees (50) are sampled in each woodland.
+
+Set up a dataframe with three columns. One column represents the site. The second represents the type of tree (i.e. conifer or broadleaf). The third represents the diameters. So there will be 150 observations (rows) in all.  Try to produce data in which there is a difference in mean diameter that is affected by the site from which the measurements are taken and the type of tree being measured. You can assume that the random variation in diameters is normally distributed and that measurements are taken to the nearest cm.
+
+## Three different sites
+
+This is simple. We just need to replicate the name of the site 50 times.
+
+```{r}
+sites<-rep(c("site_1","site_2","site_3"),each=50)
+```
+
+
+## Two types of tree
+
+This is more complex. If we just want an equal number of each type of tree we could do soething like this.
+
+
+```{r}
+tree<-rep(c("Bl","Con"),times=75)
+d<-data.frame(sites,tree)
+```
+
+In reality we are more likely to have different numbers of trees types per site, particulalry if the trees are sampled randomly. We can go back to this, but let's use this for the time being.
+
+## Differences in diameter per site.
+
+Now one way to go about the task would be assume that there is an overall mean diameter for each site, which differs between sites.
+
+```{r}
+site_dbh<-rep(c(20,30,50),each=50)
+```
+
+
+
+## Differences in diameter per type
+
+If the effects are additive this could be simulated very simply in the same way.
+
+```{r}
+tree_dbh<-rep(c(-5,5),times=75)
+
+```
+
+## Forming the underlying model
+
+Add the two effects together then add random "noise"
+```{r}
+dbh<-tree_dbh+site_dbh+rnorm(150,0,3)
+d<-data.frame(d,dbh)
+```
+
+## Plot the results
+
+```{r}
+library(ggplot2)
+g0<-ggplot(d,aes(y=dbh,x=tree))
+g0+geom_boxplot() + facet_wrap(~sites)
+```
+
+
+## More complex version with interactions
+
+There are many ways of making a more complex pattern of data using R. These do tend to involve using some additional coding tricks.
+
+Let's set up the data frame again for reference.
+
+```{r}
+sites<-rep(c("site_1","site_2","site_3"),each=50)
+tree<-sample(c("Bl","Con"),150,replace = TRUE)
+d<-data.frame(sites,tree)
+
+
+```
+
+
+## Using a function
+
+One approach is to build a function that takes each row of the data frame as an argument and returns the simulated DBH.
+
+The most flexible approach produces a simulated DBH for each possible combination of site and species.
+
+This is rather a "brute force" approach in the sense that every combination is identified separately rather than applying a single simple rule.
+
+However it is easy to set up by simply cutting and pasting a set of lines and carefully changing the rule for each.
+
+```{r}
+
+## d[1] is site and d[2] is species
+## For each possible combination set up a mean and add a randome component.
+
+dbh_function<-function(d){
+  if (d[1]=="site_1" && d[2]=="Bl")  dbh<-10 + rnorm(1,0,2)
+  if (d[1]=="site_1" && d[2]=="Con") dbh<-5  + rnorm(1,0,1)
+  if (d[1]=="site_2" && d[2]=="Bl")  dbh<-20 + rnorm(1,0,3)
+  if (d[1]=="site_2" && d[2]=="Con") dbh<-40 + rnorm(1,0,4)
+  if (d[1]=="site_3" && d[2]=="Bl")  dbh<-30 + rnorm(1,0,2)
+  if (d[1]=="site_3" && d[2]=="Con") dbh<-10 + rnorm(1,0,1)
+  round(dbh,1)
+}
+
+## Then use the apply command to apply the function to each row.
+
+d$dbh<-apply(d,1,dbh_function)
+```
+
+
+```{r}
+g0<-ggplot(d,aes(y=dbh,x=tree))
+g0+geom_boxplot() + facet_wrap(~sites)
+```
+
+```{r}
+
+g0<-ggplot(d,aes(y=dbh,x=tree))
+g0<-g0+stat_summary(fun.y=mean,geom="point") + facet_wrap(~sites)
+g0<-g0+stat_summary(fun.data=mean_cl_normal,geom="errorbar")
+g0
+```
+
+```{r}
+library(dplyr)
+d %>% group_by(sites,tree) %>% summarise(n=n(),mean_dbh=mean(dbh))
+```
+

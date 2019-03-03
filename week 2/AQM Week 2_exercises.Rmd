@@ -1,0 +1,446 @@
+---
+title: 'AQM Week 2: Linear model theory and practice'
+author: "Duncan Golicher"
+date: "2/3/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r,message=FALSE,warning=FALSE}
+library(ggplot2)
+theme_set(theme_bw())
+library(multcomp)
+```
+# The general linear model
+
+We've seen before that the regression equation is written as ..
+
+$y=a+bx+\epsilon$ where $\epsilon=N(o,\sigma^{2})$
+
+Mathematically the equation for a one way anova is equivalent to this too. If you think about a situation in which instead of a single value for x being multipled by a single coefficient we have a matrix of values representing which level of a factor is being taken into account when calculating a value of y we have an equation with a parameter for each factor level,
+
+$Y=\beta _{0}+\beta _{1}X+\beta _{2}X_ \ldots +\beta _{p}X+\epsilon$ where $\epsilon=N(o,\sigma^{2})$
+
+
+## Calculating the sum of squares
+
+In both cases the formula that is dropped in to the call to fit a linear model in R is similar. The difference is that one way ANOVA uses a factor to predict fitted values and calculate residuals whereas regression uses a numerical variable.
+
+In order to demonstrate the fundamental similarity between the two
+models we will set up some simulated data and then calculate the sum of squares from first principles.
+
+
+#### ANOVA
+
+Let's make up a predictor variable. This is a factor with three levels, call them A, B and C. Now, let's assume that the fitted values (in other words the deterministic pattern of response to the three levels of this factor) are mean values of 10, 15 and 20. These are the expected responses if there were no variability apart from that between groups.
+
+```{r}
+set.seed(1)
+predictor<-as.factor(rep(c("A","B","C"),each=10))
+fitted<-rep(c(10,12,20),each=10)
+```
+
+
+Of course, there is going to be variability within each group. So
+let's add this in. We will assume that the variability can be modelled as a normal distribution with mean zero and standard deviation of 5.
+
+So the results we actually get are derived by adding these two components together.
+
+```{r}
+residuals<-rnorm(30,mean=0,sd=5)
+results<-fitted+residuals
+d<-data.frame(predictor,results)
+boxplot(results~predictor,data=d)
+```
+
+Of course, because this was a simulation experiment the actual means will be slightly different to the invested values. We can set up a data frame with true fitted and residual values like this. 
+
+```{r}
+mod<-lm(results~predictor,data=d)
+d<-data.frame(predictor,results,fitted=fitted(mod),residuals=residuals(mod))
+head(d)
+```
+
+
+
+#### The numerator sum of squares
+
+OK, so where do the numbers in the Anova table come from? The first step is to understand that the numerator sum of squares represents all the deterministic variability in the system. This is the variability attributable to differences between groups. The sum of squares is the sum of the squared deviations around the mean. But, which mean? In this case it is the overall mean value for the respnse.
+
+So, look at the boxplot again, but this time remove the variability and just plot the means. We can show the difference for each mean from the grand mean using arrows.
+
+```{r}
+boxplot(fitted~predictor,data=d)
+abline(h=mean(results),lwd=3,col=2)
+arrows(1,10.66,1,mean(results),code=3)
+arrows(2,13.24,2,mean(results),code=3)
+arrows(3,19.33,3,mean(results),code=3)
+```
+
+
+OK, so for each mean there are 10 fitted values. The sum of squares is simply
+
+```{r}
+nsqrs<-(d$fitted-mean(results))^2
+nsumsqrs<-sum(nsqrs)
+```
+
+
+
+#### Denominator sum of squares
+
+The denominator sum of squares in an Anova table represents all the variability that can be attributed to the stochastic component of the model. In other words, the residual variablity. We produced that when simulating the data. The values are simply the residuals once the means for each group have been subtracted.
+
+```{r}
+g0<-ggplot(d,aes(x=predictor,y=results))
+g0+geom_point(pch=21,bg=2)+stat_summary(fun.y=mean,geom="point",size=4)
+```
+
+So each residual is the distance between the red points and the large black point representing the mean for that group.
+
+```{r}
+dsqrs<-d$residuals^2
+dsumsqrs<-sum(dsqrs)
+```
+
+```{r}
+mod<-lm(results~predictor)
+anova(mod)
+nsumsqrs
+dsumsqrs
+```
+
+The degrees of freedom for the munerator sum of squares are the number of free parameters in the model. This is one less than the number of groups because we need to calculate the grand mean from the data, and thus use up degree of freedom. In order to calculate the residuals we need to calculate three means in this case, so the denominator degree of freedom is the total sample size minus three.
+
+
+### Regression
+
+The set up for regression is, in effect, identical, apart from the fact that the fitted values are continuous rather than group means. So if we invent some data 
+
+```{r}
+x<-11:40
+y<-10+x*2+rnorm(30,0,10)
+plot(y~x)
+```
+
+```{r}
+mod<-lm(y~x)
+d<-data.frame(x,y,fitted=fitted(mod),residuals=residuals(mod))
+head(d)
+
+
+plot(y~x)
+points(x,fitted(mod),pch=21,bg=2)
+abline(h=mean(y),lwd=4,col=3)
+
+arrows(x,fitted(mod),x,mean(y),code=3)
+nsqrs<-(d$fitted-mean(y))^2
+nsumsqrs<-sum(nsqrs)
+```
+
+### Residuals
+
+```{r}
+plot(y~x)
+points(x,fitted(mod),pch=21,bg=2)
+arrows(x,fitted(mod),x,y,code=2)
+dsqrs<-d$residuals^2
+dsumsqrs<-sum(dsqrs)
+```
+
+
+```{r}
+mod<-lm(y~x)
+anova(mod)
+nsumsqrs
+dsumsqrs
+```
+
+## Where does R squared (coefficient of determination) come from?
+
+The "explained variability" in the data is often reported using R squared. High values suggest that a large proportion of the variability is "explained" by the model, whether the model is a regression or an ANOVA. Where does that fit in? Well the total sum of squares is the sum of all the squared distances that we have calculated.
+
+If we divide the sum of squares attributable to the model by the total we get the proportion of the variability attributable to the model.
+
+```{r}
+totsumsqrs<-nsumsqrs+dsumsqrs
+nsumsqrs/totsumsqrs
+```
+
+We can see that this is the same as R provides by asking for a summary.
+
+```{r}
+summary(mod)
+```
+
+## Model assumptions
+
+Assumptions of any linear model are the same.
+
+*  Normally distributed errors
+*  Identically distributed errors over the range (homogeneity of variance)
+*  Independent errors
+
+In the case of regression we can also state that it is assumed that there is
+
+*  No undue influence of points with high leverage (regression)
+*  An underlying linear relationship (regression)
+
+
+If these assumptions are not met then the p-values and R squared calculations based on the sums of squares may potentially be misleading. So testing assumptions critically is an important part of using and interpreting linear models. The best diagnostic tests involve looking carefully at the data rather than running an automated decision tool. Minor violations may be acceptable in some circumstances.
+
+## Some practice using linear models
+
+The best way to become comfortable fitting models in R is to fit them several times until the procedure becomes routine.
+
+Let's look at some classic data on the morphological characteristics of iris flowers. This is a useful data set to get to know, as it is very frequently used in the R literature to illustrate a wide range on more advanced techniques, including machine learning.
+We can load the data set into memory with the data command. For consistency I'll then call it d.
+
+```{r}
+data("iris")
+d<-iris
+DT:::datatable(d)
+```
+
+So there are three (closely related) species with measurements made on petals and sepals. 
+
+## One way Anova
+
+So, a reminder. The first step in any analysis is to look at the data. So if we want to look at differences in sepal width between species we can plot the data as boxplots.
+
+```{r}
+g0<-ggplot(d,aes(x=Species,y=Sepal.Width))
+g0 +geom_boxplot()
+```
+
+### Diagnostics
+
+The boxplots allow basic diagnostic tests for one way anova. Using them we can test for
+
+*  Normally distributed errors
+*  Identically distributed errors over the range (homogeneity of variance)
+
+Look carefully at the boxplots. Do they look approximately symetrical? Is there a clear pattern of outliers either above or below the box? If the answers are yes and no, then the data may be approximately normally distributed.
+
+Look at the width of the boxes for each group. Are they similar? If the answer is yes then heterogenity of variance is not likely to be a major problem.
+
+## Statistical inference
+
+The next step is to produce confidence intervals.
+
+```{r}
+g0 +stat_summary(fun.y=mean,geom="point") + stat_summary(fun.data=mean_cl_normal,geom="errorbar")
+```
+
+
+Remember that confidence intervals are a function of sample size. So if there are differences in the number of measurements in each group this may result in some showing narrower confidence intervals even if the underlying variances are similar.
+
+## Fitting a linear model
+
+There are two commonly forms of syntax for fitting a one way anova in R. We can use either oav, or lm. The aov syntax is actually just a wrapper to lm. Lm stands for linear model. The syntax is identical to that used for regression, but the second variable in the formula is a factor.
+
+```{r}
+mod<-lm(data=d,Sepal.Width~Species)
+anova(mod)
+```
+
+You should be able to interpret all the elements in the output now.
+
+
+## Diagnostics
+
+A qqplot can be the most useful of the diagnistic plots for anova. This will help in deciding if the residuals are normally distributed. Hetereogeneity of variance is best spotted using the boxplots.
+
+```{r}
+plot(mod,which=2)
+```
+
+
+If the points more or less fall along the diagonal this can be taken as a good indication that the assumption of normality is met. Minor deviations from normality are rarely important, and taken overall the assumption of "exact" normality of residuals is not the most important. Minor deviations will not invalidate the model.
+
+You should also be very careful before talking about an "invalid" model if there are minor violations. The underlying pattern may be quite clearly shown through almost any reasonable analtsis. Finding the "best" model involves refining the way in which p-values and confidence intervals are calculated to ensure that they are justifiable. If p-values are extremely small, then refinement may be unlikely to change the overall significance of the result. If p-values are close to the traditional cut off point (0.05) then the significance of the result may be questionable, and changes in the way a model is fitted to the data may change the conclusions.
+
+
+## Treatment contrasts using summary
+
+If we ask for a summary of a one way anova the default in R is to provide a table with treatment contrasts. Treatment constrasts take the first level of the factor as the reference level.
+
+
+```{r}
+summary(mod)
+```
+
+## Changing the reference leval
+
+If the anova represented an experiment with some control group, this would be the natural choice as the reference level. We can set alternative reference levels for the summary table.
+
+```{r}
+contrasts(d$Species)<-contr.treatment(levels(d$Species),base=3)
+mod<-lm(data=d,Sepal.Width~Species)
+summary(mod)
+
+```
+
+## Multiple comparisons
+
+In an observational study we will often want to look at the differences between pairs of groups.
+The "General Linear Hypothesis" from the multcomp package is useful for this.
+
+```{r}
+library(multcomp)
+#plot(glht(mod, linfct = mcp(Species = "Tukey"))) ## Have to adjust the margins to show this clearly
+summary(glht(mod, linfct = mcp(Species= "Tukey")))
+```
+
+## Exercise
+
+Look at this data set and decide which of the assumptions may be caausing problems.
+
+```{r}
+d1<-read.csv("/home/aqm/data/iris1.csv")
+
+```
+
+Now look at this data set and decide where the problem may lie.
+
+```{r}
+
+d2<-read.csv("/home/aqm/data/iris1.csv")
+
+```
+
+
+## Regression
+
+The relationship between sepal width and length can be plotted on the same figure for all the species.
+
+```{r}
+g0<-ggplot(d,aes(x=Sepal.Length,y=Sepal.Width,col=d$Species))
+g0 +geom_point() + geom_smooth(method="lm")
+```
+
+We can select a single species for analysis.
+
+```{r}
+d<-subset(iris,iris$Species=="setosa")
+```
+
+
+```{r}
+
+g0<-ggplot(d,aes(x=Sepal.Length,y=Sepal.Width))
+g0 +geom_point() + geom_smooth(method="lm")
+```
+
+## Model fit
+
+Fitting the model uses the same syntax as anova.
+
+```{r}
+mod<-lm(data=d,Sepal.Width~Sepal.Length)
+summary(mod)
+```
+
+
+## Diagnostics
+
+
+### QQplot
+
+```{r}
+plot(mod,which=2)
+```
+
+## Scale location plot
+
+This can be useful for spotting heterogeneity of variance. If heterogeniety of variance is an issue you are likely to see a trend towards larger values on the y axis as the fitted value increases.
+
+```{r}
+plot(mod,which=3)
+```
+
+## Example of heterogeniety
+
+
+
+```{r}
+set.seed(5)
+library(MASS)
+x<-sample(0:10,20,rep=T)
+y<-rnegbin(20,mu=x,theta=2)
+plot(y~x)
+
+```
+
+```{r}
+mod.negbin<-lm(y~x)
+plot(mod.negbin,which=3)
+```
+
+## Exercises
+
+1. Try fitting regressions to different variables within the iris data set.
+
+
+2. The statistician Francis Anscombe invented four data sets in order to demonstrate some of the pitfalls involved in running regression analysis blind (without either looking at the data or carrying out diagnostics).The four data sets are provided in R for illustration. 
+
+```{r}
+data(anscombe)
+str(anscombe) 
+d<-anscombe
+```
+
+We can fit models to x1,y1, x2,y2 etc
+
+```{r}
+mod1<-lm(data=d,y1~x1)
+mod2<-lm(data=d,y2~x2)
+mod3<-lm(data=d,y3~x3)
+mod4<-lm(data=d,y4~x4)
+```
+
+
+The summaries of the models look very similar.
+
+```{r}
+summary(mod1)
+summary(mod2)
+summary(mod3)
+summary(mod4)
+```
+
+However only one of these data sets is really suitable for linear regression. Run the appropriate diagnostics to find out which.
+
+3. Geek of the week data
+
+For fun I have downloaded spotify detials on tracks from three bands.
+
+```{r,eval=FALSE}
+library(spotify)
+Sys.setenv(SPOTIFY_CLIENT_ID = "df4b4ced508a4ac39ea5357c3ed2d477")
+Sys.setenv(SPOTIFY_CLIENT_SECRET ="a08dc5e0442145eaa818963bc78e843c")
+library(spotifyr)
+d1 <- data.frame(artist="Oasis",get_artist_audio_features('Oasis'))
+d2 <- data.frame(artist="Blur",get_artist_audio_features('blur'))
+d3 <- data.frame(artist="Arctic Monkeys",get_artist_audio_features('Arctic Monkeys'))
+d<-rbind(d1,d2,d3)
+d$track_name<-gsub("Remastered","",d$track_name)
+d$album_name<-gsub("(Remastered)","",d$album_name)
+library(dplyr)
+d<-d[,c(1,3,8,10:21,24)]
+write.csv(d,"/home/aqm/data/spotify.csv")
+```
+
+These data are rather like the Iris data in general format. 
+
+```{r}
+d<-read.csv("/home/aqm/data/spotify.csv")
+str(d)
+```
+
+Which artist's songs have the most energy? Is it sensible to test this statistically?
+
+

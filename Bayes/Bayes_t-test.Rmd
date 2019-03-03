@@ -1,0 +1,114 @@
+---
+title: "Bayesian First Aid for undergraduates"
+author: "Duncan Golicher"
+date: "1/2/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message = FALSE,warning = FALSE)
+```
+
+## Introduction
+
+Could undergraduates with basic statistical knowledge benefit from applying Bayesian methods in their dissertations? In most cases the answer would be probably **not**. Providing they have collected a reasonably informative data set I would typically advise them just to concentrate on showing any patterns in their data clearly using good figures. Even if reporting conventional p-values from NHSTs can be rather uninformative, it usually does no harm. Although NHSTs might not really address the scientific questions they are asking, nudging them to think more about confidence intervals can point them in the right direction.
+
+However there are situations when a student has worked very hard but not managed to collect data that need much more than a simple t-test or correlation analysis. In these circumstances encouraging them to think a little more deeply about the basis of inference might help to improve the scientific rigour of their analysis. This might be particularly important if they are tempted to apply uninformative non-parametric tests instead of parametric analyses that allow them to extract the size of differences rather than simply report "significant" difference.  Bayesian methods do rely on assumptions regarding distributions. In fact the assumptions in many cases are even more restrictive than frequentist methods.  However guidance can be provided to make the methods more flexible if students can at least start down the path themselves.
+
+Today I discovered a very interesting project online that seems to have been abandoned  a bit by the author in recent years, although he continues producing very useful packages for R and course material-
+
+http://www.sumsar.net/blog/2014/01/bayesian-first-aid/
+
+The rest of Rasmus Bååth's blog posts are all well worth browsing through.
+
+The Bayesian First Aid package is loaded on the BU server, that also has JAGS preloaded, so it ready to go.
+
+```{r,eval=FALSE}
+# devtools::install_github("rasmusab/bayesian_first_aid")
+```
+
+
+## T-test
+
+Why would an undergrad need a different t-test? Well there are a few reasons here. The theoretical justification is that a Bayesian prior based on a t-dustribution is genuinely more robust. 
+
+http://www.sumsar.net/blog/2014/02/bayesian-first-aid-one-sample-t-test/
+
+The more pragamatic reason would be that the Bayesian first aid package provides some cool looking output that would provide the student with more to think about and discuss in depth.
+
+The nice element of the package is that if a student has learned to run a t-test in R, all that's needed to run the more sophisticated Bayesian version is to load the package and place "bayes" before the code.
+
+So, if the base R t.test using a built in data set uses this code
+
+```{r}
+t.test(extra ~ group, data = sleep,paired=TRUE)
+```
+The bayesian version is run with this.
+
+```{r}
+library(BayesianFirstAid)
+fit <- bayes.t.test(extra ~ group, data = sleep,paired=TRUE)
+```
+
+The package produces some nice graphical output.
+
+```{r}
+plot(fit)
+```
+
+
+A summary
+
+```{r}
+summary(fit)
+```
+
+
+All the code, which can be used and adjusted if requires.
+
+
+```{r}
+model.code(fit)
+```
+
+## Poisson test
+
+```{r}
+no_cases <- c(41, 15)
+no_years <- c(28010, 19017)
+
+bayes.poisson.test(no_cases, no_years)
+
+# Save the return value in order to inspect the model result further.
+fit <- bayes.poisson.test(no_cases, no_years)
+summary(fit)
+plot(fit)
+```
+
+## Correlation test
+
+```{r}
+
+x <- c(44.4, 45.9, 41.9, 53.3, 44.7, 44.1, 50.7, 45.2, 60.1)
+y <- c( 2.6, 3.1, 2.5, 5.0, 3.6, 4.0, 5.2, 2.8, 3.8)
+
+# First a classical correlation test:
+cor.test(x, y)
+
+# And here is the Bayesian first aid alternative:
+
+
+# Save the output into a variable for easy plotting and further inspection:
+fit <- bayes.cor.test(rank(x), rank(y))
+plot(fit)
+summary(fit)
+model.code(fit)
+```
+
+```{r}
+library(BayesFactor)
+b1<-proportionBF(y=1, N=20, p=0.5,r=0.1)
+b2<-proportionBF(y=1, N=20, p=0.5,r=0.3)
+plot(c(b1,b2))
+```
+

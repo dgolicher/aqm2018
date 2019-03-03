@@ -1,0 +1,1467 @@
+#  #  Chapter 1
+
+x<-c(1,3,4,6,8,9,12)
+y<-c(5,8,6,10,9,13,12)
+plot(x,y)
+
+#  #  Chapter 2
+
+worms<-read.table("c:\\temp\\worms.txt",header=T,row.names=1)
+
+attach(worms)
+names(worms)
+
+worms
+
+summary(worms)
+
+worms[,1:3]
+
+worms[5:15,]
+
+worms[Area>3 & Slope <3,]
+
+worms[order(worms[,1]),1:6]
+
+worms[order(worms[,1]),1:6]
+
+rm(x,y,z)
+detach(worms)
+
+#  #  Chapter 3
+
+yvals<-read.table("c:\\temp\\yvalues.txt",header=T)
+attach(yvals)
+
+hist(y)
+
+arithmetic.mean <- function(x) {
+	sum(x)/length(x) }
+
+data<-c(3,4,6,7)
+arithmetic.mean(data)
+
+arithmetic.mean(y)
+
+mean(y)
+
+sorted <- sort(y)
+sorted[ceiling(length(y)/2)]
+sort(y)[ceiling(length(y)/2)]
+med<-function(x) {
+odd.even<-length(x)%%2
+if (odd.even == 0)  (sort(x)[length(x)/2]+sort(x)[1+ length(x)/2])/2
+else  sort(x)[ceiling(length(x)/2)]
+}
+
+med(y)
+
+insects<-c(1,10,1000,10,1)
+mean(insects)
+exp(mean(log(insects)))
+
+
+v<-c(1,2,4,1)
+length(v)/sum(1/v)
+1/mean(1/v)
+
+detach(yvals)
+rm(v,upper,lower,insects)
+
+#  Chapter 4
+
+y<-c(13,7,5,12,9,15,6,11,9,7,12)
+plot(y,ylim=c(0,20))
+
+range(y)
+
+sum((y-mean(y))^2)
+
+variance <- function (x)   sum((x-mean(x))^2)/(length(x)-1)
+variance(y)
+
+var(y)
+
+ozone<-read.table("c:\\temp\\gardens.txt",header=T)
+attach(ozone)
+ozone
+
+mean(gardenA)
+gardenA-mean(gardenA)
+(gardenA-mean(gardenA))^2
+sum((gardenA-mean(gardenA))^2)
+sum((gardenA-mean(gardenA))^2)/9
+
+mean(gardenB)
+gardenB-mean(gardenB)
+(gardenB-mean(gardenB))^2
+sum((gardenB-mean(gardenB))^2)
+sum((gardenB-mean(gardenB))^2)/9
+
+mean(gardenC)
+gardenC-mean(gardenC)
+(gardenC-mean(gardenC))^2
+sum((gardenC-mean(gardenC))^2)
+sum((gardenC-mean(gardenC))^2)/9
+
+var(gardenC)/var(gardenB)
+
+2*(1-pf(10.667,9,9))
+
+var.test(gardenB,gardenC)
+
+plot(c(0,32),c(0,15),type=”n”,xlab=”Sample size”,ylab=”Variance”)
+for (df in seq(3,31,2)) {
+for( i in 1:30){
+x<-rnorm(df,mean=10,sd=2)
+points(df,var(x)) }}
+
+qt(.995,9)
+qt(.9975,9)
+
+data<-read.table("c:\\temp\\skewdata.txt",header=T)
+attach(data)
+names(data)
+
+plot(c(0,30),c(0,60),type="n",xlab="Sample size",ylab="Confidence interval")
+for (k in seq(5,30,3)){
+a<-numeric(10000)
+for (i in 1:10000){
+a[i]<-mean(sample(values,k,replace=T))
+}
+points(c(k,k),quantile(a,c(.025,.975)),type="b")
+}
+
+quantile(a,c(.025,.975))
+
+xv<-seq(5,30,0.1)
+yv<-mean(values)+1.96*sqrt(var(values)/xv)
+lines(xv,yv)
+yv<-mean(values)-1.96*sqrt(var(values)/xv)
+lines(xv,yv)
+
+yv<-mean(values)-qt(.975,xv)*sqrt(var(values)/xv)
+lines(xv,yv,lty=2)
+yv<-mean(values)+qt(.975,xv)*sqrt(var(values)/xv)
+lines(xv,yv,lty=2)
+
+
+
+#  Chapter 5
+
+data<-read.table("c:\\temp\\das.txt",header=T)
+names(data)
+attach(data)
+summary(y)
+
+plot(y)
+
+y[50]<-21.79386 
+plot(y)
+
+which(y>10)
+y[50]<- 2.179386
+
+boxplot(y,ylab="data values")
+
+hist(y)
+
+length(table(y))
+
+(max(y)-min(y))/10
+diff(range(y))/11
+
+hist(runif(10000)*10,main="")
+
+
+means<-numeric(10000)
+for (i in 1:10000){
+means[i]<- mean(runif(5)*10)
+}
+hist(means,ylim=c(0,1600))
+
+
+mean(means)
+sd(means)
+
+xv<-seq(0,10,0.1)
+yv<-dnorm(xv,mean=4.998581,sd=1.28996)*5000
+lines(xv,yv)
+
+nd<-seq(-3,3,0.01)
+y<-dnorm(nd)
+plot(nd,y,type="l")
+
+pnorm(-2)
+pnorm(-1)
+
+1-pnorm(3)
+
+qnorm(c(0.025,0.975))
+ht<-seq(150,190,0.01)
+plot(ht,dnorm(ht,170,8),type="l",ylab="Probability density",xlab="Height")
+
+pnorm(-1.25)
+pnorm(1.875)
+1-pnorm(1.875)
+pnorm(1.25)-pnorm(-0.625)
+
+?polygon
+
+qqnorm(y)
+qqline(y,lty=2)
+
+light<-read.table(“c:\\temp\\light.txt”,header=T)
+attach(light)
+names(light)
+hist(speed)
+summary(speed)
+
+wilcox.test(speed,mu=990)
+
+
+a<-numeric(10000)
+for(i in 1:10000)  a[i]<-mean(sample(speed,replace=T))
+hist(a)
+max(a)
+
+
+plot(c(0,30),c(0,10),type="n",xlab="Degrees of freedom",ylab="Students t value")
+lines(1:30,qt(0.975,df=1:30))
+
+xvs<-seq(-4,4,0.01)
+plot(xvs,dnorm(xvs),type="l",lty=2,ylab="Probability density",xlab="Deviates")
+lines(xvs,dt(xvs,df=5))
+
+
+skew<-function(x){
+m3<-sum((x-mean(x))^3)/length(x)
+s3<-sqrt(var(x))^3
+m3/s3  }
+	
+
+data<-read.table("c:\\temp\\skewdata.txt",header=T)
+attach(data)
+names(data)
+hist(values)
+
+skew(values)
+skew(values)/sqrt(6/length(values))
+1-pt(2.949,28)
+skew(sqrt(values))/sqrt(6/length(values))
+skew(log(values))/sqrt(6/length(values))
+
+
+kurtosis<-function(x) {
+m4<-sum((x-mean(x))^4)/length(x)
+s4<-var(x)^2
+m4/s4 - 3  }
+kurtosis(values)
+kurtosis(values)/sqrt(24/length(values))
+
+
+#  Chapter 6
+
+f.test.data<-read.table(“c:\\temp\\f.test.data.txt”,header=T)
+attach(f.test.data)
+names(f.test.data)
+
+var(gardenB)
+var(gardenC)
+F.ratio<-var(gardenC)/var(gardenB)
+F.ratio
+2*(1-pf(F.ratio,9,9))
+
+var.test(gardenB,gardenC)
+
+t.test.data<-read.table(“c:\\temp\\t.test.data.txt”,header=T)
+attach(t.test.data)
+names(t.test.data)
+
+ozone<-c(gardenA,gardenB)
+label<-factor(c(rep("A",10),rep("B",10)))
+boxplot(ozone~label,notch=T,xlab="Garden",ylab="Ozone")
+
+s2A<-var(gardenA)
+s2B<-var(gardenB)
+
+
+(mean(gardenA)-mean(gardenB))/sqrt(s2A/10+s2B/10)
+
+2*pt(-3.872983,18)
+
+ozone<-c(gardenA,gardenB)
+ozone
+label<-c(rep("A",10),rep("B",10))
+label
+combined.ranks<-rank(ozone)
+combined.ranks
+tapply(combined.ranks,label,sum)
+wilcox.test(gardenA,gardenB)
+streams<-read.table(“c:\\temp\\streams.txt”,header=T)
+attach(streams)
+names(streams)
+
+t.test(down,up)
+
+t.test(down,up,paired=T)
+
+d <- up-down
+t.test(d)
+
+binom.test(1,9)
+
+sign.test <- function(x, y)
+{
+if(length(x) != length(y)) stop("The two variables must be the same length")
+d <- x - y
+binom.test(sum(d > 0), length(d))
+}
+
+sign.test(gardenA,gardenB)
+
+prop.test(c(4,196),c(40,3270))
+
+qchisq(0.95,1)
+
+count<-matrix(c(38,14,11,51),nrow=2)
+count
+chisq.test(count)
+chisq.test(count,correct=F)
+
+factorial<-function(x) max(cumprod(1:x))
+
+# note that there is a factorial function in R version 2
+
+factorial(8)*factorial(12)*factorial(10)*factorial(10) /
+                     (factorial(6)*factorial(2)*factorial(4)*factorial(8)*factorial(20)) 
+
+factorial(8)*factorial(12)*factorial(10)*factorial(10) /
+                      (factorial(7)*factorial(3)*factorial(1)*factorial(9)*factorial(20))
+
+factorial(8)*factorial(12)*factorial(10)*factorial(10) /
+                      (factorial(8)*factorial(2)*factorial(0)*factorial(10)*factorial(20))
+
+0.07501786+0.009526078+0.000352279
+
+2*(0.07501786+0.009526078+0.000352279)
+
+x<-as.matrix(c(6,4,2,8))
+dim(x)<-c(2,2)
+x
+fisher.test(x)
+
+table<-read.table("c:\\temp\\fisher.txt",header=T)
+table
+attach(table)
+fisher.test(tree,nests)
+
+data<-read.table("c:\\temp\\twosample.txt",header=T)
+attach(data)
+plot(x,y)
+
+var(x)
+var(y)
+var(x,y)
+
+var(x,y)/sqrt(var(x)*var(y))
+
+cor(x,y)
+
+pollute<-read.table(“c:\\temp\\pollute.txt”,header=T)
+attach(pollute)
+names(pollute)
+cor(pollute)
+
+cor(Pollution,Wet.days)
+
+paired<-read.table(“c:\\temp\\paired.txt”,header=T)
+attach(paired)
+names(paired)
+
+cor(Summer, Winter)
+
+cor.test(Summer, Winter)
+
+varS=var(Summer)
+varW=var(Winter)
+varD=var(Summer-Winter)
+(varS+varW-varD)/(2*sqrt(varS)*sqrt(varW))
+
+varD
+
+varS+varW
+
+varS + varW – 2 * 0.8820102 * sqrt(varS) * sqrt(varW)
+
+par(mfrow=c(1,1))
+rm(x,y)
+productivity<-read.table(“c:\\temp\\productivity.txt”,header=T)
+attach(productivity)
+names(productivity)
+plot(x,y,ylab=”Mammal species”,xlab=”Productivity”)
+
+cor.test(x,y,method="spearman")
+
+wings<-read.table("c:\\temp\\wings.txt",header=T)
+attach(wings)
+names(wings)
+table(location)
+location
+
+A<-size[location=="A"]
+B<-size[location=="B"]
+
+t.test(A,B)
+
+ks.test(A,B)
+
+var.test(A,B)
+
+
+#  Chapter 7
+
+mcheck <- function (obj, ... ) {
+	rs<-obj$resid
+	fv<-obj$fitted
+	par(mfrow=c(1,2))
+	plot(fv,rs,xlab="Fitted values",ylab="Residuals")
+	abline(h=0, lty=2)
+	qqnorm(rs,xlab="Normal scores",ylab="Ordered residuals")
+	qqline(rs,lty=2)
+	par(mfrow=c(1,1))
+	invisible(NULL)                }
+
+
+leverage<-function(x){ 1/length(x)+(x-mean(x))^2/sum((x-mean(x))^2) }
+
+
+#  Chapter 8
+
+plot(c(2,5),c(16,10),type="n",ylab="y",xlab="x",ylim=c(0,20),xlim=c(0,6))
+
+points(c(2,5),c(16,10),pch=16)
+
+
+lines(c(2,2),c(16,10))
+
+text(1,13,”delta y”)
+
+lines(c(2,5),c(10,10))
+text(3.5,8,"delta x")
+
+lines(c(2,5),c(16,10))
+
+abline(20,-2)
+
+reg.data<-read.table("c:\\temp\\tannin.txt",header=T)
+attach(reg.data)
+names(reg.data)
+
+plot(tannin,growth,pch=16)
+
+lm(growth~tannin)
+
+abline(lm(growth~tannin))
+
+fitted<-predict(lm(growth~tannin))
+fitted
+
+lines(c(0,0),c(12,11.7555555))
+
+for (i in 1:9) lines (c(tannin[i],tannin[i]),c(growth[i],fitted[i]))
+
+
+SSX=sum(tannin^2)-sum(tannin)^2/length(tannin)
+SSX
+SSY=sum(growth^2)-sum(growth)^2/length(growth)
+SSY
+SSXY=sum(tannin*growth)-sum(tannin)*sum(growth)/length(tannin)
+SSXY
+
+qf(0.95,1,7)
+
+1-pf(30.974,1,7)
+
+model<-lm(growth~tannin)
+
+summary(model)
+
+summary.aov(model)
+
+plot(model)
+
+model2<-update(model,subset=(tannin != 6))
+summary(model2)
+
+
+
+rm(x,y)
+par(mfrow=c(1,1))
+curve<-read.table("c:\\temp\\decay.txt",header=T)
+attach(curve)
+names(curve)
+plot(x,y,pch=16)
+abline(lm(y~x))
+
+x2<-x^2
+quadratic<-lm(y~x+x2)
+summary(quadratic)
+
+linear<-lm(y~x)
+anova(quadratic,linear)
+
+xv<-seq(0,30,0.1)
+yv<-predict(quadratic,list(x=xv,x2=xv^2))
+lines(xv,yv)
+
+exponential<-lm(log(y)~x)
+yv2<-exp(predict(exponential,list(x=xv)))
+lines(xv,yv2,lty=2)
+
+deer<-read.table("c:\\temp\\jaws.txt",header=T)
+attach(deer)
+names(deer)
+plot(age,bone,pch=16)
+
+library(nls)
+model<-nls(bone~a-b*exp(-c*age),start=list(a=120,b=110,c=0.064))
+summary(model)
+
+model2<-nls(bone~a*(1-exp(-c*age)),start=list(a=120,c=0.064))
+anova(model,model2)
+
+av<-seq(0,50,0.1)
+bv<-predict(model2,list(age=av))
+lines(av,bv)
+
+summary(model2)
+
+smooth<-read.table("c:\\temp\\smoothing.txt",header=T)
+attach(smooth)
+names(smooth)
+par(mfrow=c(1,2))
+plot(x,y)
+abline(lm(y~x))
+ 
+sequence<-order(x)
+plot(x,y)
+lines(x[sequence],y[sequence])
+
+#  here is what not to do
+
+lines(x,y)
+
+rm(x,y)
+
+library(mgcv)
+hump<-read.table("c:\\temp\\hump.txt",header=T)
+attach(hump)
+names(hump)
+
+model<-gam(y~s(x))
+plot(model)
+points(x,y-mean(y))
+summary(model)
+
+
+#  Chapter 9
+
+oneway<-read.table("c:\\temp\\oneway.txt",header=T)
+attach(oneway)
+names(oneway)
+
+plot(1:20,ozone,ylim=c(0,8),ylab="y",xlab="order")
+
+abline(mean(ozone),0)
+for(i in 1:20) lines(c(i,i),c(mean(ozone),ozone[i]))
+
+plot(1:20,ozone,ylim=c(0,8),type="n",ylab="y",xlab="order")
+points(seq(1,19,2),ozone[garden=="A"],pch=1)
+points(seq(2,20,2),ozone[garden=="B"],pch=16)
+
+
+abline(mean(ozone[garden=="A"]),0)
+abline(mean(ozone[garden=="B"]),0)
+
+k<- -1
+for (i in 1:10){
+k<-k+2
+lines(c(k,k),c(mean(ozone[garden==”A”]),ozone[garden==”A”] [i]))
+lines(c(k+1,k+1),c(mean(ozone[garden==”B”]),ozone[garden==”B”] [i]))
+}
+
+SSY<-sum((ozone-mean(ozone))^2)
+SSY
+sum((ozone[garden=="A"]-mean(ozone[garden=="A"]))^2)
+sum((ozone[garden=="B"]-mean(ozone[garden=="B"]))^2)
+
+qf(0.95,1,18)
+
+1-pf(15.0,1,18)
+
+summary(aov(ozone~garden))
+
+plot(aov(ozone~garden))
+
+wanted=(1:20 != 8 & 1:20 != 13 & 1:20 != 14)
+wanted
+summary(aov(ozone~garden,subset=wanted))
+
+cbind(ozone[garden=="A"],ozone[garden=="B"])
+tapply(ozone,garden,sum)
+
+summary.lm(aov(ozone~garden))
+
+mean(ozone[garden=="A"])
+
+mean(ozone[garden=="B"])-mean(ozone[garden=="A"])
+
+tapply(ozone, garden, mean)
+
+comp<-read.table("c:\\temp\\competition.txt",header=T)
+attach(comp)
+names(comp)
+plot(clipping,biomass,xlab="Competition treatment",ylab="Biomass")
+
+error.bars<-function(yv,z,nn){
+xv<-barplot(yv,ylim=c(0,(max(yv)+max(z))),names=nn,ylab=deparse(substitute(yv)))
+g=(max(xv)-min(xv))/50
+for (i in 1:length(xv)) {
+lines(c(xv[i],xv[i]),c(yv[i]+z[i],yv[i]-z[i]))
+lines(c(xv[i]-g,xv[i]+g),c(yv[i]+z[i], yv[i]+z[i]))
+lines(c(xv[i]-g,xv[i]+g),c(yv[i]-z[i], yv[i]-z[i]))
+}}
+
+
+model<-aov(biomass~clipping)
+summary(model)
+table(clipping)
+
+se<-rep(28.75,5)
+labels<-as.character(levels(clipping))
+ybar<-as.vector(tapply(biomass,clipping,mean))
+error.bars(ybar,se,labels)
+
+qt(0.975,10)*sqrt(2*4961/6) 
+
+lsd<-qt(0.975,10)*sqrt(2*4961/6) 
+lsdbars<-rep(lsd,5)/2
+error.bars(ybar,lsdbars,labels)
+
+weights<-read.table("c:\\temp\\growth.txt",header=T)
+attach(weights)
+names(weights)
+barplot(tapply(gain,list(diet,supplement),mean),beside=T)
+
+labs<-c("Barley","Oats","Wheat") 
+cols<-c("red","orange","yellow")
+legend(6.3,26,labs,fill=cols)
+
+tapply(gain,list(diet,supplement),mean)
+
+model<-aov(gain~diet*supplement)
+summary(model)
+summary.lm(model)
+
+model<-aov(gain~diet+supplement)
+summary.lm(model)
+
+supp2<-factor(supplement)
+levels(supp2)
+levels(supp2)[c(1,4)]<-"best"
+levels(supp2)[c(2,3)]<-"worst"
+levels(supp2)
+
+model2<-aov(gain~diet+supp2)
+anova(model,model2)
+summary.lm(model2)
+
+
+yields<-read.table("c:\\temp\\splityield.txt",header=T)
+attach(yields)
+names(yields)
+
+model<-aov(yield~irrigation*density*fertilizer+Error(block/irrigation/density))
+summary(model)
+
+
+interaction.plot(fertilizer,irrigation,yield)
+
+interaction.plot(density,irrigation,yield)
+
+rats<-read.table("c:\\temp\\rats.txt",header=T)
+attach(rats)
+names(rats)
+
+Treatment<-factor(Treatment)
+Rat<-factor(Rat)
+Liver<-factor(Liver)
+
+model<-aov(Glycogen~Treatment)
+summary(model)
+
+
+tt<-as.numeric(Treatment)
+yv<-tapply(Glycogen,list(Treatment,Rat),mean)
+tv<-tapply(tt,list(Treatment,Rat),mean)
+ 
+model<-aov(as.vector(yv)~factor(as.vector(tv)))
+summary(model)
+
+model2<-aov(Glycogen~Treatment+Error(Treatment/Rat/Liver))
+summary(model2)
+
+
+#  Chapter 10
+
+compensation<-read.table("c:\\temp\\compensation.txt",header=T)
+attach(compensation)
+names(compensation)
+
+plot(Grazing,Fruit)
+
+model<-lm(Fruit~Root*Grazing)
+summary.aov(model)
+
+model2<-lm(Fruit~Grazing+Root)
+anova(model,model2)
+
+
+summary.lm(model2)
+
+levels(Grazing)
+
+sf<-split(Fruit,Grazing)
+sr<-split(Root,Grazing)
+plot(Root,Fruit,type="n",ylab="Seed production",xlab="Initial root diameter")
+points(sr[[1]],sf[[1]],pch=16)
+points(sr[[2]],sf[[2]])
+
+abline(-127.829,23.56)
+abline(-127.829+36.103,23.56,lty=2)
+
+tapply(Fruit,Grazing,mean)
+summary(aov(Fruit~Grazing))
+
+-127.829+36.103+23.56*mean(Root)
+
+-127.829+23.56*mean(Root)
+
+
+#  Chapter 11
+
+rm(ozone)
+
+ozone.pollution<-read.table("c:\\temp\\ozone.data.txt",header=T)
+attach(ozone.pollution)
+names(ozone.pollution)
+
+pairs(ozone.pollution,panel=panel.smooth)
+
+library(mgcv)
+par(mfrow=c(2,2))
+model<-gam(ozone~s(rad)+s(temp)+s(wind))
+plot(model)
+par(mfrow=c(1,1))
+
+#  make sure that you have down-loaded the tree library from CRAN
+
+library(tree)
+model<-tree(ozone~.,data=ozone.pollution)
+plot(model)
+text(model)
+
+model1<-lm(ozone~temp*wind*rad+I(rad^2)+I(temp^2)+I(wind^2))
+summary(model1)
+
+model2<-update(model1,~. – temp:wind:rad)
+summary(model2)
+
+model3<-update(model2,~. - wind:rad)
+summary(model3)
+
+model4<-update(model3,~. - temp:wind)
+summary(model4)
+
+model5<-update(model4,~. - I(rad^2))
+summary(model5)
+
+model6<-update(model5,~. - temp:rad)
+summary(model6)
+
+model7<-lm(log(ozone) ~ temp + wind + rad + I(temp^2) + I(wind^2))
+summary(model7)
+
+model8<-update(model7,~. - I(temp^2))
+summary(model8)
+plot(model8)
+
+model9<-lm(log(ozone) ~ temp + wind + rad + I(wind^2),subset=(1:length(ozone)!=17))
+summary(model9)
+
+
+pollute<-read.table("c:\\temp\\sulphur.dioxide.txt",header=T)
+attach(pollute)
+names(pollute)
+
+pairs(pollute,panel=panel.smooth)
+
+#  make sure that you have down-loaded the tree library from CRAN
+
+library(tree)
+model<-tree(Pollution~.,data=pollute)
+plot(model)
+text(model)
+
+model1<-lm(Pollution~Temp+I(Temp^2)+Industry+I(Industry^2)+Population+I(Population^2)+Wind+I(Wind^2)+Rain+I(Rain^2)+Wet.days+I(Wet.days^2))
+summary(model1)
+
+interactions<-c("ti","tp","tw","tr","td","ip","iw","ir","id","pw","pr","pd","wr","wd","rd")
+
+sample(interactions)
+
+model2<-lm(Pollution~Temp+Industry+Population+Wind+Rain+Wet.days+Wind:Rain+Wind:Wet.days+Industry:Wet.days+Industry:Rain+Rain:Wet.days)
+
+model3<-lm(Pollution~Temp+Industry+Population+Wind+Rain+Wet.days+Population:Rain+Temp:Population+Population:Wind+Temp:Industry+Industry:Wind)
+
+model4<-lm(Pollution~Temp+Industry+Population+Wind+Rain+Wet.days+Temp:Wind+Population:Wet.days+Temp:Rain+Temp:Wet.days+Industry:Population)
+
+model5<-lm(Pollution~Temp+Industry+Population+Wind+Rain+Wet.days+Wind:Rain+Wind:Wet.days+Population:Wind+Temp:Rain)
+summary(model5)
+
+model6<-update(model5,~. – Temp:Rain)
+model7<-update(model6,~. – Population:Wind)
+plot(model7)
+
+model8<-update(model7,~. + Wind:Rain:Wet.days)
+summary(model8)
+
+#  Chapter 12 
+
+
+comp<-read.table("c:\\temp\\competition.txt",header=T)
+attach(comp)
+names(comp)
+model1<-aov(biomass~clipping)
+summary(model1)
+
+summary.lm(model1)
+
+contrasts(clipping)<-cbind(c(4,-1,-1,-1,-1),c(0,1,1,-1,-1),c(0,0,0,1,-1),
+c(0,1,-1,0,0))
+contrasts(clipping)
+
+
+model2<-aov(biomass~clipping)
+summary.lm(model2)
+
+contrasts(clipping)<-NULL
+options(contrasts=c("contr.treatment","contr.poly"))
+
+model3<-aov(biomass~clipping)
+summary.lm(model3)
+
+clip2<-clipping
+levels(clip2)
+levels(clip2)[4:5]<-“root”
+levels(clip2)
+
+model4<-aov(biomass~clip2)
+anova(model3,model4)
+
+clip3<-clip2
+levels(clip3)[2:3]<-"shoot"
+levels(clip3)
+
+model5<-aov(biomass~clip3)
+anova(model4,model5)
+
+clip4<-clip3
+levels(clip4)[2:3]<-"pruned"
+levels(clip4)
+
+model6<-aov(biomass~clip4)
+anova(model5,model6)
+
+summary.lm(model6)
+
+tapply(biomass,clip4,mean)
+
+model7<-aov(biomass~1)
+anova(model6,model7)
+
+tapply(biomass,clipping,mean)
+
+tapply(biomass,clipping,sum)
+
+options(contrasts=c("contr.treatment","contr.poly"))
+contrasts(clipping)
+
+output.treatment<-lm(biomass~clipping)
+summary(output.treatment)
+
+options(contrasts=c("contr.helmert","contr.poly"))
+contrasts(clipping)
+
+output.helmert<-lm(biomass~clipping)
+summary(output.helmert)
+
+output.helmert<-lm(biomass~clipping)
+summary(output.helmert)
+
+?TukeyHSD
+
+
+#  Chapter 13
+
+clusters<-read.table("c:\\temp\\clusters.txt",header=T)
+attach(clusters)
+names(clusters)
+
+plot(Distance,Cancers)
+
+model1<-glm(Cancers~Distance,poisson)
+summary(model1)
+
+model2<-glm(Cancers~Distance,quasipoisson)
+summary(model2)
+
+xv<-seq(0,100,.1)
+yv<-predict(model2,list(Distance=xv))
+lines(xv,exp(yv))
+
+count<-read.table("c:\\temp\\cells.txt",header=T)
+attach(count)
+names(count)
+
+table(cells)
+
+tapply(cells,smoker,mean)
+ 
+tapply(cells,weight,mean)
+ 
+tapply(cells,sex,mean)
+
+tapply(cells,age,mean)
+
+model1<-glm(cells~smoker*sex*age*weight,poisson)
+summary(model1)
+
+model2<-glm(cells~smoker*sex*age*weight,quasipoisson)
+summary(model2)
+
+model3<-update(model2, ~. -smoker:sex:age:weight)
+summary(model3)
+
+summary(model18)
+
+tapply(cells,list(smoker,weight),mean)
+
+barplot(tapply(cells,list(smoker,weight),mean),beside=T)
+legend(1.2,3.4,c("non","smoker"),fill=c(2,7))
+
+induced<-read.table("C:\\temp\\induced.txt",header=T)
+attach(induced)
+names(induced)
+
+model<-glm(Count~Tree*Aphid*Caterpillar,family=poisson)
+
+model2<-update(model , ~ . - Tree:Aphid:Caterpillar)
+
+anova(model,model2,test="Chi")
+
+model3<-update(model2 , ~ . - Aphid:Caterpillar)
+anova(model3,model2,test="Chi")
+
+wrong<-glm(Count~Aphid*Caterpillar,family=poisson)
+wrong1<-update(wrong,~. - Aphid:Caterpillar)
+anova(wrong,wrong1,test="Chi")
+
+as.vector(tapply(Count,list(Caterpillar,Tree),sum))[1]/ tapply(Count,Tree,sum) [1]
+
+as.vector(tapply(Count,list(Caterpillar,Tree),sum))[3]/ tapply(Count,Tree,sum) [2]
+
+species<-read.table("c:\\temp\\species.txt",header=T)
+attach(species)
+names(species)
+
+plot(Biomass,Species,type="n")
+spp<-split(Species,pH)
+bio<-split(Biomass,pH)
+points(bio[[1]],spp[[1]],pch=16)
+points(bio[[2]],spp[[2]],pch=17)
+points(bio[[3]],spp[[3]])
+
+
+model1<-glm(Species~Biomass*pH,poisson)
+summary(model1)
+
+model2<-glm(Species~Biomass+pH,poisson)
+anova(model1,model2,test="Chi")
+
+xv<-seq(0,10,0.1)
+levels(pH)
+
+length(xv)
+
+phv<-rep("high",101)
+yv<-predict(model1,list(pH=factor(phv),Biomass=xv),type="response")
+lines(xv,yv)
+
+phv<-rep("mid",101)
+yv<-predict(model1,list(pH=factor(phv),Biomass=xv),type="response")
+lines(xv,yv)
+
+phv<-rep("low",101)
+yv<-predict(model1,list(pH=factor(phv),Biomass=xv),type="response")
+lines(xv,yv)
+
+
+case.book<-read.table("c:\\temp\\cases.txt",header=T)
+attach(case.book)
+names(case.book)
+
+frequencies<-table(cases)
+frequencies
+
+mean(cases)
+
+par(mfrow=c(1,2))
+
+barplot(frequencies,ylab="Frequency",xlab="Cases",col="red")
+barplot(dpois(0:10,1.775)*80,names=as.character(0:10),ylab="Frequency",
+xlab="Cases",col="red")
+
+var(cases)/mean(cases)
+
+mean(cases)^2/(var(cases)-mean(cases))
+
+
+negbin<-function(x,u,k) (1+u/k)^(-k)*(u/(u+k))^x*
+gamma(k+x)/(factorial(x)*gamma(k))
+
+xf<-numeric(11)
+for (i in 0:10) xf[i+1]<-negbin(i,0.8,0.2)
+barplot(xf)
+exp<-dnbinom(0:10,1,mu=1.775)*80
+
+both<-numeric(22)
+both[1:22 %% 2 != 0]<-frequencies
+both[1:22 %% 2 == 0]<-exp
+labels<-character(22)
+labels[1:22 %% 2 == 0]<-as.character(0:10)
+barplot(both,col=rep(c("white","grey"),11),names=labels,
+ylab="Frequency",xlab="Cases")
+legend(16,30,c("Observed","Expected"), fill=c("white","grey"))
+
+
+cs<-factor(0:10)
+levels(cs)[6:11]<-"5+"
+levels(cs)
+
+ef<-as.vector(tapply(exp,cs,sum))
+of<-as.vector(tapply(frequencies,cs,sum))
+
+sum((of-ef)^2/ef)
+1-pchisq(3.594145,3)
+
+#  Chapter 14
+
+numbers<-read.table("c:\\temp\\sexratio.txt",header=T)
+numbers
+attach(numbers)
+par(mfrow=c(1,2))
+
+p<-males/(males+females)
+plot(density,p,ylab="Proportion male")
+plot(log(density),p,ylab="Proportion male") 
+
+y<-cbind(males,females)
+model<-glm(y~density,binomial)
+summary(model)
+
+model<-glm(y~log(density),binomial)
+summary(model)
+
+xv<-seq(0,6,0.1)
+plot(log(density),p,ylab="Proportion male")
+lines(xv,predict(model,list(density=exp(xv)),type="response"))
+rm(count)
+
+germination<-read.table("c:\\temp\\germination.txt",header=T)
+attach(germination)
+names(germination)
+
+y<-cbind(count , sample-count)
+
+levels(Orobanche)
+levels(extract)
+
+model<-glm(y ~ Orobanche * extract, binomial)
+summary(model)
+
+model<-glm(y ~ Orobanche * extract, quasibinomial)
+
+model2<-update(model, ~ . - Orobanche:extract)
+
+anova(model,model2,test="F")
+
+model3<-update(model2, ~ . - Orobanche)
+anova(model2,model3,test="F")
+
+tapply(predict(model3,type="response"),extract,mean)
+
+p<-count/sample
+
+tapply(p,extract,mean)
+
+tapply(count,extract,sum)
+
+tapply(sample,extract,sum)
+
+as.vector(tapply(count,extract,sum))/as.vector(tapply(sample,extract,sum))
+
+
+props<-read.table("c:\\temp\\flowering.txt",header=T)
+attach(props)
+names(props)
+
+y<-cbind(flowered,number-flowered)
+pf<-flowered/number
+pfc<-split(pf,variety)
+dc<-split(dose,variety)
+
+plot(dose,pf,type="n",ylab="Proportion flowered")
+points(dc[[1]],pfc[[1]],pch=16)
+points(dc[[2]],pfc[[2]],pch=1)
+points(dc[[3]],pfc[[3]],pch=17)
+points(dc[[4]],pfc[[4]],pch=2)
+points(dc[[5]],pfc[[5]],pch=3)
+
+
+model1<-glm(y~dose*variety,binomial)
+summary(model1)
+
+p<-flowered/number
+tapply(p,list(dose,variety),mean)
+
+
+#  Chapter 15
+
+mortality<-read.table("c:\\temp\\deaths.txt",header=T)
+attach(mortality)
+names(mortality)
+
+tapply(death,treatment,mean)
+
+tapply(death,treatment,var)
+
+model<-glm(death~treatment,Gamma)
+summary(model)
+
+library(survival)
+sheep<-read.table(“c:\\temp\\sheep.txt”,header=T)
+attach(sheep)
+names(sheep)
+
+plot(survfit(Surv(death,status)~group),lty=c(1,3,5),
+xlab="Age at death (months)")
+
+model<-survreg(Surv(death,status)~weight*group,dist="exponential")
+summary(model)
+
+model2<-survreg(Surv(death,status)~weight+group,dist="exponential")
+anova(model,model2,test="Chi")
+
+model3<-survreg(Surv(death,status)~group,dist="exponential")
+anova(model2,model3,test="Chi")
+
+model4<-survreg(Surv(death,status)~1,dist="exponential")
+anova(model3,model4,test="Chi")
+
+summary(model3)
+
+model3<-survreg(Surv(death,status)~group,dist="exponential")
+model4<-survreg(Surv(death,status)~group,dist="extreme")
+model5<-survreg(Surv(death,status)~group,dist="gaussian")
+model6<-survreg(Surv(death,status)~group,dist="logistic")
+anova(model3,model4,model5,model6)
+
+tapply(predict(model3,type="response"),group,mean)
+
+tapply(death,group,mean)
+
+#  Chapter 16
+
+island<-read.table("c:\\temp\\isolation.txt",header=T)
+attach(island)
+names(island)
+
+model1<-glm(incidence~area*isolation,binomial)
+
+model2<-glm(incidence~area+isolation,binomial)
+
+anova(model1,model2,test="Chi")
+
+summary(model2)
+
+modela<-glm(incidence~area,binomial)
+modeli<-glm(incidence~isolation,binomial)
+par(mfrow=c(1,2))
+xv<-seq(0,9,0.01)
+yv<-predict(modela,list(area=xv),type="response")
+plot(area,incidence)
+lines(xv,yv) 
+xv2<-seq(0,10,0.1)
+yv2<-predict(modeli,list(isolation=xv2),type="response")
+plot(isolation,incidence)
+lines(xv2,yv2)
+
+ac<-cut(area,3)
+ic<-cut(isolation,3)
+tapply(incidence,ac,sum)
+tapply(incidence,ic,sum)
+
+table(ac)
+ac
+table(ic)
+ic
+
+
+plot(area,incidence)
+lines(xv,yv)
+points(4.1705,0.5333,pch=16)
+lines(c(4.1705,4.1705),c(0.533333-0.1288,0.533333+0.1288))
+plot(isolation,incidence)
+lines(xv2,yv2)
+points(5.8015,0.68,pch=16)
+lines(c(5.8015,5.8015),c(0.68-0.093,0.68+0.093))
+
+infection<-read.table(“c:\\temp\\infection.txt”,header=T)
+attach(infection)
+names(infection)
+
+par(mfrow=c(1,2))
+plot(infected,weight,xlab="Infection",ylab="Weight")
+plot(infected,age,xlab="Infection",ylab="Age")
+
+table(infected,sex)
+
+model<-glm(infected~age*weight*sex,family=binomial)
+summary(model)
+
+model2<-step(model)
+
+summary(model2)
+
+model3<-update(model2,~.-age:weight)
+anova(model2,model3,test="Chi")
+
+model4<-update(model2,~.-age:sex)
+anova(model2,model4,test="Chi")
+
+model5<-glm(infected~age+weight+sex,family=binomial)
+summary(model5)
+
+model6<-glm(infected~age+weight+sex+I(weight^2)+I(age^2),family=binomial)
+summary(model6)
+
+library(mgcv)
+model7<-gam(infected~sex+s(age)+s(weight),family=binomial) 
+plot.gam(model7)
+
+
+model8<-glm(infected~sex+age+I(age^2)+I((weight-12)*(weight>12)),
+family=binomial)
+summary(model8) 
+
+model9<-update(model8,~.-sex)
+anova(model8,model9,test="Chi")
+model10<-update(model8,~.-I(age^2))
+anova(model8,model10,test="Chi")
+
+summary(model9)
+
+#  Appendix
+
+par(mfrow=c(1,1))
+
+plot(rnorm(100),rnorm(100),ylab="Label for y axis",
+                                               xlab="Label for x axis",las=1,cex.lab=1.5)
+
+x <- seq(-4, 4, len = 101)
+plot(x,sin(x),type="l",xaxt="n",
+            xlab=expression(paste("Phase Angle ",phi)),
+            ylab=expression("sin "*phi))
+axis(1, at = c(-pi, -pi/2, 0, pi/2, pi),
+            lab = expression(-pi, -pi/2, 0, pi/2, pi))
+
+
+text(-pi/2,0.5,substitute(chi^2=="24.5"))
+
+text(pi/2, -0.5, expression(paste(frac(1, sigma*sqrt(2*pi)), " ",
+           e^{frac(-(x-mu)^2, 2*sigma^2)})))
+
+text(pi/2,0,expression(hat(y) %+-% se))
+
+y<-c(5,7,7,8,2,5,6,6,7,5,8,3,4) 
+z<-13:1
+
+y[3]
+
+y[3:7]
+
+y[c(3,5,6,9)]
+
+y[-1]
+
+y[-length(y)]
+
+y[y>6]
+
+z[y>6]
+
+y[y%%3!=0]
+
+
+A <- array(1:30, c(5,3,2) )   
+
+A[,2:3,]
+
+A[2:4,2:3,]
+
+A[2:4,2:3,2]
+
+cars<-list(c("Toyota","Nissan","Honda"),
+                                                 c(1500,1800,1750),c("blue","red","black","silver"))
+cars
+
+cars[[3]]
+
+cars[3]
+
+cars[[3]][2]
+
+central <- function (x) {
+                 gm<-exp(mean(log(x)))
+                 hm<-1/mean(1/x)
+                 cat(“Median           “, median(x),”\n”)
+                 cat(“Arithmetic mean  “,mean(x),”\n”)
+                 cat(“Geometric mean   “,gm,”\n”)
+                 cat(“Harmonic mean    “,hm,”\n”)          }
+
+central(y)
+
+sort(y)
+
+rev(sort(y))
+
+vals<-rnbinom(10000,size=0.63,prob=0.63/1.83)
+table(vals)
+
+Daphnia.data<-read.table("c:\\Daphnia.txt",header=T) 
+attach(Daphnia.data)
+names(Daphnia.data)
+
+tapply(Growth.rate,Detergent,mean)
+tapply(Growth.rate,Water,mean)
+
+tapply(Growth.rate,list(Water,Detergent),mean)
+
+tapply(Growth.rate,list(Water,Detergent),length)
+
+sml<-cut(vals,3)
+table(sml)
+
+
+sdata<-read.table("c:\\temp\\splits.txt",header=T)
+attach(sdata)
+names(sdata)
+
+plot(xc,yc,type="n",xlab="x",ylab="y")
+sxc<-split(xc,fac)
+syc<-split(yc,fac)
+
+points(sxc[[1]],syc[[1]])
+points(sxc[[2]],syc[[2]],pch=16)
+
+for (i in 1:2) abline(lm(syc[[i]]~sxc[[i]]))
+
+forms<-read.table("c:\\temp\\results.txt",header=T)
+attach(forms)
+names(forms)
+
+boxplot(split(return,bank),notch=T,ylab="Return",xlab="Bank")
+pigs<-read.table("c:\\temp\\pig.txt",header=T)
+attach(pigs)
+names(pigs)
+
+pig.wt<-c(t1,t2,t3,t4,t5,t6,t7,t8,t9)
+ 
+pig.id<-c(rep(Pig,9))
+ 
+pig.time<-c(rep(c(1:9),each=48))
+pig<-data.frame(cbind(pig.time,pig.id,pig.wt))
+ 
+library(nlme)
+pig.growth<-groupedData(pig.wt~pig.time|pig.id,data=pig)
+
+plot(pig.growth,pch=16)
+
+plot(pig.growth,outer=~1,key=F)
+
+library(lattice)
+
+ozone<-read.table("c:\\temp\\ozone.data.txt",header=T)
+attach(ozone)
+names(ozone)
+
+xyplot(ozone$ozone~wind|cut(temp,6),
+panel = function(x, y) {
+                panel.grid(h=-1, v= 2)
+                panel.xyplot(x, y,pch=16)
+                panel.loess(x,y, span=1) } )
+
+
+x<-seq(0,10,0.1)
+y<-seq(0,10,0.1)
+func<-function(x,y) 3*x*exp(0.1*x)*sin(y*exp(-.5*x))
+image(x,y,outer(x,y,func))
+contour(x,y,outer(x,y,func),add=T)
+
+
+image(x,y,outer(x,y,func),col=palette(gray(seq(0,.9,len=25))))
+
+L<-c(0,0.7,0,0,6,0,0.5,0,3,0,0,0.3,1,0,0,0)
+L<-matrix(L,nrow=4)
+
+n<-c(45,20,17,3)
+n<-matrix(n,ncol=1)
+
+L %*% n
+
+fun<-function(x) L%*%x
+
+
+n<-c(45,20,17,3)
+n<-matrix(n,ncol=1)
+pop<-numeric(40)
+for (i in 1:40) {
+n<-fun(n)
+pop[i]<-sum(n)}
+plot(log(pop),type="l")
+
+
+eigen(L)
+
+eigen(L)$vectors[,1]/sum(eigen(L)$vectors[,1])
+
+
+A<-matrix(c(3,1,4,2),nrow=2)
+
+kv<-matrix(c(12,8),nrow=2)
+
+solve(A,kv)
+
+

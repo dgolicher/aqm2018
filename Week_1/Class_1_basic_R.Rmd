@@ -1,0 +1,486 @@
+---
+title: "Class 1. Basic R and simulating data"
+author: "Duncan Golicher"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+# Introduction
+
+During the course of this unit you will develop the skills to be able to apply R code to the analysis of a range of data sets. Although crib sheets will be provided with model code for all the analytical techniques shown on the course, in order to manipulate data effectively and apply novel techniques it is important to begin to become more comfortable with basic R programming techniques and concepts. This week we will revise some of the fundamentals of R programming.
+
+## Using R to simulate data
+
+If you understand data structures you can usually choose and run the right analysis. If you do not consider the basic properties of your data then not only will you not know which analysis to use, but you will probably not even be able to import the data into any software in order to run it!
+
+
+## Simple R programming
+
+Try running some simple commands  by stepping through them in code chunks.
+
+```{r}
+1+1
+```
+
+
+Experiment some more. For example ..
+
+```{r}
+5*10
+12/4
+3^2
+```
+
+There is a lot more maths functionality built into the R language that you can find out about as you go on. However to follow the primer you do not need to learn any more commands than are shown in this document. 
+
+Note that when you type maths in the console the output is just printed to the screen. This is not stored anywhere in the computer's memory. So we need to bring in the concept of data objects. A data object "holds" the numbers and can be manipulated by commands. This is how R manages to run analyses on your data. When you import a file containing data it will be stored into a data object. 
+
+The simplest data object is a variable. If a variable only contains one number it is known formally as a scalar. A variable with many numbers is a vector. So let's assign a single value to a variable to form a scalar. We do that in R using the <- operator which is typed as a combination of the less than sign < with a horizontal bar -.
+
+```{r}
+x<-5
+```
+
+Nothing appears to have happened! However you now have your first data object, a scalar called x. This is stored in memory. So try this.
+
+```{r}
+x*2
+```
+
+Notice that this would not have worked if you had typed X*2 as R is case sensitive.
+
+So, how do we form a vector with multiple values? When you are analysing your own data the answer is that you usually won't need to. You import all the values from a file. But if you wish to form a vector in the console you must use the concatenation operator "c". So this gives the variable x a series of values.
+
+```{r}
+x<-c(1,4,5,9,10,11,12,34,56,67,100,123,45)
+```
+
+Now see what happens if you type 
+
+```{r}
+x*2
+```
+
+You can carry out any sort of mathematical operation that involves x and all the values in the vector will be used. Notice that the results are just printed out to the console and lost.
+
+If you want to assign the results to a new variable you use the "<-" operator again. This is a very common practice when analysing data. So, say you are intending to work with the natural logarithm of x you might write.
+
+```{r}
+logx<-log(x)
+```
+
+You can see that this has worked by writing the new variable name so that R prints out the contents to the console.
+
+```{r}
+logx
+```
+
+This time you can see more clearly the purpose of the indices in the output. The second line starts with the 12th number in the vector.
+
+You can find the names of the data objects that are held in memory by typing ls(). 
+
+```{r}
+ls()
+```
+
+
+### Data structures
+
+Now we can begin looking at data structures. You can ask R to tell you about the structure of any object that it has in memory by typing str().
+
+```{r}
+str(x)
+str(logx)
+```
+
+So R has told us that both x and logx are numerical vectors. If you have a lot of data you probably do not want to look at all of it at once.
+
+How does this relate to choosing an analysis? We have seen that this particular variable contains numbers. However in statistical analysis we also use "variables"" that don't consist of numbers. They vary in another respect. If you look at any introductory statistical textbook you will see a chapter that defines types of variables in terms of interval, ordinal and scale variables and nominal and ordinal variables.
+
+The sort of analysis that you will be able to run is determined by the sort of variable, or combination of variables, that you are working with.
+
+Let's set up a categorical variable. Experienced users of R often want to replicate values in order to set up some test data as Dytham suggests. So R has a range of functions for making data. The rep function replicates the values.
+
+```{r}
+gender<-rep(c("Male","Female"),each=10)
+gender
+```
+
+Now if we ask R about the data structure it will tell us that we have a character vector.
+
+```{r}
+str(gender)
+```
+
+In statistics categorical variables are referred to as factors. Factors are special character vectors with numbered levels. R automatically assumes that any column in a data file that contains non numeric values is a factor and converts the data to that form. In this case we need to tell R to turn the character vector into a factor.
+
+```{r}
+gender<-as.factor(gender)
+str(gender)
+```
+
+Now R tells us that gender is a factor with two levels. There is no intrinsic order to the levels. R places them in alphabetical order by default. The important element to be aware of is that gender is a variable. It varies in a known and specific way (it has two levels), but it is a variable all the same. You cannot calculate means, medians, standard deviations or any similar summary statistics using a factor. However you can, and will, use them together with numerical variables in many types of analysis.
+
+Let's produce a numerical variable to go alongside this. In the UK the mean height of men is around 176 cm and women 164 cm. So we could produce a vector with these values using this code. What we need to do is to replicate the "expected value" for each gender to be placed alongside the factor level. 
+
+
+```{r}
+height<-rep(c(176,164),each=10)
+height
+str(height)
+```
+
+So now we have another numerical variable. However if we really carried out a survey of people's heights we would be absolutely amazed if we got data like this. Although the numbers represent an estimate of the expected value for each of the ten men and women we know from experience that people's heights vary around this value. In fact they vary quite a lot. The standard deviation is around 6cm. So we need to add some variability. This demonstrates clearly how statistical procedures work. Data consists of two components. It has an underlying structure that we typically want to find out about. In this case there is a difference in heights which is related to gender. There is also random variability, somtimes called the stochastic component. We are usually less interested in this directly, but we need to be very careful to make justifiable assumptions about this variability in order to correctly analyse the data.
+
+Knowing this we can now make our variable more realistic by adding in some simulated values taken from a normal distribution with this standard deviation.
+
+```{r}
+set.seed(1)
+height<-height+rnorm(20,sd=6)
+height
+```
+
+We may want to round the values to one decimal place to make them equivalent to the sort of measurements we might make in practice.
+
+```{r}
+height<-round(height,1)
+```
+
+
+Now we have two variables that are held in R's memory. We are assuming that they both form part of a simulated data set that we could have obtained if we had measured a stratified random sample of twenty students consisting of ten men and ten women. Let's call the survey "hsurvey"" and make what is known as a data frame to hold the results.
+
+```{r}
+hsurvey<-data.frame(gender,height)
+str(hsurvey)
+```
+
+So we have now made up data that has the same structure and similar properties to the results we would get from carrying out a simple survey of people's heights. The basic concepts used to do this can be extended to more complex situations and used to help the design of experiments.  
+
+A data frame is the basis of almost all statistical analysis. It consists of two or more columns that line up in such a way that the measurements or observations recorded have been taken from the same individual member of a sample. This is often equivalent to a single sheet in a spreadsheet. R tells us that we have one factor and one numerical variable in this case. We might have measured many other variables at the same time and produced a much wider set of data. These may have been either categorical or numerical. Providing that they all "line up"" and correspond to the same individual we have our data frame. Many standard statistical techniques use two variables together. Later on in the course you will see how we can analyse data consisting of more than two variables using multivariate analysis.
+
+The complete data frame is shown below.
+
+```{r}
+hsurvey
+```
+
+
+
+If you want to remove all the other variables you set up from memory and leave just the data frame you could type.
+
+```{r}
+remove(x,logx,height,gender)
+ls()
+```
+
+Now if we ask R to print height or gender it will not find them. They have been placed within the data frame.
+
+```{r,error=TRUE}
+height
+gender
+```
+
+We can refer to the variables by writing out the full name of the data frame and the variable we want, separated by "$"
+
+```{r}
+hsurvey$height
+hsurvey$gender
+```
+
+Or we can attach the data frame. This makes the variables available directly. Notice that if we have several data frames containing variables with the same name this could cause confusion (so I don't usually do this)
+
+```{r}
+attach(hsurvey)
+height
+gender
+```
+
+
+### Saving and loading data frames
+
+Now that we have made up some data we might want to save it in the format that we will eventually use to capture our real data. The simplest, most portable data format is a CSV (Comma Separated Variable) file. Such a file can be easily read by all software. 
+
+First we must find a place to store the data. The standard practice is to make a separate data directory (folder) for each analysis that you carry out. You then set this as the working directory using the menu options in the R console.
+Once you have set your working directory (which could be on a USB stick for portability) you can save the data that is held in memory using an R command.
+
+```{r}
+write.csv(hsurvey,file="hsurvey.csv",row.names=FALSE)
+```
+
+The command has three elements. The first is the name of the data frame that you wish to save. This is not quoted. The second is the name of the file into which you are going to save the data. The third tells R not to add row names to the file (these are not usually necessary).
+
+Data frames are the standard input to all statistical analysis and are of a consistent form. Many different sorts of data summaries and tables can be generated from a data frame quickly by statistical software.
+
+You can check the working directory using this command.
+
+```{r}
+getwd()
+#In my case I am running R on Linux so the paths look different to Windows
+```
+
+To see a list of files in the directory type dir()
+
+```{r,eval=FALSE}
+dir()
+##[1] hsurvey.csv
+``` 
+
+If we remove the dataframe we formed we will be left with nothing in R's memory
+
+```{r,eval=FALSE}
+remove(hsurvey)
+ls()
+```
+
+To load it back from the file type
+
+```{r,eval=FALSE}
+hsurvey<-read.csv("hsurvey.csv")
+str(hsurvey)
+```
+
+
+### Histogram of simulated data
+
+```{r}
+library(ggplot2)
+g0<-ggplot(hsurvey,aes(x=height))
+g0+geom_histogram(fill="grey",colour="black",binwidth=3)+facet_wrap(~gender,nrow=2)
+
+```
+
+
+So we have simulated some data, saved it, and reloaded the data into R. We have then looked at it as a histogram.
+
+
+### Saving a workspace
+
+You can save the 
+
+```{r}
+save(list=ls(),file="height_study.rda")
+```
+
+
+#### Installing packages
+
+Many of the more advanced features of R have been implemented within add on packages. These are held online at numerous mirror sites throughout the world. Packages are what makes R the important research tool that it is. Notice that the top articles from Methods in Ecology and Evolution present recently built R packages.
+
+ 
+
+In order to use packages you have to install them to your hard disk. You do this once, and need to be online in order to download them. Once installed you make a package available at the start of a session using the command ``library''. All the most useful packages have been installed already on the PCs in the lab. You may want to add some packages to your laptop. This can be done either using the menu options at the top of the console or by writing a command (if you know the names of the packages you need).
+
+For example the following line will install the package vegan. This provides access to a large range of useful methods for analysing biodiversity and community data.
+
+```{r,eval=FALSE}
+install.packages("vegan")
+```
+
+Once installed you can use vegan by typing
+
+```{r}
+library(vegan)
+```
+
+During the course I will tell you which packages are most useful, and what they are useful for. I will also show you how to get help on functions in order to work independently. For now, just be aware that if R tells you that "there is no package called vegan"" if you type "library(vegan)" it means that the package has not yet been downloaded. You would then need to install it first.
+
+
+
+
+#### More vector functions
+
+As we have seen functions act on the whole vector at once. This applies also to functions that return only one number as a result. 
+
+```{r}
+x<-c(1,3,5,7,4,2,7)
+sum(x)
+mean(x)
+length(x)
+var(x)
+sd(x)
+```
+
+It is very important to realise that a vector with NA values can cause problems for these sorts of functions. You need to tell R explicitly to remove the NAs. If not the result itself will be an NA. For example.
+
+```{r}
+x<-c(1,2,3,4,5,6)
+mean(x)
+x<-c(1,2,3,4,5,NA)
+mean(x)
+mean(x,na.rm=T)
+```
+
+This is a very common pitfall for beginners. In general, if something does not work as you expect look for NAs!
+
+
+### Generating sequences of numbers in R
+
+One of the most useful features of R is the ease with which you can generate sequences of numbers and simulated data sets. To produce a sequence you can use the : syntax.
+
+```{r}
+x<-0:100
+0:100
+x<-30:10
+x
+```
+
+A longer but more flexible way of producing a sequence is with seq. For example to produce even numbers between 0 and 100.
+
+```{r}
+x<-seq(0,100,by=2)
+x
+```
+
+Say we know the length of the sequence we want but have not worked out the intervals. 
+
+```{r}
+x<-seq(0,100,length=23) 
+x
+```
+
+
+#### Using rep to replicate a vector
+
+If we want ten copies of the same vector one after the other we can use.
+
+```{r}
+x<-rep(c(1,4,9,23),times=10) 
+x
+```
+
+However we might want each number in the vector replicated ten times before moving to the next. In this case we use each instead of times.
+
+```{r}
+x<-rep(c(1,4,9,23),each=10)
+x
+```
+
+
+#### Replicating text
+
+When designing a format to hold the results from a planned experiment or field survey it can be very useful to generate replicated sequences of text for the factor levels or grouping variables. This is also very easy.
+
+```{r}
+x<-rep(c("Control","Treatment1","Treatment2"),each=10)
+x
+```
+
+Or of course
+
+```{r}
+x<-rep(c("Control","Treatment1","Treatment2"),times=10)
+x
+```
+
+
+
+### Logical vectors and subsetting
+
+One of the keys to using R efficiently is the concept of logical vectors, indices and subsetting. However the concept does take a little effort to get used to. Let's take it a step at a time. Say we have a vector x which we have setup like this.
+
+```{r}
+x<-seq(-4,10,by=2)
+x<-rep(x,times=3)
+x
+```
+
+Now we can ask a question that will be answered as true or false for each of the numbers. Is the element of x greater than zero?
+
+```{r}
+x>0
+```
+
+R replies with a vector stating whether the result is true or false. We can also ask which of the numbers is greater than zero.
+
+```{r}
+which(x>0)
+```
+
+Now R replies with the indices of the elements of the vector.
+
+Subsetting the vector involves the use of the square brackets {[} and {]}. If you include either a logical vector with TRUE and FALSE values or numeric indices within the square brackets R will subset the vector. Either way works.
+
+```{r}
+x[x>0]
+x[which(x>0)]
+```
+
+When we move on to handling more than one variable at a time using data frames we will see that the same concept can be used to subset whole blocks of data.It is a very powerful and fundamentally simple way of manipulating data.
+
+A more complex example is given here. This takes every second member of x using a sequence of indices as a subset.
+
+```{r}
+x[seq(2,length(x),by=2)]
+```
+
+Could you follow how this worked? Working outwards
+ 
+*  length(x) gives the number of elements in x. Lets call this n
+*  seq(0,length(x),by=2) gives the vector of indices 2,4,6,....n.
+*  A subset of x is found using the square brackets.
+ 
+With experience it is common to wrap up several steps in a single line. There is nothing wrong with explicitly writing
+
+```{r}
+n<-length(x)
+ind<-seq(2,n,by=2)
+x[ind]
+```
+
+
+#### Sorting and ordering
+
+We can also sort vectors. There are two ways of doing this. The first is very direct, but I really do not recommend it. It uses the sort command with the argument decreasing=TRUE or FALSE
+
+```{r}
+sort(x,decreasing=T)
+```
+
+That's simple enough. However it is much better practice in the long run to use order. This needs a little explaining, again we will take it step by step.
+
+```{r}
+order(x,decreasing=T)
+```
+
+Order has not given us the numbers in order! But of course it should not, as sort does that. Instead order has given us the the indices in order. Notice that if there are ties, as in this case, R respects the original order for the tied numbers. So how can we use order to sort the vector? If you have followed the logic of using indices to refer to elements of a vector you might have guessed.
+
+```{r}
+x[order(x,decreasing=T)]
+```
+
+Although this involves more typing than simply writing sort, it is more powerful. The power comes from the way indices can be used with many variables at once. When we move on to see data frames this will be clearer. For the moment look at this simple example to see the logic.
+
+```{r}
+x<-c(1,3,2,4)
+y<-c("A","B","C","D")
+y[order(x,decreasing=F)]
+```
+
+
+
+#### Ranks
+
+Finding ranks is a very common procedure in statistics. This is a slightly different problem. We need a way to deal with ties, and there is more than one solution to the problem.
+
+```{r}
+x<-c(1,1,2,3,4,5,5)
+rank(x,ties="average")
+rank(x,ties="max")
+rank(x,ties="min")
+```
+
+The last example coincides with the familiar ranks given in sports (joint gold medal followed by the bronze). Notice that there is no decreasing argument to ranks. The lowest numbers take the lowest ranks. If you really want to rank performance scores you must reverse them first by, say, subtracting all the scores from the maximum possible.
+
+```{r}
+x<-c(1,1,2,3,4,5,5)
+rank(max(x)-x,ties="min") 
+```
+
+## Exercise
+
+In order to practice putting together these commands in order to simulate some data try this.
+
+A researcher is interested in looking at the differences in diameters of trees in three different woodland sites in the New Forest. At each site there are several different species. In order to simplify the task we will consider only two types of trees ... conifers and broadleaves. We will also simplify the exercise by assuming that the same number of trees (50) are sampled in each woodland.
+
+Set up a dataframe with three columns. One column represents the site. The second represents the type of tree (i.e. conifer or broadleaf). The third represents the diameters. So there will be 150 observations (rows) in all.  Try to produce data in which there is a difference in mean diameter that is affected by the site from which the measurements are taken and the type of tree being measured. You can assume that the random variation in diameters is normally distributed and that measurements are taken to the nearest cm.
