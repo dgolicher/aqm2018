@@ -1,0 +1,123 @@
+---
+title: "Using dplyr"
+author: "Duncan Golicher"
+date: "1/24/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(DT)
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+load("/home/aqm/data/dt.rob")
+
+```
+
+
+## Loading the saved data
+
+
+```{r}
+d<-read.csv("/home/aqm/data/met_office.csv")
+d$month<-month(d$date,label=TRUE) ## Makes an ordered labaled factor
+```
+
+## Using dplyr
+
+If you look at older tutorials on R you will find many ways of manipulating data using functions such as apply, tapply, lapply and subset. These methods are still valid and useful However these have mainly been superseded by dplyr. The dplyr approach is preferable as it leads to simpler code that is easier to read and explain.
+
+There are three very frequently used functions in dplyr. These are ..
+
+1. **filter**
+
+2. **group_by**
+
+3. **summarise**
+
+
+They are often linked together using the %>% operator. 
+
+Take a look at this chain and try to follow the logic.
+
+```{r}
+d %>% filter(!is.na(tmin)) %>% group_by(station,Year) %>% summarise(n=n(),tmin=round(mean(tmin),2),tmax=round(mean(tmax),2),rain=sum(rain)) %>% filter(n==12) -> yrly
+```
+
+What is going on?
+
+Well the first step is to remove any rows with no data for tmin. **filter(!is.na(tmin))**
+
+The next step is to group the data up to the level which will be used for a summary **group_by(station,Year)**. 
+Notice that by grouping by station **and** Year we are going to use all the stations separately. Remember that the full data has a column labled month. So by dropping month from the grouping operation we will summarise by year.
+(What would we get if we used this **group_by(Year)**? Or this **group_by(station,Month)**?)
+
+The next step is to calculate the summarised table. **summarise(n=n(),tmin=round(mean(tmin),2),tmax=round(mean(tmax),2),rain=sum(rain))**
+
+Things to notice here is that the n() summary gives the number of observations in the group. It is always worth including this, even if it is only used a check of your logic (if n were to be greater than 12 clearly something would be going wrong in this case). The next steps calculate the means. Notice that they are rounded to two decimal places. Rainfall is best summarised as the total monthly rainfall. Finally notice that the last operator is not %>%. It is ->. This assigns the result to a new data frame called yrly. We can then look at this.
+
+```{r}
+dt(yrly)
+```
+
+## Plotting
+
+Filters can be used at any point in an analysis. If we pipe the data into a plot using %>% we can preapply some filters to use parts of the data. For example, say we want to look at all the staions annual rainfall since 2000, excludig the Scottish station.
+
+```{r}
+
+yrly %>% filter(Year>=2000) %>% filter(station != "braemar") %>% ggplot(aes(x=Year,y=rain,col=station)) +geom_line() +geom_point() 
+```
+
+
+
+## Another example
+
+To look at the monthly rainfall as boxplots for Hurn.
+
+```{r}
+d %>% filter(station =="hurn") %>% ggplot(aes(x=month,y=rain)) +geom_boxplot() 
+```
+
+## The %in% filter
+
+A trick that is well wrth learning is the use of the %in% operator to filter data. This can solve problems that are quite tricky to resolve in any other way.
+
+Say, for example, we want to look at only the winter months. The definition of "winter" may be specific to a study. It could mean the period during which a bird species is over wintering. The month column is a factor with named levels
+
+```{r}
+levels(d$month)
+```
+Let's define winter as the months of January February, November and December.
+```{r}
+winter<-levels(d$month)[c(1,2,11,12)]
+```
+
+Now to filter out just the winter months we can simply use
+
+```{r}
+d %>% filter(month %in% winter) %>% dt()
+```
+
+## Aggregating years to decades
+
+The cut function can be very useful when we want to cut a continuous variable into discrete sections. Say for example we wanted to find the rainiest decades. We can design a filter that only uses only the complete decades. The rain total is summed over ten years and divided by 10.
+
+```{r}
+decades<-seq(1800,2020,10)
+d$decades<-cut(d$Year,decades,dig.lab=4)
+d %>% group_by(station,decades) %>% filter(!is.na(rain)) %>% summarise(n=n(),sum(rain)/10) %>% filter(n==120) %>% dt()
+```
+
+
+## Exercise
+
+Design an analysis to answer the following question.
+
+Do the spring temperatures in the south of England provide evidence of climate change?
+
+Think carefully about how you will summarise the data. Use dplyr to produce tables and ggplot to visualise the results.
+
+

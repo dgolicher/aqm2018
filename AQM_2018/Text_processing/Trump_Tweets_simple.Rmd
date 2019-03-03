@@ -1,0 +1,116 @@
+---
+author: Duncan Golicher
+date: March 2019
+title: "Trump's  recent tweets"
+output: html_document
+---
+
+## Introduction
+
+The analysis here aims to be as simple as possible.  I'll pull down Trump's most recent tweets using the twitteR package.
+
+```{r,echo=FALSE}
+comkey<-"7zfxM4y0w3d8NrahhSnCKof7F"
+comsec<-"7amLF9z9TzgWKdkfvYSyLe2MTMek8i0pFBgPDKkw3OcbaGfVnx"
+actok<-"17944291-0Rb03YJqd6Tt7VX7tpO3OrZD96pwLHSNQ83E8t8Wr"
+acsec<-"lKdlNbNtq4hgcx7lSdSqXtZDqajn0Qw8oVvTIie1VgmVd"
+
+
+```
+
+
+```{r,message=FALSE,warning=FALSE,results='hide',echo=FALSE}
+library(wordcloud)
+require(twitteR)
+library(ggmap)
+library(httr)
+library(dplyr)
+library(purrr)
+library(tidyr)
+library(lubridate)
+library(scales)
+library(stringr)
+library(tidytext)
+
+setup_twitter_oauth(comkey,comsec,actok,acsec) ## Hidden keys used
+library(knitr)
+options(scipen=999)
+opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+```{r,cache=TRUE}
+trump_tweets <- userTimeline("realDonaldTrump", n = 3200, excludeReplies = TRUE)
+d<- tbl_df(map_df(trump_tweets, as.data.frame))
+trump_tweets2 <- userTimeline("realDonaldTrump", n = 3200, excludeReplies = TRUE,maxID=min(d$id))
+d2<- tbl_df(map_df(trump_tweets2, as.data.frame))
+d<-rbind(d,d2)
+d$hour<-hour(with_tz(d$created, "EST"))
+```
+
+## Clean the text
+
+Tweet texts always need some cleaning up to remove internet characters.
+
+```{r}
+d %>% mutate(text = str_replace_all(text, "https://t.co/[A-Za-z\\d]+|@;", "")) ->d
+
+d$text<-gsub("@","",d$text)
+d$text<-gsub("#","",d$text)
+```
+
+
+## Count on time of day
+
+Does Trump still Tweet in the morning?
+
+```{r}
+d %>%
+  count(hour) %>%
+  mutate(percent = n / sum(n)) %>%
+  
+  ggplot(aes(hour, percent)) +
+  geom_line() +
+  scale_y_continuous(labels = percent_format()) +
+  labs(x = "Hour of day (EST)",
+       y = "% of tweets",
+       color = "")
+```
+
+```{r,message=FALSE}
+data(stop_words)
+d %>% select(hour, id, favoriteCount,text) %>% unnest_tokens(word, text) %>% anti_join(stop_words) -> words
+```
+
+
+## Sentiment scores
+
+This time I will use the affin lexicon. This produces scores between -3 and +3 for positive and negative 
+
+```{r}
+afin<-get_sentiments("afinn")
+```
+
+```{r,results='asis'}
+words$daytime<-cut(words$hour,c(-1,8,25))
+levels(words$daytime)<-c("Early","Later")
+words %>% inner_join(afin, by = "word") -> word_score
+
+word_score %>% group_by(id) %>% summarise(n=n(),score=mean(score),likes=mean(favoriteCount)) %>% ggplot(aes(x=score,y=likes)) + geom_point() + geom_smooth()
+
+```
+
+
+```{r}
+word_score %>%
+ggplot(aes(x=daytime,y=score)) +stat_summary(fun.y=mean,geom="point") +stat_summary(fun.data=mean_cl_normal,geom="errorbar")
+
+```
+
+
+```{r}
+library(mgcv)
+word_score %>% group_by(hour) %>% summarise(score=mean(score)) %>%
+ggplot(aes(x=hour,y=score)) +geom_point() +geom_line()  +geom_smooth(method="gam",formula=y~s(x))
+```
+
+

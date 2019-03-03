@@ -1,0 +1,406 @@
+---
+title: "Design and analysis of experiments 2"
+author: "Duncan Golicher"
+date: "20/10/2015"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+## Repeat measures designs
+
+Repeated measures on the same experimental subject can occur for many reasons. 
+The typical situation is when the measures are repeated in time, but repeated measures can also arise in other ways. The key to understanding when a design involves repeated measures is to realise that measures which involve different levels of the fixed factor of interest are taken from the same experimental unit. A blocked design is therefore an example of repeated measures in space if a block is regarded as an experimental unit. However blocks are usually thought of in terms of groups of experimental units. The terminology in the literature can be slightly confusing in this respect as it may depend on the discipline involved and blocked designs can be called repeated measures in some circumstances. 
+
+Let's think of a simple example of a repeated measurement in a laboratory setting. The blood pressure of ten rats was measured before and after the injection of a drug.
+
+
+
+```{r,message=FALSE,warning=FALSE}
+library(lmerTest)
+library(ggplot2)
+library(effects)
+library(reshape)
+library(multcomp)
+library(dplyr)
+
+
+```
+
+
+```{r}
+
+d<-read.csv("https://tinyurl.com/aqm-data/rats.csv")
+```
+
+Repeat measures such as these lead to a situation that is fundamentally similar to a design with blocks. Each treatment level is replicated once within each subject. However the total variability also has a between subject component as each rat may have a different baseline blood pressure. This needs to be taken into account.
+
+
+```{r}
+g0<-ggplot(d,aes(x=time,y=resp))
+g0+geom_boxplot()
+g1<- g0+stat_summary(fun.data=mean_cl_normal,geom="point")
+g1+stat_summary(fun.data=mean_cl_normal,geom="errorbar",colour="black")
+```
+
+## Paired t-test
+
+Just as in the blocked design failure to take into account between subject variability reduces the power of the analysis. We can see this by running two t-tests. The first is unpaired. The second is paired.
+
+
+```{r}
+d2<-melt(d,id=1:2,m="resp")
+d2<-cast(d2,id~time)
+t.test(d2$Base,d2$Treat)
+t.test(d2$Base,d2$Treat,paired=TRUE)
+```
+
+## Mixed effects model
+
+The design can be analysed using a mixed effect model with rat id as a random effect.
+
+First let's see what happens if we don't include the random effect.
+
+```{r}
+mod<-lm(resp~time,data=d)
+anova(mod)
+
+```
+
+You should see that the p-value is the same as we got from the unpaired t-test.
+
+Now making rat id a random effect.
+
+```{r}
+mod<-lmer(resp~time+(1|id),data=d)
+summary(mod)
+par(mar=c(4,8,4,2)) 
+plot(glht(mod))
+```
+
+Now the p-value is the same as that obtained by a paired t-test.
+Alternatively code this achieve the same result.
+
+```{r}
+mod<-aov(resp~time+Error(id),data=d)
+summary(mod)
+
+```
+
+You should also be able to see the fundamental similarity between this situation and one involving blocking with respect to the specification of the model. However in a classic block design the blocks are considered to be **groups** of experimental units rather than individual experimental units. This can lead to confusion and model mispecification if you are not careful. A block design must have repeated measures with different levels of treatment **within** each block, just as a repeat measure design has different treatment levels within each subject.  These simple examples can be extended to produce more complex designs.
+
+## Repeat measures with subsampling
+
+One way the repeat measures design can be extended is with sub sampling. Take this example. A researcher is interested in the impact of sewage treatment plants outfalls on the diversity of river invertebrates. In order to produce a paired design kick samples are taken 100m above the outfall and 100m below the outfall in five rivers. This leads to a total of ten sites. At each site three kicks are obtained. These three measurements are thus sub-samples.
+
+
+```{r}
+d<-read.csv("https://tinyurl.com/aqm-data/river.csv")
+g0<-ggplot(d,aes(x=sewage,y=nspecies))
+
+```
+
+### Visualising the data
+
+If we pool all the data points taken below and above the sewage outfall we would not be taking into account the variability between rivers. We would also not be taking into account the potential for "pseudo-replication" as a result of the sub-sampling. 
+
+```{r}
+g0+geom_boxplot()
+```
+
+We can still obtain confidence intervals, but they would be based on a simplistic model that does not take into account the true data structure.
+
+```{r}
+g1<-g0+stat_summary(fun.data=mean_cl_normal,geom="point")+stat_summary(fun.data=mean_cl_normal,geom="errorbar",colour="black")
+g1
+
+```
+
+We could try splitting the data by river in order to visualise the pattern of differences.
+
+```{r}
+g1+facet_wrap(~id)
+```
+
+## Incorrect model specification.
+
+We could think of river id as a fixed effect. This may be reasonable if we are interested in differences between rivers. However it does not take into account the fact that the data consists of sub samples at each site. So the model below would be wrong.
+
+```{r}
+mod<-lm(nspecies~sewage+id,data=d)
+anova(mod)
+```
+
+
+
+## Mixed effect model
+
+The data could be modelled as nested random effects. There is random variability between rivers and there is also random variability between sites at each river. The fixed effect that we are most interested in concerns whether the site is above or below the sewage outfall.
+
+
+```{r}
+mod<-lmer(nspecies~sewage+(1|id/site),data=d)
+summary(mod)
+par(mar=c(4,8,4,2)) 
+plot(glht(mod))
+
+```
+
+We could also treat river as a fixed effect if we are specifically interested in differences between rivers.
+
+```{r}
+mod<-lmer(nspecies~sewage+id+(1|site),data=d)
+anova(mod)
+summary(mod)
+par(mar=c(4,8,4,2)) 
+plot(glht(mod))
+```
+
+Notice that both models provide the same p-value for the effect of the sewage outfalls.
+
+Using nested random effects produces an almost identical result to that which would be obtained by taking the means of the sub samples, as we have seen in previous examples.
+
+```{r}
+# dd<-melt(d,m="nspecies") reshape method of aggregation
+# dd1<-cast(dd,id+sewage~variable,mean)
+## Dplyr method
+d %>% group_by(id,sewage) %>% summarise(nspecies=mean(nspecies)) ->dd
+mod<-lm(nspecies~id+sewage,data=dd)
+anova(mod)
+```
+
+## Factorial designs
+
+Factorial designs refer to situations in which more than one factor is of interest. There are various reasons to use more than one factor in an experiment. In some cases it may save time and money to measure the effects of two factors simultaneously. This makes sense if the factors are additive, with no interactions. In other situations we may actually be interested in looking for interactions between two factors. Altering the level of one factor may alter the effect of another. 
+
+Let's look at an example. An experimenter was interested in the effect of irrigation on the yield of two varieties of wheat. The design involved assigning variety and irrigation treatment at random to 24 plots in order to have 6 replicates of each combination of treatment levels (v1:i1,v1:i2,v2:i1 and v2:i2)
+
+![](/home/aqm/course/figures/Factorial.png)
+
+For the moment let's ignore the possibilities of setting up the experiment within blocks and assume that the experimental units are uniform prior to treatment and are independent of each other.
+
+```{r}
+d<-read.csv("https://tinyurl.com/aqm-data/factorial.csv")
+
+```
+
+We can look at the results as box plots by conditioning on one of the factors using facet wrapping.
+
+```{r}
+g0<-ggplot(d,aes(x=irrigation,y=yield))
+g0+geom_boxplot()+facet_wrap(~variety)
+```
+
+We can also look at confidence intervals.
+
+```{r}
+g1<-g0+stat_summary(fun.data=mean_cl_normal,geom="point")
+g1<-g1+stat_summary(fun.data=mean_cl_normal,geom="errorbar",colour="black")
+g1+facet_wrap(~variety)
+```
+
+## Model fitting
+
+There are no random effects in this design, so a simple linear model can be used. Typing an asterix (*) in the model formula fits a model with main effects and an interaction.
+
+
+```{r}
+mod<-lm(yield~irrigation*variety,data=d)
+anova(mod)
+summary(mod)
+```
+
+You should be able to see that the interaction term in this case is not significant. The effects package allows us to look at the pattern of effects visually.
+
+
+```{r}
+
+e <- Effect(c("irrigation","variety"), mod)
+plot(e)
+
+```
+
+You can see that the lines between the two levels of the factors follow the same slope but are moved up. This is indicative of additive effects. We could therefore fit a simpler model
+
+```{r}
+mod<-lm(yield~irrigation+variety,data=d)
+anova(mod)
+summary(mod)
+
+```
+
+
+## Experiment with interactions
+
+Let's look at data from the same experimental set up, but in this case there **is** an interaction.
+
+```{r}
+d<-read.csv("https://tinyurl.com/aqm-data/factorial2.csv")
+head(d)
+```
+
+The pattern is apparent in the box plots.
+
+```{r}
+g0<-ggplot(d,aes(x=irrigation,y=yield))
+g0+geom_boxplot()+facet_wrap(~variety)
+```
+
+
+```{r}
+g1<-g0+stat_summary(fun.data=mean_cl_normal,geom="point")
+g1<-g1+stat_summary(fun.data=mean_cl_normal,geom="errorbar",colour="black")
+g1+facet_wrap(~variety)
+
+```
+
+Now if we fit a model we will find a very significant interaction.
+
+```{r}
+mod<-lm(yield~irrigation*variety,data=d)
+anova(mod)
+summary(mod)
+```
+
+The first variety does not respond positively to irrigation. In fact yield may be reduced through over watering. In this case the effects are not additive. They are conditional on the level of one of the factors. In this situation the main effects of irrigation or variety can be difficult to interpret as they represent the average effect taken over both levels of the other factor. 
+
+```{r}
+
+e <- Effect(c("irrigation","variety"), mod)
+plot(e)
+
+```
+
+Interactions are very common in many ecological situations. Although some textbooks on experimental design treat interactive effects as undesirable, finding interactions is an interesting result. In this case the discussion of the results could concentrate on finding an explanation for the difference in response between the two varieties.
+
+## Full factorial with blocking
+
+The previous example treated each experimental unit as independent. In many situations there is some spatial dependence between experimental units. 
+
+![alt text](/home/aqm/course/figures/Factorial_blocks.png)
+
+```{r}
+
+d<-read.csv("https://tinyurl.com/aqm-data/factorial_block.csv")
+head(d)
+```
+
+Once again, the potential advantage of taking into account blocking is to increase the power of the analysis. If the intrinsic variability between blocks is contributing to the variability in the response of the experimental units then accounting for it in the statistical model will increase power.
+
+This can be seen in this example by first plotting the raw data.
+
+```{r}
+g0<-ggplot(d,aes(x=irrigation,y=yield))
+g0+geom_boxplot()+facet_wrap(~variety)
+```
+
+
+```{r}
+g1<-g0+stat_summary(fun.data=mean_cl_normal,geom="point")
+g1<-g1+stat_summary(fun.data=mean_cl_normal,geom="errorbar",colour="black")
+g1+facet_wrap(~variety)
+
+```
+
+### Model not taking into account blocks
+
+If we don't take into account the variability attributable to the blocks in the model we lose statistical power.
+
+```{r}
+
+mod<-lm(yield~variety*irrigation,data=d)
+anova(mod)
+
+```
+
+Effects plot.
+
+```{r}
+e <- Effect(c("irrigation","variety"), mod)
+plot(e)
+```
+
+### Model with block as a random effect.
+
+Block can be fitted as a random effect using lmer.
+
+```{r}
+mod<-lmer(yield~variety*irrigation+(1|field),data=d)
+summary(mod)
+```
+
+Now notice how the effects plot shows more effects of the treatment.
+
+```{r}
+e <- Effect(c("irrigation","variety"), mod)
+plot(e)
+```
+
+## Split plot
+
+In all the previous examples there have been alternatives available to the use of mixed models with random and fixed effects. In the case of situations involving sub sampling the dependence between sub samples can be dealt with by taking means for each experimental unit. In the cases in which variability occurs between blocks it is possible to include blocks in a model as a fixed effect. Repeat measures designs can use differences within subjects as responses. However there are some more complex situations in which the sum of squares attributed to the variability attributed to different treatments should be compared with different error terms. A classic example is the split plot design in agriculture.
+The split plot design arose simply as a form of reducing the cost and difficulty of setting up field experiments. When treating field plots it can sometimes be much easier to set up some treatments for larger areas than a smaller one. Imagine the case in the yield experiment we have been looking at in which whole fields are planted with single varieties of wheat and each field is split into two forms of irrigation treatment.
+
+
+![](/home/aqm/course/figures/Split.png)
+
+In some respects you could argue that not much has changed from the block design. However if each main field has a different response then the error term for variety will have fewer degrees of freedom than that for irrigation as the same variety has been planted in each field which is then "split" into two levels of irrigation. So effectively there is less independent replication of variety than of irrigation.
+
+If this is not taken into account there may be an accusation of "pseudo replication" with respect to the effect of variety as the anlysis would potentially treat all subplots as independent replicates without taking into account the fact that they are nested within field. However this is a problem if there are shared effects at the field level. If it were possible to ensure as much independence between subplots within the same field as between subplots as a whole it wouldn't matter.  
+
+Here is a dataframe with results from the split plot experiment shown above.
+
+
+```{r}
+
+d<-read.csv("https://tinyurl.com/aqm-data/split_plot.csv")
+str(d)
+```
+
+### Visualising the data
+
+We can look at the data as boxplots.
+
+```{r}
+g0<-ggplot(d,aes(x=irrigation,y=yield))
+g0+geom_boxplot()+facet_wrap(~variety)
+```
+
+
+```{r}
+g1<-g0+stat_summary(fun.data=mean_cl_normal,geom="point")
+g1<- g1+stat_summary(fun.data=mean_cl_normal,geom="errorbar",colour="black")
+g1+facet_wrap(~variety)
+
+```
+
+## Incorrect model
+
+The naive way of analysing the data would overlook the potential for a field effect.
+
+```{r}
+
+mod<-lm(yield~variety*irrigation,data=d)
+anova(mod)
+
+```
+
+## Correct model
+
+```{r}
+mod<-lmer(yield~variety*irrigation+(1|field),data=d)
+anova(mod)
+
+```
+
+```{r}
+summary(mod)
+par(mar=c(4,12,4,2)) 
+plot(glht(mod))
+```
+
+```{r}
+mod<-aov(yield~variety*irrigation+Error(field),data=d)
+summary(mod)
+```
+

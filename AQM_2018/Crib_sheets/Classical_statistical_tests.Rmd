@@ -1,0 +1,331 @@
+---
+title: "Simple statistical tests"
+author: "Duncan Golicher"
+date: "1/12/2019"
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyr)
+library(readxl)
+library(reshape2)
+library(DT)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(DT)
+library(BayesianFirstAid)
+library(MASS)
+library(readr)
+library(kableExtra)
+theme_set(theme_bw())
+dt<-function(x) DT::datatable(x, 
+    filter = "top",                         
+    extensions = c('Buttons'), options = list(
+    dom = 'Blfrtip',
+    buttons = c('copy', 'csv', 'excel')))
+```
+
+
+# How to use the crib sheet
+
+The crib sheets contain R code for running analyses. There is no accompanying text to explain the output nor advice on why to use the method. You must consult course material in order to decide whether it is sensible to apply the method.
+
+In order to use the cribsheets you **must** first become completely familiar with the process of loading data into R's memory by using either read.csv, for comma separated variable files or read_excel which can import data directly from an excel spreadsheet file.  You need to know how to put together your own annotated markdown files, with embedded code chunks and annotated comments.
+
+For each analysis an example data set is provided that is loaded from the /home/aqm/data folder on the server. The file is converted into a data table in the cribsheet. This data table can be exported and then used as the template for your own analysis.
+
+To use the cribsheet, first look carefully at the format of the example data. Download this file and modify it in Excel, changing the values and headers to match your own data. Then build a markdown file using your own data as the input. Change any names of variables to match those used in your own data set. 
+Providing you paste in chunks from the crib sheet **in the right order**  you can then build your own bespoke analysis for your data that will reproduce the anaysis shown in the crobsheet. Order of the operations is very important, as some code chnuks are precursors to others. If you understand the logic of the analysis this will not be a problem.
+
+# Classical null hypothesis tests in R
+
+This crib sheet shows how to run simple, introductory, statistical tests. These are **very rarely** the best way to analyse your data. Model based procedures are available that produce a more informative analysis in every case, including situations when a non-parametric test is often chosen.
+
+## Un-paired T-test {.tabset .tabset-pills}
+
+### Data formats {.tabset .tabset-pills}
+
+#### Long format
+
+```{r}
+d<-read.csv("/home/aqm/data/leaves.csv")
+dt(d)
+```
+
+#### Wide format
+
+You may sometimes be given data in a wide format, with one column per group. This is not a standard data frame. The most consistent approach is to turn it into a data frame
+
+```{r}
+
+d2<-read.csv("/home/aqm/data/leaves2.csv")
+dt(d2)
+## To long format
+d2<-gather(d2,key=leaf_type,value=leaf_area)
+dt(d2)
+```
+
+
+```{r}
+d2$id<-rep(1:20,times=2)
+d2 %>% spread(key=leaf_type,value=leaf_area)
+```
+
+### Boxplot
+
+```{r}
+g0<-ggplot(d,aes(x=leaf_type,y=leaf_area))
+g_box<- g0 +geom_boxplot()
+g_box
+```
+
+### Confidence interval plot
+
+```{r}
+g0<-ggplot(d,aes(x=leaf_type,y=leaf_area))
+g_conf <- g0 + stat_summary(fun.y=mean,geom="point") + stat_summary(fun.data=mean_cl_normal,geom="errorbar")
+g_conf
+```
+
+
+### Dynamite plot
+
+```{r}
+g0<-ggplot(d,aes(x=leaf_type,y=leaf_area))
+g_bar <- g0 + stat_summary(fun.y=mean,geom="bar") + stat_summary(fun.data=mean_cl_normal,geom="errorbar")
+g_bar
+```
+
+
+### T-test
+
+```{r}
+t.test(d$leaf_area~d$leaf_type)
+```
+
+
+## Wilcoxon test (also known as ‘Mann-Whitney’ test)  {.tabset .tabset-pills}
+
+### Wide format
+
+
+```{r}
+
+d2<-read.csv("/home/aqm/data/leaves2.csv")
+dt(d2)
+
+```
+
+### Wilcoxon test
+
+```{r}
+wilcox.test(d2$shade,d2$sun)
+```
+
+
+
+## Paired T-test {.tabset .tabset-pills}
+
+### Data formats {.tabset .tabset-pills}
+
+#### Wide format
+
+The wide format seems the natural one to use in this case.
+
+```{r}
+d2<-read.csv("/home/aqm/data/paired2.csv")
+dt(d2)
+```
+
+#### Long format
+
+For the classic paired t-test function the long format is best changed to wide.
+
+```{r}
+d<-read.csv("/home/aqm/data/paired1.csv")
+dt(d)
+## Change to wide
+d %>% spread(time,val) %>% dt()
+```
+
+
+### T-test
+
+```{r}
+t.test(d2$After,d2$Before,paired=TRUE)
+```
+
+```{r}
+d %>% spread(time,val) -> d2
+t.test(d2$After,d2$Before,paired=TRUE)
+```
+
+
+## Paired Wilcoxon test{.tabset .tabset-pills}
+
+### Wide format
+
+The wide format seems the natural one to use in this case.
+
+```{r}
+d2<-read.csv("/home/aqm/data/paired2.csv")
+dt(d2)
+```
+
+### Wilcoxon test
+
+```{r}
+wilcox.test(d2$Before,d2$After, paired=)
+```
+
+
+
+## Correlation test {.tabset .tabset-pills}
+
+### Data format
+
+Only the standard data frame format is sensible in this case. However a data frame may consist of many variables that can be correlated with each other. In this case more advanced methods avoid the need to correlate each pair in turn. Fitting regresion lines is included in other crib sheets.
+
+```{r}
+d<-read.csv("/home/aqm/data/arne_pines_simple.csv")
+dt(d)
+```
+
+### Scatterplot
+
+```{r}
+g0<-ggplot(d,aes(x=twi,y=pine_density)) +geom_point()
+g0
+```
+
+### Pearson's correlation test
+
+```{r}
+cor.test(d$pine_density,d$twi)
+```
+
+### Spearman's rank correlation test
+
+There are often ties, but this does not *invalidate* the test. R produces a warning in this case.
+
+```{r}
+cor.test(d$pine_density,d$twi,method="spearman")
+```
+
+
+## Chi squared contingency tables {.tabset .tabset-pills}
+
+### Data formats {.tabset .tabset-pills}
+
+#### Long format 
+
+The data will originally have been collected though classifying each observation. So, if the data consists of mud cores that have been classified into two categories of substrate, mud or sand, and two categories depending whether ragworm are present or absent you will produces a csv file with the format as shown.
+
+```{r}
+d<-read.csv("/home/aqm/data/HedisteCat.csv")
+dt(d)
+```
+
+#### Tablular format
+
+You might already have tabulated the data in Excel. Providing that the table is in the top cells of the first sheet of an Excel spreadsheet, this code will load the data.
+
+```{r}
+library(readxl)
+system ("cp contingency_table.xlsx /home/aqm/data/contingency_table.xlsx")
+ct <-read_excel("/home/aqm/data/contingency_table.xlsx")
+dt(ct)
+
+```
+
+
+### Table of counts {.tabset .tabset-pills}
+
+
+#### Table of counts using the data frame format
+
+```{r}
+ct<-table(d)
+ct
+### Formatted version for HTMl printing
+ct %>% kable() %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+#### Table of counts using the ct format
+
+```{r}
+## These data are already in tabular format, but some slight rearrangement is needed to turn them into an R table.
+ct <-read_excel("contingency_table.xlsx")
+ct<-as.data.frame(ct)
+row.names(ct) <- ct[,1]
+ct<-ct[,-1]
+ct<-as.table(as.matrix(ct))
+ct
+### Formatted version for HTMl printing
+ct %>% kable() %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+### Table of Proportions {.tabset .tabset-pills}
+
+#### Table of proportions
+
+```{r}
+pt<-round(prop.table(ct) *100,1)
+pt
+### Formatted version for HTMl printing
+pt %>% kable() %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+#### Table of proportions for rows
+
+```{r}
+ptr<-round(prop.table(ct,margin=1) *100,1)
+ptr
+ptr %>% kable() %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+#### Table of proportions for columns
+
+```{r}
+ptc<-round(prop.table(table(d),margin=2) *100,1)
+ptc
+ptc %>% kable() %>% kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+### Plots {.tabset .tabset-pills}
+
+####  Mosaic plot
+
+```{r}
+mosaicplot(ct)
+```
+
+####  Barplot
+
+```{r}
+ct_d<-data.frame(ct)
+
+bc<-ggplot(ct_d,aes(x=Var2,y=Freq))+geom_bar(stat="identity")
+bc + facet_wrap(~Var1)
+```
+
+### Chisq-test
+
+```{r}
+chisq.test(ct)
+```
+
+### Fisher's exact test
+
+```{r}
+fisher.test(ct)
+```
+
+

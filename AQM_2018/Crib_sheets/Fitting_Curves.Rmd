@@ -1,0 +1,268 @@
+---
+title: "Fitting curves"
+author: "Duncan Golicher"
+date: "18/2/2019"
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+
+---
+
+```{r,echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message = FALSE,warnings=FALSE)
+library(ggplot2)
+```
+
+# Fitting polynomials {.tabset .tabset-pills}
+
+## The data
+
+```{r}
+
+d<-read.csv("/home/aqm/course/data/marineinverts.csv")
+DT::datatable(d)
+```
+
+## Fitting linear model {.tabset .tabset-pills}
+
+### Linear model fit
+
+```{r}
+mod<-lm(data=d,richness~grain)
+```
+
+### Linear model anova and summary
+
+```{r}
+anova(mod)
+summary(mod)
+```
+
+### Linear model plot
+
+```{r}
+library(ggplot2)
+theme_set(theme_bw())
+g0<-ggplot(d,aes(x=grain,y=richness))
+g1<-g0+geom_point() + geom_smooth(method="lm") 
+g1 + xlab("Mean grain size") + ylab("Species richness")
+```
+
+
+### Reset test
+
+We can check whether a strait line is a good representation of the
+pattern using the reset test that will have a low p-value if the linear form of the model is not a good fit.
+
+```{r}
+library(lmtest)
+resettest(d$richness ~ d$grain)
+```
+
+### Durbin Watson test
+
+The Durbin Watson test which helps to confirm serial autocorrelation that may be the result of a misformed model will often also be significant when residuals cluster on one side of the line. In this case it was not, but this may be because there were too few data points.
+
+```{r}
+dwtest(d$richness~d$grain)
+```
+
+### Diagnostic plot after fitting linear model
+
+```{r}
+library(ggfortify)
+theme_set(theme_bw())
+autoplot(mod, which = 1)
+```
+
+## Fitting quadratic model {.tabset .tabset-pills}
+
+### Quadratic model fit
+
+```{r}
+mod2<-lm(data=d,richness~grain + I(grain^2))
+```
+
+### Quadratic model anova and summary
+
+```{r}
+anova(mod2)
+summary(mod2)
+```
+
+### Quadratic model plot
+
+```{r}
+library(ggplot2)
+theme_set(theme_bw())
+g0<-ggplot(d,aes(x=grain,y=richness))
+g1<-g0+geom_point() + geom_smooth(method="lm", formula=y~x+I(x^2), se=TRUE) 
+g1 + xlab("Mean grain size") + ylab("Species richness")
+```
+
+
+### Diagnostic plot after fitting quadratic
+
+```{r}
+library(ggfortify)
+theme_set(theme_bw())
+autoplot(mod2, which = 1)
+```
+
+### Comparing fits
+
+```{r}
+anova(mod,mod2)
+```
+
+# Fitting splines using mgcv {.tabset .tabset-pills}
+
+## Fiting model {.tabset .tabset-pills}
+
+```{r}
+library(mgcv)
+mod3<-gam(data=d,richness~s(grain))
+
+```
+
+## Summary model
+
+```{r}
+summary(mod3)
+```
+
+## Plotting model
+
+```{r}
+theme_set(theme_bw())
+g0<-ggplot(d,aes(x=grain,y=richness))
+g1<-g0+geom_point() + stat_smooth(method = "gam", formula = y ~ s(x)) 
+g1 + xlab("Mean grain size") + ylab("Species richness")
+```
+
+# Non linear model {.tabset .tabset-pills}
+
+
+## Rectangular hyperbola of the Michaelis-Menten form {.tabset .tabset-pills}
+
+$$C=\frac{sR}{F+R}$$
+
+
+Where 
+
+* C is resource consumption, 
+* R is the amount or density of the resource, 
+* s is the asymptotic value and 
+*  F represents the density of resource at which half the asymptotic consumption is expected to occur. This model is not linear in its parameters.
+
+### Fitting model
+
+Starting values need to be provided. Plot the data first to estimate the asymptote
+
+```{r}
+d<-read.csv("/home/aqm/course/data/Hollings.csv")
+g0<-ggplot(data=d,aes(x=Resource,y=Consumption)) + geom_point()
+g0
+```
+
+### Fitting the model
+
+```{r}
+nlmod<-nls(Consumption~s*Resource/(F+Resource),data = d,start = list( F = 20,s=20)) 
+```
+
+### Curve fit
+
+```{r}
+g0<-ggplot(data=d,aes(x=Resource,y=Consumption))
+g1<-g0+geom_point()
+g2<-g1+geom_smooth(method="nls",formula=y~s*x/(F+x),method.args=list(start = c( F = 20,s=20)), se=FALSE)
+g2
+```
+
+### Curve fit with confidence intervals
+
+This needs the propagate package. 
+
+```{r,message=FALSE}
+require(propagate)
+newdata<-data.frame(Resource=seq(min(d$Resource),max(d$Resource),length=100))
+pred_model <- predictNLS(nlmod, newdata=newdata,nsim = 10000)
+conf_model <- pred_model$summary
+
+newdata<-data.frame(newdata,conf_model)
+
+g2  + geom_line(data=newdata,aes(x=Resource,y=Prop.2.5.),col="black",lty=2) + geom_line(data=newdata,aes(x=Resource,y=Prop.97.5.),col="black",lty=2)
+
+```
+
+## Holling's disc equation  {.tabset .tabset-pills}
+
+The classic version of Hollings disk equation used in the article is written as
+
+$R=\frac{aD}{1+aDH}$
+
+ Where 
+ 
+ * F = feeding rate (food items)
+ * D = food density (food items $m^{-2}$)
+ * a = searching rate ($m^{2}s^{-1}$) 
+ * H = handling time (s per food item).
+ 
+### The data 
+
+```{r}
+d<-read.csv("/home/aqm/course/data/buntings.csv")
+g0<-ggplot(data=d,aes(x=density,y=rate)) + geom_point()
+g0
+```
+
+### Fitting the model
+
+```{r}
+d<-read.csv("/home/aqm/course/data/buntings.csv")
+HDmod<-nls(rate~a*density/(1+a*density*H),data = d,start = list(a =0.001,H=2)) 
+```
+
+### Confidence intervals for parameters
+
+```{r}
+confint(HDmod)
+```
+
+### Plot with fitted curve
+
+```{r}
+g0<-ggplot(data=d,aes(x=density,y=rate))
+g1<-g0+geom_point()
+g2<-g1+geom_smooth(method="nls",formula=y~a*x/(1+a*x*H),method.args=list(start = c(a = 0.01,H=2)), se=FALSE)
+g2
+```
+
+### Plot with confidence intervals
+
+```{r}
+require(propagate)
+newdata<-data.frame(density=seq(0,max(d$density),length=100))
+pred_model <- predictNLS(HDmod, newdata=newdata,nsim = 10000)
+conf_model <- pred_model$summary
+
+newdata<-data.frame(newdata,conf_model)
+
+g3<-g2  + geom_line(data=newdata,aes(x=density,y=Prop.2.5.),col="black",lty=2) + geom_line(data=newdata,aes(x=density,y=Prop.97.5.),col="black",lty=2)
+g3
+```
+
+### Non linear quantile regression
+
+```{r}
+library(quantreg)
+QuantMod90<-nlrq(rate~a*density/(1+a*density*H),data = d,start = list(a =0.001,H=2),tau=0.9)
+QuantMod10<-nlrq(rate~a*density/(1+a*density*H),data = d,start = list(a =0.001,H=2),tau=0.1)
+newdata$Q90<- predict(QuantMod90, newdata = newdata)
+newdata$Q10 <- predict(QuantMod10, newdata = newdata)
+
+g3 + geom_line(data=newdata,aes(x=density,y=Q90),col="red") + geom_line(data=newdata,aes(x=density,y=Q10),col="red")
+```
+

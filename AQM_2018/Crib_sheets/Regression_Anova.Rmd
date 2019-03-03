@@ -1,0 +1,422 @@
+---
+title: "Crib sheet for regression and ANOVA"
+author: "Duncan Golicher"
+date: "12/5/2017"
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE,message = FALSE,eval = TRUE)
+```
+
+# Introduction
+
+This document provides all the code chunks that may be useful in the context of the data analysis component of the assignment. The data set used to illustrate is the mussels data, that can be analysed using one way ANOVA and regression in the context of calibrating a relationship.
+
+You should look through ALL the handouts provided on these techniques to understand the underlying theory. This "crib sheet" simply provides access to useful code.
+
+1. **ALWAYS CHECK THAT THE STEPS HAVE BEEN TAKEN IN THE RIGHT ORDER.**
+2. **LOOK AT THE DATA YOU HAVE LOADED FIRST**
+3. **USE YOUR OWN VARIABLE NAMES**
+4. **PASTE IN CODE CHUNKS CAREFULLY; LEAVING GAPS BETWEEN EACH CHUNK**
+5. **COMMENT ON ALL THE STEPS**
+
+## Packages needed
+
+Include this chunk at the top of you analysis to ensure that you have all the packages. It also includes the wrapper to add buttons to a data table if you want to use this. Remember that data tables can only be included in HTML documents.
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(mgcv)
+library(DT)
+theme_set(theme_bw())
+dt<-function(x) DT::datatable(x, 
+    filter = "top",                         
+    extensions = c('Buttons'), options = list(
+    dom = 'Blfrtip',
+    buttons = c('copy', 'csv', 'excel'), colReorder = TRUE
+  ))
+
+```
+
+
+# Univariate {.tabset .tabset-pills}
+
+## Data 
+
+
+```{r}
+d<-read.csv("https://tinyurl.com/aqm-data/mussels.csv")
+dt(d)
+```
+
+
+## Data summaries for individual variables
+
+Change the name of the variable to match a numerical variable in your own data set. The command removes NAs just in case you have them
+
+
+```{r}
+summary(d$Lshell,na.rm=TRUE)
+```
+
+## Individual statistics for a single variable
+
+Mean, median, standard deviation and variance.
+
+```{r}
+mean(d$Lshell, na.rm=TRUE)
+median(d$Lshell, na.rm=TRUE)
+sd(d$Lshell, na.rm=TRUE)
+var(d$Lshell, na.rm=TRUE)
+
+
+```
+
+## Simple boxplot of one variable
+
+Useful for your own quick visualisation.
+
+```{r}
+boxplot(d$Lshell)
+```
+
+## Simple histogram of one variable
+
+Useful for your own quick visualisation.
+
+```{r}
+hist(d$Lshell)
+```
+
+## Neater histogram of one variable
+
+This uses ggplot. Change the bin width if you want to use this.
+
+```{r}
+g0<-ggplot(d,aes(x=d$Lshell))
+g0+geom_histogram(color="grey",binwidth = 5)
+```
+
+
+# Regression {.tabset .tabset-pills}
+
+## Data 
+
+In this data set there are two numerical variables. So we can run a linear regresion.
+
+```{r}
+d<-read.csv("https://tinyurl.com/aqm-data/mussels.csv")
+dt(d)
+```
+
+
+## Scatterplot without fitted line
+
+```{r}
+g0<-ggplot(d,aes(x=Lshell,y=BTVolume))
+g0+geom_point()
+```
+
+
+## Scatterplot with fitted line and labels
+
+Type the text you want for the x and y axes to replace the variable names
+
+```{r}
+
+g0<-ggplot(d,aes(x=Lshell,y=BTVolume))
+g1<-g0+geom_point() + geom_smooth(method="lm") 
+g1 + xlab("Some text for the x asis") + ylab("Some text for the y axis")
+```
+
+## Fitting a model {.tabset .tabset-pills}
+
+Change the names of the variables in the first line.
+
+```{r}
+mod<-lm(data= d, BTVolume~Lshell)
+
+```
+
+
+### Model summary
+
+```{r}
+summary(mod)
+
+```
+
+### Model anova table
+
+```{r}
+anova(mod)
+
+```
+
+### Confidence intervals for the model parameters
+
+```{r}
+confint(mod)
+```
+
+
+### Extracting residuals
+
+```{r}
+d$residuals<-residuals(mod)
+```
+
+
+### Model diagnostics
+
+Look at the regression handout to understand these plots.
+
+```{r}
+plot(mod,which=1)
+```
+
+```{r}
+plot(mod,which=2)
+```
+
+
+```{r}
+plot(mod,which=3)
+```
+
+
+```{r}
+plot(mod,which=4)
+```
+
+```{r}
+plot(mod,which=5)
+```
+
+### Spearman's rank correlation
+
+Used if all else fails. Not needed with these data, but included for reference.
+
+```{r}
+g0<-ggplot(d,aes(x=rank(Lshell),y=rank(BTVolume)))
+g0+geom_point() + geom_smooth(method="lm") 
+
+```
+
+
+```{r}
+cor.test(d$Lshell,d$BTVolume,method="spearman")
+```
+
+
+## Fitting a spline
+
+Only use if you suspect that the relationship is not well described by a straight line.
+
+```{r}
+library(mgcv)
+
+g0<-ggplot(d,aes(x=Lshell,y=BTVolume))
+g1<-g0 + geom_point() + geom_smooth(method="gam", formula =y~s(x))
+g1 + xlab("Some text for the x asis") + ylab("Some text for the y axis")
+```
+
+In this case the line is the same as the linear model. Get a summary using this code.
+
+```{r}
+mod<-gam(data=d, BTVolume~s(Lshell))
+summary(mod)
+```
+
+If you do use this model remember that **its only needed if you can't use linear regression**. Report the ajusted R squared value, the estimated degrees of freedom and the p-value for the smooth term (not the intercept). You **must** include the figure in your report, as that is the only way to show the shape of the response.
+
+
+# One way ANOVA {.tabset .tabset-pills}
+
+The purpose of one way anova is
+
+1. Test whether there is greater variability between groups than within groups
+2. Quantify any differences found between group means
+
+## Grouped boxplots
+
+Exploratory plots
+
+```{r}
+g0<-ggplot(d,aes(x=Site,y=Lshell))
+g0+geom_boxplot()
+```
+
+## Histograms for each factor level
+
+```{r}
+g0<-ggplot(d,aes(x=d$Lshell))
+g1<-g0+geom_histogram(color="grey",binwidth = 5)
+
+g1+facet_wrap(~Site) +xlab("Text for x label") 
+```
+
+
+## Confidence interval plot
+
+```{r}
+g0<-ggplot(d,aes(x=Site,y=Lshell))
+g1<-g0+stat_summary(fun.y=mean,geom="point")
+g1<-g1 +stat_summary(fun.data=mean_cl_normal,geom="errorbar")
+g1 +xlab("Text for x label") + ylab("Text for y label")
+```
+
+
+## Fitting ANOVA  {.tabset .tabset-pills}
+
+```{r}
+mod<-lm(data=d,Lshell~Site)
+
+```
+
+### Model anova
+
+```{r}
+anova(mod)
+```
+
+### Model summary {.tabset .tabset-pills}
+
+#### Treatment effects
+
+```{r}
+summary(mod)
+```
+
+#### Change reference level
+
+```{r}
+slevels<-levels(d$Site)
+d$Site<-relevel(d$Site,"Site_5")
+mod<-lm(data=d,Lshell~Site)
+summary(mod)
+d$Site <- factor(d$Site, levels=slevels)
+```
+
+#### Reverse levels
+
+```{r}
+slevels<-levels(d$Site)
+d$Site <- factor(d$Site, levels=rev(slevels))
+mod<-lm(data=d,Lshell~Site)
+summary(mod)
+d$Site <- factor(d$Site, levels=slevels)
+```
+
+#### Sum contrasts
+
+Sum contrasts compare the effects to the mean. Notice that the last level is missing due to the way the design matrix is formed. So it can be worth running sum contrasts twice, with the order reversed, to get all the contrasts.
+
+```{r}
+options(contrasts = c("contr.sum", "contr.poly"))
+mod<-lm(data=d,Lshell~Site)
+summary(mod)
+options(contrasts = c("contr.treatment", "contr.poly"))
+
+
+```
+
+##### Reverse order
+
+```{r}
+
+d$Site <- factor(d$Site, levels=rev(slevels))
+options(contrasts = c("contr.sum", "contr.poly"))
+mod<-lm(data=d,Lshell~Site)
+summary(mod)
+options(contrasts = c("contr.treatment", "contr.poly"))
+d$Site <- factor(d$Site, levels=slevels)
+```
+
+
+### Tukey corrected pairwise comparisons
+
+Use to find where signficant differences lie. This should confirm the pattern shown using the confidence interval plot.
+
+```{r}
+mod<-aov(data=d,Lshell~Site)
+TukeyHSD(mod)
+
+```
+
+Plot of results of Tukey HSD
+
+```{r}
+plot(TukeyHSD(mod))
+```
+
+
+
+### Anova with White's correction
+
+This will give you the overall Anova table if there is heterogeneity of variance.
+
+```{r}
+library(sandwich)
+library(car)
+mod<-lm(Lshell~Site, data=d)
+Anova(mod,white.adjust='hc3')
+```
+
+### Bayesian model with shrinkage
+
+Specialist model. Probably the best for these particular data, but seek guidance. **Don't do this at home kids!**
+
+```{r}
+
+library(rjags)
+library(ggmcmc)
+rand_mod="
+  model {
+      ### Likeihood
+      for (i in 1:N) {                  ## Loop through observations
+        mu[i]<-mu_r+Beta[ind[i]]        ## Beta is added to an overall mean
+        y[i] ~ dnorm(mu[i],tau[ind[i]])  ## Set an independent tau for each group agan. A                                              pooled variance model would also work  here
+       
+      }
+    
+    for (j in 1:p) {
+     Beta[j]~dnorm(0,tau_r)            ## A single tau represents the variance between group                                        #   means
+     tau[j] ~ dgamma(scale, rate)
+      for (n in 1:(j-1)){
+        Difbeta[n,j]<-Beta[n]-Beta[j]
+      }
+    }
+   
+    scale ~ dunif(0, 1)
+    rate ~ dunif(0, 1)
+    tau_r ~ dgamma(scale,rate)
+    sigma_r <- 1/sqrt(tau_r)
+    mu_r ~ dnorm(0,0.00001)     ## Prior for the overall mean
+   
+  }"
+
+data=list(y=d$Lshell,
+          ind=as.numeric(d$Site),
+          N=length(d$Lshell),
+          p=length(levels(d$Site)),
+          overall_mean=mean(d$Lshell))
+model=jags.model(textConnection(rand_mod),data=data)
+
+update(model,n.iter=1000)
+output=coda.samples(model=model,variable.names=c("sigma_r","mu_r","Difbeta","Beta"),n.iter=100000,thin=10)
+ms <-ggs(output) 
+mt<-filter(ms,grepl("Beta",Parameter))
+ggs_caterpillar(mt) +geom_vline(xintercept = 0,col="red")
+```
+
+
+```{r}
+summary(output)
+```
+

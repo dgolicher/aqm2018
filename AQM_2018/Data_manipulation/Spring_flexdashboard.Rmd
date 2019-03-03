@@ -1,0 +1,71 @@
+---
+title: "Oxford"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    source_code: embed
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+
+
+```{r}
+load("/home/aqm/data/dt.rob")
+library(lubridate)
+library(xts)
+library(dplyr)
+d<-read.csv("/home/aqm/data/met_office.csv")
+d$date<-as.Date(d$date)
+d$month<-month(d$date,label=TRUE)## Makes an ordered labaled factor
+
+spring<-levels(d$month)[c(3,4)]
+d %>% filter(d$month %in% spring) %>% group_by(station,Year) %>% summarise(n=n(),date=mean(date),mean_temp=mean((tmin+tmax)/2),sum_rain=sum(rain)) ->d
+library(dygraphs)
+
+library(lubridate)
+
+
+```
+
+# Temperatures {.tabset}
+
+
+```{r}
+d %>% filter(station=="oxford")->oxford
+d %>% filter(station=="hurn")->hurn
+oxford<-xts(x = oxford$mean_temp, order.by = oxford$date)
+hurn<-xts(x = hurn$mean_temp, order.by = hurn$date)
+
+dygraph(oxford,group = "spring") %>% dyRangeSelector() %>%  dyRoller(rollPeriod = 10)
+```
+
+
+
+# Rain
+
+```{r}
+xts(x = dd$rain, order.by = dd$date) %>% dygraph(group = "Oxford") %>% dyRangeSelector()
+```
+
+# 10 year rolling average rain
+
+```{r}
+xts(x = dd$rain, order.by = dd$date) %>% dygraph(group = "Oxford") %>% dyRangeSelector() %>%  dyRoller(rollPeriod = 12*10)
+```
+
+# 10 year rolling average tmax
+
+```{r}
+xts(x = dd$tmax, order.by = dd$date) %>% dygraph(group = "Oxford") %>% dyRangeSelector() %>%  dyRoller(rollPeriod = 12*10)
+```
+
+
+# Raw data
+```{r}
+dt(dd)
+```
+

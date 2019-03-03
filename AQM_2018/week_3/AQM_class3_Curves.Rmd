@@ -1,0 +1,527 @@
+---
+output:
+  html_document: default
+  author: "Duncan Golicher"
+  pdf_document: default
+  title: "Curvilinear relationships"
+---
+
+```{r,echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message = FALSE)
+```
+
+## Introduction
+
+In the previous class we have assumed that the underlying relationship between variables takes the form of a straight line. However in ecology the relationship between variables can have more complex forms. Sometimes the form can be predicted from theory. However we are often simply interested in finding a model that describes the data well and provides insight into processes. 
+
+
+### Data exploration
+
+The data we will first look at is analysed by Zuur et al (2007) but here it has been modified slightly in order to illustrate the point more clearly.
+
+The data frame we will look at contains only two variables selected from a large number of measurements taken on sediment cores from Dutch beaches. The response variable is the richness of benthic invertebrates. The explanatory variable we are going to look at here is sediment grain size in mm. The data also contains measurements on height from mean sea level and salinity.
+
+```{r}
+library(ggplot2)
+```
+
+
+```{r}
+
+d<-read.csv("/home/aqm/course/data/marineinverts.csv")
+DT::datatable(d)
+```
+
+The first step in any analysis should be to look at the data.
+
+Base graphics are good enough for a quick figure at this stage.
+
+```{r}
+attach(d)
+plot(richness~grain)
+```
+
+Or in ggplot
+
+```{r}
+theme_set(theme_bw())
+g0<-ggplot(data=d,aes(x=grain,y=richness))
+g1<-g0+geom_point()
+g1
+```
+
+There seems to be a pattern of an intial steep decline in richness as grain size increases, followed by a plateau. Let's try fitting a linear regression to the data and plotting the results with confidence intervals.
+
+**Note** This is **not** necessarily the correct analysis for these data. In fact there are many reasons why it is clearly an incorrect way of modelling the relationship. We will explore this as the class progresses, and in a later class we will revisit the data set in order to use a much better model. The exercise at this point is for illustrative, didactic purposes. You should think about the reasons for not using a simple model at every step, in order to understand why more advanced methods are needed.
+
+Plotting confidence intervals using base graphics requires a few steps in base graphics, but you can see explicitly that these are constructed using the model predictions.
+
+```{r}
+mod<-lm(richness~grain)
+plot(richness~grain)
+x<-seq(min(grain),max(grain),length=100)
+matlines(x,predict(mod,newdata=list(grain=x),interval="confidence"))
+```
+
+It is, of course, usually much quicker and easier to use ggplots. 
+
+```{r}
+
+g2<-g1+geom_smooth(method="lm")
+g2
+```
+
+The relationship is modelled quite well by a straight line, but it does not look completely convincing. There are two many points above the line on the left hand side of the figure and too many below on the right. If look at the first diagnostic plot for the model this is also apparent. The residuals are correlated as a result of the model not being of the correct form.
+
+Look at the diagnostic plots.
+
+```{r}
+anova(mod)
+summary(mod)
+par(mfcol=c(2,2))
+plot(mod)
+```
+
+## T values and significance in summary output
+
+An element of the R output that you should be aware of at this point is the summary table. If you look at this table you will see that for each parameter there is an estimate of its value together with a standard error. The confidence interval for the parameter is approximately plus or minus twice the standard error. The T value is a measure of how far from zero the estimated parameter value lies in units of standard error. So generally speaking t values of 2 or more will be statistically significant. This may be useful, but it certainly does **not** suggest that parameter is useful in itself. To evaluate whether a parameter should be included requires taking a "whole model" approach. 
+
+Remember that a p-value only tells you how likely you would be to get the value of t (or any other statistic with a known distribution such as an F value) if the null model were true. It doesn't really tell you that much directly about the model you actually have.
+
+#### Testing for curvilearity
+
+We can check whether a strait line is a good representation of the
+pattern using the reset test that will have a low p-value if the linear form of the model is not a good fit.
+
+```{r}
+library(lmtest)
+resettest(richness ~ grain)
+```
+
+
+The Durbin Watson test which helps to confirm serial autocorrelation that may be the result of a misformed model will often also be significant when residuals cluster on one side of the line.
+
+```{r}
+dwtest(richness~grain)
+```
+
+In this case it was not, but this may be because there were too few data points.
+
+
+### Polynomials
+
+The traditional method for modelling curvilinear relationships when a functional form of the relationship is not assumed is to use polynomials. Adding quadratic, cubic or higher terms to a model gives it flexibility and allows the line to adopt different shapes. The simplest example is a quadratic relationship which takes the form of a parabola.
+
+$y=a+bx+cx^{2} +\epsilon$ where $\epsilon=N(o,\sigma^{2})$
+
+```{r}
+x<-1:100
+y<-10+2*x-0.02*x^2
+plot(y~x,type="l")
+```
+
+If the quadratic term has a small value the curve may look more like a hyperbola over the data range. 
+
+```{r}
+x<-1:100
+y<-10+2*x-0.01*x^2
+plot(y~x,type="l")
+```
+
+We can add a quadratic term to the model formula in R very easily.
+
+The syntax is lm(richness ~ grain+I(grain^2)).
+
+The "I" is used to isolate the expression so that it is interpreted literally in mathematical terms. Notice that we are still using lm, i.e. a general linear model. This is because mathematically the terms still enter in a "linear" manner. So linear models can produce curves!
+
+We canplot the predictions explicitly using base graphics.
+
+```{r}
+mod2<-lm(richness~grain+I(grain^2))
+plot(richness~grain)
+x<-seq(min(grain),max(grain),length=100)
+matlines(x,predict(mod2,newdata=list(grain=x),interval="confidence"))
+```
+
+Or using ggplot.
+
+```{r}
+g1+geom_smooth(method="lm",formula=y~x+I(x^2), se=TRUE)
+```
+
+
+```{r}
+anova(mod2)
+summary(mod2)
+```
+
+We now have a higher value of R squared and a better fitting model.
+
+But the shape does not look right. The quadratic is constrained in form and has started to rise at the high end of the x axis. This does not make a great deal of sense.
+
+We can give the model more flexibility by adding another term.
+
+```{r}
+mod3<-lm(richness~grain+I(grain^2)+I(grain^3))
+plot(richness~grain)
+x<-seq(min(grain),max(grain),length=100)
+matlines(x,predict(mod3,newdata=list(grain=x),interval="confidence"))
+```
+
+```{r}
+g1+geom_smooth(method="lm",formula=y~x+I(x^2)++I(x^3), se=TRUE)
+```
+
+
+```{r}
+anova(mod3)
+summary(mod3)
+```
+
+This produces a better fit statistically, but things are now getting very confusing. It is not clear what the third term is actually doing. The confidence intervals are quite wide, so we could ignore the sharp downturn, as any shape within the confidence intervals is permissible. But the model still does not look right.
+
+The advantages of polynomials is that they do result in a formula that can be written down and provided as a predictive model. The major disadvantage is that the formula is rather complex and has no intrinisic biological or ecological basis. You must also be very careful never to use these models to predict values that fall outside the range used for fitting. Also the formulae produced by fitting polynomials are often used without regard to the confidence intervals. Uncertainty is part of the statistical model and should be taken into account.
+
+
+### Splines
+
+A commonly used alternative to polynomials is to fit a so called smoother of some description. There are many different ways to go about this, making the subject seem complicated. However for most practical purposes they produce similar results and we can rely on the software to make most of the decisions. 
+
+The most commonly used smoothers are splines of some type. These work by fitting curves to sections of the data and then splicing the results together. This gives the curves much greater flexibility that polynomials. Almost any shape can be fitted.
+
+![alt text](/home/aqm/course/figs/spline.png)
+
+The issue with this involves complexity. If we let the curves become too flexible we could fit a line to that passed through all the data points. But this would not be useful and would leave no degrees of freedom. The degree of waviness is selected in R automatically by cross validation if we use the mgcv package. There is no guarantee that the model will be biologically meaningful, but many times the selection produces a curve that fits the data well and can be interpreted.
+
+```{r}
+library(mgcv)
+mod4<-gam(richness~s(grain))
+summary(mod4)
+```
+
+
+The summary gives a p-value for the term and also shows the estimated degrees of freedom. The more complex the response, the more degrees of freedom are used in fitting the model.
+
+Unlike regression models there is no formula associated with the model. So it can be difficult to communicate the results. The usual way of presenting the model is graphically.
+
+```{r}
+plot(mod4)
+```
+
+Notice that the plot shows differences from the mean value (intercept) associated with the smoothed term in the model. Splines can suffer from some of the same problems as polynomials, but they often lead to a curve that has more intrinsic meaning.
+
+```{r}
+g1+stat_smooth(method = "gam", formula = y ~ s(x))
+```
+
+
+### Complex shapes
+
+The next data set is on the Gonadosomatic index (GSI, i.e., the weight of the gonads relative to total body weight) of squid Measurements were taken from squid caught at various locations and months in Scottish
+waters.
+
+```{r}
+
+squid<-read.csv("/home/aqm/course/data/squid.csv")
+```
+
+We can plot out the data using a conditional box and whisker plot.
+
+```{r}
+squid$month<-as.factor(squid$MONTH)
+
+```
+
+```{r}
+g0<-ggplot(data=squid,aes(x=month,y=GSI))
+g1<-g0+geom_boxplot()
+g1+facet_wrap("Sex")
+```
+
+It seems sensible to split the data by gender.
+
+```{r}
+males<-subset(squid,Sex=="Male")
+females<-subset(squid,Sex=="Female")
+```
+
+Now we can try representing the pattern of change over the year using a spline model fit using mgcv.
+
+```{r}
+mod1<-gam(GSI~s(MONTH),data=females) 
+plot(mod1)
+summary(mod1)
+```
+
+```{r}
+g0<-ggplot(data=females, aes(x=MONTH,y=GSI))
+g1<-g0+geom_point()
+g1+stat_smooth(method = "gam", formula = y ~ s(x))
+```
+
+The statistics are OK, but the biology seems wrong. The dip in the curve in October does not seem to make sense. Although the number of knots in the spline are determined by cross validation we can lower them in order to produce a simpler model.
+
+```{r}
+mod2<-gam(GSI~s(MONTH,k=8),data=females) 
+plot(mod2)
+summary(mod2)
+```
+
+```{r}
+g1+stat_smooth(method = "gam", formula = y ~ s(x,k=8))
+```
+
+
+```{r}
+mod3<-gam(GSI~s(MONTH,k=7),data=females) 
+plot(mod3)
+summary(mod3)
+```
+
+```{r}
+g1+stat_smooth(method = "gam", formula = y ~ s(x,k=7))
+```
+
+By reducing the number of knots we have models which use fewer degrees of freedom. However the fit as measured by the deviance explained (R squared in this case) is reduced. 
+
+We can test whether the first model is significantly better. We find that it is.
+
+```{r}
+anova(mod1,mod2,mod3,test="F")
+```
+
+So we are left with a difficulty. The statistical criteria lead to a wavy model, while common sense suggest that there is some issue that has not been taken into account. In such a situation we should look for additional variables that have not been measured. Perhaps some of the squid that were caught actually came from a separate population with a different timing of reproduction. 
+
+
+### Non-linear models
+
+Statistical modelling involves measures of fit. However scientific modelling often brings in other elements, including theory that is used to propose a model for the data. These theoretical models are often non-linear in the statistical sense. The terms do not enter in a linear manner. Such models can be difficult to fit to real life data, but are often used when building process based ecological models.
+
+For example, resource use is commonly modelled using a function with an asymptote. The equation below is a version of Holling's disk equation that has been rewriten as a generalised rectangular hyperbola. This is identical in form to the Michaelis-Menton equation for enzyme kinetics.
+
+$$C=\frac{sR}{F+R}$$
+
+
+Where 
+
+* C is resource consumption, 
+* R is the amount or density of theresource, 
+* s is the asymptotic value and 
+*  F represents the density of resource at which half the asymptotic consumption is expected to occur. This model is not linear in its parameters.
+
+The data below have been simulated from this equation in order to illustrate the model fitting process.
+
+```{r}
+d<-read.csv("/home/aqm/course/data/Hollings.csv")
+plot(d,pch=21,bg=2)
+```
+
+
+There are many ways to fit a theoretical non-linear model in R. One of the simplest uses least squares, so some of the assumptions made are similar to linear regression. 
+
+It is much harder to run diagnosis on these sorts of models. Even fitting them can be tricky. Diagnostics are arguably less important, as the interest lies in finding a model that matches our understanding of how the process works, rather than fitting the data as well as possible.
+
+We have to provide R with a list of reasonable starting values for the model. At present R does not provide confidence bands for plotting, but this is less important in the case of non linear models. It is much more interesting to look at the confidence intervals for the parameters themselves. 
+
+```{r}
+nlmod<-nls(Consumption~s*Resource/(F+Resource),data = d,start = list( F = 20,s=20)) 
+newdata <- data.frame(Resource=seq(min(d$Resource),max(d$Resource),l=100)) 
+a <- predict(nlmod, newdata = newdata)
+plot(d,main="Non-linear model")
+lines(newdata$Resource,a,lwd=2)
+confint(nlmod)
+```
+
+```{r}
+g0<-ggplot(data=d,aes(x=Resource,y=Consumption))
+g1<-g0+geom_point()
+g1+geom_smooth(method="nls",formula=y~s*x/(F+x),method.args=list(start = c( F = 20,s=20)), se=FALSE)
+
+
+```
+
+The nice result of fitting this form of model is that we can now interpret the result in the context of the process. If the resource represented biomass of ragworm in mg m2 and consumption feeding rate of waders we could now estimate the maximum rate of feeding lies between 19.5 and 20.3 mg hr. The density at which birds feed at half this maximum rate, if the theoretical model applies, lies beyond the range of the data that we obtained (34 to 44 mg m2).
+
+Non linear models can thus be extrapolated beyond the data range in a way that linear models, polynomials and splines cannot. However this extrapolation relies on assuming that the functional form of the model is sound.
+
+It is common to find that parameters are estimated with very wide confidence intervals even when a model provides a good fit to the data. Reporting confidence intervals for key parameters such as the asymptote is much more important in this context than reporting R2 values. This can be especially important if the results from non linear model fitting are to be used to build process models.
+
+You should not usually fit a non-linear model of this type to data, unless you have an underlying theory. When the data are taken from a real life situation it is always best to explore them first using other approaches before thinking about fitting a non-linear model. When we obtain data from nature we do not know that the equation really does represent the process. Even if it does, there will certainly be quite a lot of random noise around the underlying line. 
+
+
+### Real data
+
+Smart, Stillman and Norris were interested in the functional responses of farmland birds. In particular they wished to understand the feeding behaviour of the corn bunting *Miliaria calandra* L, a bird species whose decline may be linked to a reduction of food supply in stubble fields. 
+
+The authors tested five alternative models of the functional responses of corn buntings. They concluded that Holling’s disk equation provided the most accurate fit to the observed feeding rates while remaining the most statistically simple model tested.
+
+```{r}
+d<-read.csv("/home/aqm/course/data/buntings.csv")
+ 
+plot(rate~density,data=d,pch=21,bg=2)
+```
+
+The classic version of Hollings disk equation used in the article is written as
+
+$$
+R=\frac{aD}{1+aDH}
+$$
+
+ Where 
+ 
+ * F = feeding rate (food items)
+ * D = food density (food items $m^{-2}$)
+ * a = searching rate ($m^{2}s^{-1}$) 
+ * H = handling time (s per food item).
+
+```{r}
+HDmod<-nls(rate~a*density/(1+a*density*H),data = d,start = list(a =0.001,H=2)) 
+confint(HDmod)
+newdata <- data.frame(density=seq(0,max(d$density),l=100)) 
+HDpreds <- predict(HDmod, newdata = newdata)
+plot(rate~density,data=d,pch=21,bg=2,ylim=c(0,1))
+lines(newdata$density,HDpreds,lwd=2)
+```
+
+```{r}
+g0<-ggplot(data=d,aes(x=density,y=rate))
+g1<-g0+geom_point()
+g1+geom_smooth(method="nls",formula=y~a*x/(1+a*x*H),method.args=list(start = c(a = 0.01,H=2)), se=FALSE)
+```
+
+
+
+The figure in the article shows the five models that were considered.
+
+![alt](/home/aqm/course/figs/buntings1.png)
+
+Note that models with a vigilance term could not be fit to the data directly due to lack of convergence.
+
+
+#### Calculating R squared
+
+The fit of the models in the paper is presented below.
+
+![alt](/home/aqm/course/figs/buntings2.png)
+
+R does not calculate R squared for non linear models by default. The reason is that statisticians do not accept this as a valid measure. However ecologists are used to seeing R squared values when models are fit. You can calculate them easily enough from a non linear model. First you need the sum of squares that is not explained by the fitted model. This is simply the variance multiplied by n-1.
+
+```{r}
+nullss<-(length(d$rate)-1)*var(d$rate)
+nullss
+```
+
+We get the residual sum of squares (i.e. the unexplained variability) when we print the model
+
+```{r}
+HDmod
+```
+
+So, R squared is just one minus the ratio of the two.
+
+```{r}
+Rsq<-1-2.795/nullss
+Rsq*100
+```
+
+Which agrees with the value given in the paper.
+
+
+### Including the vigilance term
+
+A very interesting aspect of this article is that the terms of the model were in fact measured independently.
+
+Vigilance, which is defined as the proportion of the time spent being vigilant, rather than feeding, is included in most of the models which are presented in the paper as alternatives to the classic disk equation. Most of these are rather complex conditional models, but the simplest is model 2.
+
+$$
+R=\frac{(1-v)aD}{1+aDH}
+$$
+
+
+The vigilance parameter for model2 cannot be estimated from the data. However it was also measured independently.
+
+![alt](/home/aqm/course/figs/vigilance.png)
+
+Notice that vigilance is fundamentally independent of seed density within this range of densities. The measured value (approximately 0.4) can be included and the model refit with this value included.
+
+```{r}
+Vigmod<-nls(rate~(1-0.4)*a*density/(1+a*density*H),data = d,start = list(a =0.001,H=2)) 
+confint(Vigmod)
+```
+
+When the measured vigilance is included in the model as an offset term the handling time is reduced by about a half. This makes sense. We may assume that most of the measured vigilance is in fact reducing the rate of feeding as the seed density is so high that search time is very small. However note that we could not possibly have fitted this model without some prior knowledge of the offset value.
+
+
+### Quantile regression
+
+Another way to look at the issue is to use an alternative approach to fitting statistical models. The traditional approach to fitting a model to data assumes that we are always interested in the centre of any pattern. The error term was classically assumed to be uninteresting random noise around an underlying signal. However in many situations this noise is actually part of the phenomenon we are studying. It may sometimes be attributed to *process error*, in other words variability in the process we are actually measuring, rather than error in our measurements. This may possibly be occurring here. If handling time in fact sets an upper limit on feeding rate, and if we can assume that feeding rate has been measured fairly accurately, then the upper part of the data cloud should be estimating true handling time. Birds that are feeding more slowly than this may be doing something else. For example, they may be spending time being vigilant. So there is possibly some additional information in the data that has not been used in the published paper.
+
+We can use quantile regression to fit a non linear model around the top 10\% of the data and the bottom 10\%. 
+
+```{r}
+library(quantreg)
+QuantMod90<-nlrq(rate~a*density/(1+a*density*H),data = d,start = list(a =0.001,H=2),tau=0.9)
+QuantMod10<-nlrq(rate~a*density/(1+a*density*H),data = d,start = list(a =0.001,H=2),tau=0.1)
+QuantPreds90 <- predict(QuantMod90, newdata = newdata)
+QuantPreds10 <- predict(QuantMod10, newdata = newdata)
+plot(rate~density,data=d,pch=21,bg=2,ylim=c(0,1))
+lines(newdata$density,HDpreds,lwd=2, col=1)
+lines(newdata$density,QuantPreds90,lwd=2,col=2)
+lines(newdata$density,QuantPreds10,lwd=2,col=3)
+```
+
+If handling time limits the maximum rate at which seed can be consumed, then the estimate based on the upper 10\% of the data should be closer to the true handling time. So if we look at the summaries of these models we should be able to get a handle on vigilance without the prior knowledge.
+
+```{r}
+summary(QuantMod90)
+summary(QuantMod10)
+```
+
+The upper limit (pure handling time) is 1.37 (se= 0.047)
+
+The lower estimate that may include time spent being vigilant is estimated using quantile regression as 2.65 (se= 0.31)
+
+Vigilance thus could, arguably, be estimated as the difference between the upper and lower estimates of handling time divided by the upper value. As the uncertainty around these values has been provided by the quantile regression in the form of a standard error we can use a montecarlo prodedure to find confidence intervals by simulating from the distributions and finding the percentiles of the result.
+
+```{r}
+quantile((rnorm(10000,2.65,0.31)-rnorm(10000,1.37,0.047))/rnorm(10000,2.65,0.31),c(0.025,0.5,0.975))
+```
+
+This is within the range of the measured value.
+
+There are some interesting elements here that could be discussed in the context of the explanation of the study methods and results.
+
+
+### Summary
+
+Many relationships in ecology do not form strait lines. If we only have data, and no underlying theory, we can fit a model to the underlying shape using traditional methods such as polynomials or more contemporary models such as splines and other forms of local weighted regression. However these models cannot be extrapolated beyond the data range.
+
+A very different approach involves finding a model "from first principles". Often models are constrained to pass through the origin and by some fundamental limit (asymptote). Model fitting then involves finding a justifiable form for the curve lying between these two points. In some situations data can be used to "mediate" between competing models. In other situations the best we can achieve is to find justifiable estimates, with confidence intervals, for the parameters of a non linear model.
+
+
+## Exercise
+
+A researcher is interested in establishing a predicitive equation to estimate the heights of trees based on measurements of their diameter at breast height. Your task is to try to find a defensible model for three different data sets.
+
+
+
+```{r}
+pines1<-read.csv("https://tinyurl.com/aqm-data/pinus_allometry1.csv")
+```
+
+
+```{r}
+oaks<-read.csv("https://tinyurl.com/aqm-data/quercus_allometry.csv")
+```
+
+```{r}
+pines2<-read.csv("https://tinyurl.com/aqm-data/pinus_allometry2.csv")
+```
+
+
+### References
+
+Smart, S. L., Stillman, R. A., \& Norris, K. J. (2008). Measuring
+the functional responses of farmland birds: an example for a declining
+seed-feeding bunting. Journal of Animal Ecology, 77(4), 687–695. 
+

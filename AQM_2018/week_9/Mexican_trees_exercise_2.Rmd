@@ -1,0 +1,99 @@
+---
+title: "Mexican Trees Exercise"
+author: "Duncan Golicher"
+date: "3/26/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message=FALSE,warnings=FALSE)
+```
+
+#### Mexican trees
+
+The first exercise involves data taken from three forest types in Mexico. The abundances are counts of individual trees. What differences are there in species diversity between the forest types?
+
+```{r}
+library(vegan)
+library(reshape)
+library(dplyr)
+library(ggplot2)
+```
+
+
+```{r}
+mexveg<- read.csv("/home/aqm/course/data/mexveg.csv")
+df<-melt(mexveg,id=1:2)
+mexmat<-mexveg[,-c(1,2)]
+```
+
+
+## Quick example of hierarchical data
+
+As pointed out in the class, data on individual trees would contain measurements taken at that level. How should this data be held and converted to plot level information?
+
+
+Let's just simulate some data with no statistical pattern to illustrate.
+
+Assume there are 1000 trees belonging to 100 species and falling into 10 plots.
+
+```{r}
+
+tree_id<-1:1000
+
+species_ids<-paste("sp",1:100,sep="_")
+
+plot_ids<-paste("plot",1:10)
+
+
+
+```
+
+We'll take the ids at random, so the tree_ids are not necessarily ordered per plot, but this doesn't matter.
+
+```{r}
+sp_id<-sample(species_ids,1000,replace=TRUE)
+plot_id<-sample(plot_ids,1000,replace=TRUE)
+dbh<-round(rlnorm(1000,1.5,1),1)
+d<-data.frame(tree_id,sp_id,plot_id,dbh)
+```
+
+Now, if you look at the raw data it is like this.
+
+
+```{r}
+library(DT)
+datatable(d)
+```
+
+So, to aggregate to a plot and species level data frame all you need is this ..
+
+
+```{r}
+library(dplyr)
+d %>% group_by(plot_id,sp_id) %>% summarise(nstems=n(),mean_dbh=round(mean(dbh),2)) -> plot_df
+datatable(plot_df)
+```
+
+So you can form the sites by species matrix for the occurence counts like this..
+
+```{r}
+library(reshape)
+dd<-melt(data.frame(plot_df),id=1:2,m=3)
+site_sp_mat<-data.frame(cast(dd,plot_id~sp_id,fill=0))
+datatable(site_sp_mat)
+```
+
+## Using real species names
+
+Now, if the species numbered 1:100 had names you could use these by merging the data with another table holding names and any other information you may have on the species, such as wood density, leaf characteristics, fruit type etc. Let's just get 100 names used at BCI
+
+
+```{r}
+data(BCI)
+sp_names<-names(BCI)[1:100]
+sp_table<-data.frame(sp_id=species_ids,name=sp_names)
+d<-merge(d,sp_table)
+datatable(d)
+```
+

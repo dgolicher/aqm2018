@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="BCI" id="BCI">
+	<SimpleField name="grp" type="int"></SimpleField>
+</Schema>
+<Folder><name>BCI</name>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8554864789929,9.1493979389932</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8554835880359,9.15030225903923</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8554806967809,9.15120657903935</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8554778052281,9.15211089899354</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8554749133773,9.15301521890182</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8545764830636,9.14939506507475</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8545735898092,9.15029938483203</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8545706962567,9.1512037045434</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.854567802406,9.15210802420883</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8545649082572,9.15301234382835</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8536664874324,9.14939218887337</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8536635918807,9.15029650834167</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8536606960305,9.15120082776405</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.853657799882,9.1521051471405</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8536549034351,9.15300946647103</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8527564920996,9.14938931038906</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8527535942505,9.15029362956815</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8527506961028,9.15119794870132</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8527477976564,9.15210226778856</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8527448989115,9.15300658682986</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8518464970654,9.14938642962182</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.851843596919,9.15029074851147</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8518406964737,9.15119506735519</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8518377957295,9.15209938615299</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8518348946865,9.15300370490485</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8509365023301,9.14938354657166</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8509335998862,9.15028786517164</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8509306971434,9.15119218372569</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8509277941014,9.15209650223382</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8509248907603,9.15300082069601</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8500265078938,9.14938066123859</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8500236031526,9.15028497954867</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8500206981122,9.15118929781282</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8500177927724,9.15209361603103</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8500148871333,9.15299793420332</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8491165137568,9.1493777736226</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8491136067183,9.15028209164254</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8491106993803,9.15118640961657</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8491077917427,9.15209072754465</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">2</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8491048838055,9.1529950454268</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8482065199194,9.1493748837237</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8482036105836,9.15027920145329</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8482007009479,9.15118351913694</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8481977910125,9.15208783677467</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8481948807773,9.15299215436646</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8472965263817,9.14937199154189</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8472936147486,9.15027630898089</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8472907028154,9.15118062637396</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.8472877905822,9.15208494372109</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#BCI">
+		<SimpleData name="grp">1</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>-79.847284878049,9.15298926102229</coordinates></Point>
+  </Placemark>
+</Folder>
+</Document></kml>

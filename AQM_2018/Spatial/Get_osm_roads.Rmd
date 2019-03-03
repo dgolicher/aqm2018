@@ -1,0 +1,34 @@
+---
+title: "Get OSM roads in Dorset"
+author: "Duncan Golicher"
+date: "1/27/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(osmdata) # fetching OpenStreetmap-data
+library(mapview) # display interactive maps
+library(stringr) # optional, tidyverse string-operations
+library(dplyr)   # data-manipulation
+library(sf)      # spatial features library
+library(forcats) # 
+```
+
+
+```{r,cache=TRUE}
+dorset_roads <- opq(bbox = 'Dorset') %>% # set bounding box via name
+  add_osm_feature(key = 'highway') %>% # get roads
+  add_osm_feature(key = 'name') %>% # include the name
+  osmdata_sf() # return as a sf-object
+```
+
+```{r}
+unique(dorset_roads$osm_lines$highway)
+main<-unique(dorset_roads$osm_lines$highway)[c(1,3,4,5,6,9,10,14,19,20)]
+dorset_roads$osm_lines %>% select(osm_id,name,highway) %>% filter(highway %in% main) %>% mapview()
+```
+

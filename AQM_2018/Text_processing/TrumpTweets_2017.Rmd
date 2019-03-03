@@ -1,0 +1,260 @@
+---
+author: Duncan Golicher
+date: February 2017
+title: "Trump's tweets"
+output: html_document
+---
+
+## Introduction
+
+In August 2016 a data anayst made the news by proving that Donald Trump's Twitter account was being used by at least two separate people. The story made the Washington post.
+http://varianceexplained.org/r/trump-tweets/
+
+https://www.washingtonpost.com/posteverything/wp/2016/08/12/two-people-write-trumps-tweets-he-writes-the-angrier-ones/
+
+Today, Donald Trump tweeted some complementary comments about women (on international women's day). 
+http://www.politico.com/story/2017/03/trump-womens-day-tweet-235814
+The problem is that the nice comments all came from an IPhone. David Robinson's analysis showed that Trump himself uses an Android device. 
+
+David Robinson has claimed that he is no longer analysing Trump's tweets due to the adverse reaction he provoked. However no one is going to notice my reanalysis, so I pulled down his code, tweaked it a little, and re ran it to see if Trump and his team have swopped devices.
+
+```{r,echo=FALSE}
+
+```
+
+
+```{r,message=FALSE,warning=FALSE,results='hide',echo=FALSE}
+library(wordcloud)
+require(twitteR)
+library(ggmap)
+library(httr)
+library(dplyr)
+library(purrr)
+library(twitteR)
+library(tidyr)
+library(lubridate)
+library(scales)
+library(dplyr)
+
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+```{r,cache=FALSE}
+library(readr)
+trump_tweets_df<-read_csv("trump_tweets.csv")
+```
+
+## Taking recent tweets
+
+I pulled down the maximum of 3200 tweets, but decided to only use those written this year. That includes a few pre-inauguration tweets for good measure, when Trump may have been feeling more optimistic about things to come.
+
+```{r}
+
+library(tidyr)
+
+tweets <- trump_tweets_df %>%
+  select(id, statusSource, text, created) %>%
+  extract(statusSource, "source", "Twitter for (.*?)<") %>%
+  filter(source %in% c("iPhone", "Android")) 
+
+
+```
+
+## Time of day and device used
+
+The key indicator that seemed to confirm that two devices were being used was the time of day on which the tweets were sent. Early in the day angry tweets were sent from an android device during the campaign. More measured tweets came from an Iphone later on. Is this still happening?
+
+```{r}
+library(lubridate)
+library(scales)
+
+tweets %>%
+  count(source, hour = hour(with_tz(created, "EST"))) %>%
+  mutate(percent = n / sum(n)) %>%
+  ggplot(aes(hour, percent, color = source)) +
+  geom_line() +
+  scale_y_continuous(labels = percent_format()) +
+  labs(x = "Hour of day (EST)",
+       y = "% of tweets",
+       color = "")
+```
+
+It certainly appears so!
+
+
+```{r,echo=FALSE,results='hide'}
+library(stringr)
+
+# tweets %>%
+#   count(source,
+#         quoted = ifelse(str_detect(text, '^"'), "Quoted", "Not quoted")) %>%
+  # ggplot(aes(source, n, fill = quoted)) +
+  # geom_bar(stat = "identity", position = "dodge") +
+  # labs(x = "", y = "Number of tweets", fill = "") +
+  # ggtitle('Whether tweets start with a quotation mark (")')
+```
+
+
+```{r}
+library(tidytext)
+
+reg <- "([^A-Za-z\\d#@']|'(?![A-Za-z\\d#@]))"
+tweet_words <- tweets %>%
+  filter(!str_detect(text, '^"')) %>%
+  mutate(text = str_replace_all(text, "https://t.co/[A-Za-z\\d]+|&amp;", "")) %>%
+  unnest_tokens(word, text, token = "regex", pattern = reg) %>%
+  filter(!word %in% stop_words$word,
+         str_detect(word, "[a-z]"))
+
+
+```
+
+## Most common words
+
+It is interesting to look at the raw vocabulary being used.
+
+```{r}
+tweet_words %>%
+  count(word, sort = TRUE) %>%
+  head(20) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n)) +
+  geom_bar(stat = "identity") +
+  ylab("Occurrences") +
+  coord_flip()
+```
+Donald Trump's android device is used to rant about the press.
+
+## Splitting occurences by device
+
+```{r}
+android_iphone_ratios <- tweet_words %>%
+  count(word, source) %>%
+  filter(sum(n) >= 5) %>%
+  spread(source, n, fill = 0) %>%
+  ungroup() %>%
+  mutate_each(funs((. + 1) / sum(. + 1)), -word) %>%
+  mutate(logratio = log2(Android / iPhone)) %>%
+  arrange(desc(logratio))
+
+android_iphone_ratios %>%
+  group_by(logratio > 0) %>%
+  top_n(15, abs(logratio)) %>%
+  ungroup() %>%
+  mutate(word = reorder(word, logratio)) %>%
+  ggplot(aes(word, logratio, fill = logratio < 0)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  ylab("Android / iPhone log ratio") +
+  scale_fill_manual(name = "", labels = c("Android", "iPhone"),
+                    values = c("red", "lightblue"))
+
+```
+
+
+
+## Sentiment analysis
+
+What sort of sentiments are used in the tweets and is there any relationship between the sentiment and the device of origin?
+
+```{r}
+nrc <- sentiments %>%
+  filter(lexicon == "nrc") %>%
+  dplyr::select(word, sentiment)
+
+```
+
+```{r}
+sources <- tweet_words %>%
+  group_by(source) %>%
+  mutate(total_words = n()) %>%
+  ungroup() %>%
+  distinct(id, source, total_words)
+
+by_source_sentiment <- tweet_words %>%
+  inner_join(nrc, by = "word") %>%
+  count(sentiment, id) %>%
+  ungroup() %>%
+  complete(sentiment, id, fill = list(n = 0)) %>%
+  inner_join(sources) %>%
+  group_by(source, sentiment, total_words) %>%
+  summarize(words = sum(n)) %>%
+  arrange(-words) %>%
+  ungroup()
+
+dd<-head(by_source_sentiment,30)
+dd
+```
+
+## Analysis using log odds ratio
+
+So `r by_source_sentiment$words[1]` of the `r by_source_sentiment$total_words[1]` words in the Android tweets were associated with "anger"). To measure how much more likely the Android account is to use an emotionally-charged term relative to the iPhone account a Poisson test can be used.
+
+```{r}
+library(broom)
+
+sentiment_differences <- by_source_sentiment %>%
+  group_by(sentiment) %>%
+  do(tidy(poisson.test(.$words, .$total_words)))
+
+```
+
+```{r}
+library(scales)
+
+sentiment_differences %>%
+  ungroup() %>%
+  mutate(sentiment = reorder(sentiment, estimate)) %>%
+  mutate_each(funs(. - 1), estimate, conf.low, conf.high) %>%
+  ggplot(aes(estimate, sentiment)) +
+  geom_point() +
+  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high)) +
+  scale_x_continuous(labels = percent_format()) +
+  labs(x = "% increase in Android relative to iPhone",
+       y = "Sentiment")
+```
+
+## Which words are associated with the emotions?
+
+
+```{r}
+android_iphone_ratios %>%
+  inner_join(nrc, by = "word") %>%
+  filter(!sentiment %in% c("positive", "negative")) %>%
+  mutate(sentiment = reorder(sentiment, -logratio),
+         word = reorder(word, -logratio)) %>%
+  group_by(sentiment) %>%
+  top_n(10, abs(logratio)) %>%
+  ungroup() %>%
+  ggplot(aes(word, logratio, fill = logratio < 0)) +
+  facet_wrap(~ sentiment, scales = "free", nrow = 2) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x = "", y = "Android / iPhone log ratio") + coord_flip()+
+  scale_fill_manual(name = "", labels = c("Android", "iPhone"),
+                    values = c("red", "lightblue"))
+```
+
+## Word cloud for Android
+
+Notice that one of the accounts does not mention of America nor of jobs. In fact Russia figures larger in Trunp's android account. The IPhone account is much more positive and focussed on political issues that may matter to the electorate.
+
+```{r}
+tweet_words %>%
+  group_by(word,source) %>%
+  count() ->allwords
+
+words<-subset(allwords,source=="Android")
+wordcloud(words$word, words$n, random.order=FALSE, max.words = 100, colors=brewer.pal(8, "Dark2"), use.r.layout=TRUE)
+
+```
+
+## Word cloud for IPhone
+
+```{r}
+words<-subset(allwords,source=="iPhone")
+wordcloud(words$word, words$n, random.order=FALSE, max.words = 100, colors=brewer.pal(8, "Dark2"), use.r.layout=TRUE)
+```
+
+
+https://bitbucket.org/dgolicher/aqm2017/raw/a0a96bdb972804b78011944d2432e20a343434b6/TrumpTweets.Rmd

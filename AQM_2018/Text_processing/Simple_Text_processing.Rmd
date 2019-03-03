@@ -1,0 +1,167 @@
+---
+title: "Simple text processing with sentiment analysis analysis"
+author: "Duncan Golicher"
+date: "3/2/2019"
+output: html_document
+---
+
+# Introduction
+
+This is a very simple example of the sort of work flow involved with text processing. As an example I have used the text from this page obtained by googling nature and bereavement.
+
+http://journeyofhearts.org/healing/nature.html
+
+The page has been cut and pasted into a text file.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message=FALSE)
+```
+
+```{r}
+library(wordcloud)
+library(dplyr)
+library(tidyr)
+library(scales)
+library(stringr)
+library (readr)
+library(tidytext)
+
+options(scipen=999)
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+## Reading in the data
+
+The data from a simple text file can be read in using read_lines. Blank lines are then filtered out and the factor coerced into a character vector.
+
+```{r}
+d<-data.frame(text=read_lines("nature_healing.txt"))
+
+d %>% filter(text != "") %>% mutate(text=as.character(text))->d
+
+DT::datatable(d)
+
+```
+
+## Making a data frame consisting of just words
+
+The tidytext package has functions to extract the words (tokens) and to remove stop words.
+
+```{r}
+library(SnowballC)
+data(stop_words)
+d %>% unnest_tokens(word, text)  %>% anti_join(stop_words) -> words
+
+
+```
+
+## Count the frequenciy of each word
+
+```{r}
+### Count the frequencies
+
+words %>%
+  group_by(word) %>%
+  count() %>% arrange(-n) ->word_count
+
+## Show as table
+DT::datatable(word_count)
+```
+
+
+## Word cloud
+
+Making a word cloud from the table of frequencies is easy using the word-cloud package.
+
+```{r}
+ wordcloud(word_count$word, word_count$n, random.order=FALSE, max.words = 100, colors=brewer.pal(8, "Dark2"), use.r.layout=TRUE)
+```
+
+
+## Find the sentiments associated with the words
+
+This is the part that may not quite work as well as you might hope. There are various lexicons in the R package tidytext. These lexicons are simple tables with words and associated emotions, or scores. Some words can have several emotions associated with them. 
+
+```{r}
+
+# Get Lexicon
+nrc <- sentiments %>%
+  filter(lexicon == "nrc") %>%
+  dplyr::select(word, sentiment)
+
+## Join to words
+words %>% inner_join(nrc, by = "word") -> word_sentiment
+```
+
+```{r}
+DT::datatable(word_sentiment)
+```
+
+## Plotting the frequencies of the sentiments
+
+```{r}
+library(ggplot2)
+word_sentiment %>% group_by(sentiment) %>% summarise(n=n()) %>% arrange(n) %>% mutate(sentiment = reorder(sentiment, n)) ->ws
+
+ggplot(data=ws,aes(x=sentiment,y=n,label=n)) + geom_bar(stat="identity") + geom_label()  + coord_flip()
+```
+
+## Words associated with each sentiment
+
+```{r}
+word_sentiment %>% group_by(sentiment,word) %>% count() %>% filter(n>3) %>% arrange(-n) %>% ungroup() %>% mutate(word = reorder(word, n)) %>% ggplot(aes(x=word,y=n)) +geom_bar(stat="identity",fill="red") +facet_wrap(~ sentiment, scales = "free", ncol = 5) +coord_flip()
+```
+
+## Used in a questionaire context
+
+Shorter pieces of text can be scored for usage of positive and negative terms in order to be used as a response variable in an statistical analysis. However be aware of the potential weaknesses of the lexicon used, and the potential for mis-scoring, especially when the terms are negated or taken out of context. 
+
+
+
+## Example: One line per tweet
+
+The word tokens are extracted from a data frame along with the covariates in the rows that contain text. So if shorter pieces of text are scored numerically the relationship between the scores and other covariates can be looked at. For example, here is the text of some of Donald Trump's recent tweets along with the number of times his followers have favourited them. Each tweet can be scored as being positive or negative.
+
+```{r}
+d<-read_csv("/home/aqm/data/trump_recent_tweets.csv")
+d$text<-as.character(d$text)
+d %>% select(id,text,favoriteCount,created, hour) ->d
+DT::datatable(d)
+```
+
+## Extracting the words
+
+```{r,message=FALSE}
+data(stop_words)
+d$text2<-d$text
+d %>% select(hour, text2, id, favoriteCount,text) %>% unnest_tokens(word, text) %>% anti_join(stop_words) -> words
+```
+
+
+## Sentiment scores
+
+This time using the affin lexicon. This produces scores between -4 and +4 for positive and negative 
+
+```{r}
+afin<-get_sentiments("afinn")
+words %>% inner_join(afin, by = "word") -> word_score
+head(word_score)
+```
+
+## Is there a relationship between the scores and the number of times the tweet is favourited?
+
+```{r}
+
+
+
+word_score %>% group_by(id,text2) %>% summarise(n=n(),score=mean(score),favourited=mean(favoriteCount)) %>% ggplot(aes(x=score,y=favourited, label =text2)) + geom_point() + geom_smooth() ->g1
+library(plotly)
+ggplotly(g1)
+```
+
+
+The answer seems to be no. Donald Trump's twitter followers don't care much whether he expresses positive or negative sentiments. By plotting out the results using plotly at least some of the text can be seen by hovering on the tweet. Trump scored the most favourite counts when he tweeted "Merry Christmas", which scored quite highly on the positivity index!
+
+
+ 
+ 

@@ -1,0 +1,41 @@
+---
+title: "Tick trapping - An observational study incorporating experimental design"
+author: "Duncan Golicher"
+date: "3/6/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+The presence of ticks in grassland and heathland is an important public health issue in many reserves in the South of England.
+
+A variety of methods are available to trap ticks. A useful summary (used in Africa, but relevant for any area with ticks) is available here.
+
+http://www.afrivip.org/sites/default/files/Ticks_surveillance/free_living.html
+
+You have been given the task by Dorset wildlife trust of designing a tick monitoring program run initially over two years (but potentially extended into the future) to establish the effectiveness of deer culling as a means of reducing tick density. Culling is going to take place at the end of the first year. This will affect the deer population throughout the Purbeck area, resulting in an 80% fall in deer numbers. DWT wish to select one out of three different trapping techniques to be used in a consistent long term study based on a consideration of cost and efficiency. You are working with a group of ten volounteers at five sites within Purbeck. Your trial will take place during the year prior to the cull and the year following the cull.
+
+At each site there are two broad vegetation classes. Grassland and heathland.
+
+Design a study to establish the effectiveness of both the deer cull and the effectiveness of the trapping techniques that will be used in the monitoring.
+
+Advice: This is a potentially complex analysis which can be approached in a variety of different ways. There will be elements of sub-sampling and blocking involved. It is also a repeat measures design. Think carefully about how the principles of experimental design and robust statistical analysis involving fixed and random effects can be used to address the questions.  There is also a spatial element involved, which you can ignore for the purposes of this statistical design, but should consider when discussing the study.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

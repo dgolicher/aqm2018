@@ -1,0 +1,108 @@
+---
+title: "An example Bubble plot. Hans Roslin's famous figure"
+author: "Duncan Golicher"
+date: "3/2/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning=FALSE,message=FALSE)
+```
+
+# Introduction
+
+Hans Roslin, who died in 2017, was considered to be one of the greatest data communicator of all time. Roslin's skill was an ability to select informative ways of displaying large data sets in order to engage the audience. There are many videos of his talks on You Tube and Ted talks.
+
+https://www.youtube.com/watch?v=jbkSRLYSojo
+
+Roslin's original figures were constructed by a team of data analysts, programmers and analysts working with the professor.  The later figures that he used look as if they probably were first built up using Tableau and then touched up and animated by the team. Can these sophisticated figures be built easily in R? The answer is that it is surprisingly simple. The figures require very few lines of code.
+
+## Getting the data
+
+A suitable data set is provided by the WDI package which can search, extract and format data from the World Bank's World Development Indicators.
+
+```{r}
+library(WDI)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(ggthemes)
+```
+
+The field names and their meanings can be searched for in the table below.
+
+```{r}
+dd<-data.frame(WDIsearch( field='name', cache=NULL) )
+DT::datatable(dd)
+```
+
+## Selecting some indicators
+
+All the indicators are not available for all the years, but a useful set can be pulled from the data base. The data includes aggregates (regions and global figures) than can be filtered out to leave just the countries.
+
+```{r}
+d <- WDI(country="all", indicator=c("NY.GDP.PCAP.CD", "SP.POP.TOTL", "SP.DYN.LE00.IN","EG.EGY.PRIM.PP.KD","NV.AGR.TOTL.ZS"), start=1900, end=2018, extra = TRUE)
+names(d)[4:8]<- c("GDP_per_capita", "Population_total", "Life_expectancy","Energy_intensity_MJ_GDP","Agriculture_percent_GDP") ## Set the names
+d %>% filter(region !="Aggregates") -> d ## Filter out the aggregated totals
+
+```
+
+```{r}
+
+```
+
+## Forming bubble plots
+
+Han's Roslin's data animations effectively showed four dimensions of data in one. A third dimension was added to the scatter-plots in the form of the size of the bubble. In most of the plots this was the population size. The animation was over time, adding a fourth dimension. In order to produce a static graph a smaller subset of the years can be shown side by side.
+
+So the tricks used in the R code are to add in a size aesthetic to represent population and to facet wrap on year. Some additional information can be added by colouring the points according to region. If a filled point style (21) is chosen the fill can be set as an aesthetic. Some tweaking of axes is necessary. A log scale on the x axis spreads out the points more effectively and the y scale can be constrained to a range to avoid one or two outlying points adding too much space.
+
+So the tricks are
+
+1. aes(x = GDP_per_capita, y = Life_expectancy, size = Population_total/1000000). Note that the label aesthetic is not used for a static graph as it would lead to too much clutter, but it is useful when plotly is used.
+2. scale_x_log10()
+3. scale_y_continuous(limits = c(50, 90))
+4. facet_wrap("year")
+
+```{r}
+
+
+d %>% filter(year%in% c(1975,1990,2015)) %>% ggplot( aes(x = GDP_per_capita, y = Life_expectancy, size = Population_total/1000000, fill = region, label=country)) +
+  geom_point(shape = 21) +
+  labs(x = "GDP per Capita(USD)", y = "Life Expectancy(years)") +
+  scale_y_continuous(limits = c(50, 90)) +
+  scale_size(range = c(1, 10)) +
+  labs(size = "Population(Millions)", fill = "Region") + scale_x_log10() + theme_bw() +facet_wrap("year") +  theme(axis.text.x=element_text(angle=45,hjust=1)) -> g1
+g1 
+
+```
+
+Notice how sub-saharan Africa has been left behind in the general increase in life expectancy. The positions of China and India are also very striking. Looking at individual countries trajectories is possible using ggplotly.
+
+
+## Another example
+
+```{r}
+
+d %>% filter(year%in% c(1990,2015)) %>% filter(Population_total> 10000000) %>% ggplot( aes(x = Energy_intensity_MJ_GDP, y = Agriculture_percent_GDP, size = Population_total/1000000, fill = region,label=country)) +
+  geom_point(shape = 21) + 
+  labs(x = "Energy intensity", y = "Agriculture as percent GDP") +
+  scale_size(range = c(1, 10)) + scale_y_continuous(limits = c(1, 50)) +
+  labs(size = "Population(Millions)", fill = "Region")  + theme_bw() +facet_wrap("year") + scale_x_log10() + scale_y_log10()-> g2
+g2
+```
+
+## Using ggplotly
+
+A problem with the completely static figures is that countries cannot be identified, although it is  easy to deduce the identities of those with large populations such as India, China and the USA. Using ggplotly resolves this, as the label aesthetic can be seen when the mouse hovers over the country.
+
+
+```{r}
+ggplotly(g1)
+```
+
+
+```{r}
+ggplotly(g2)
+```
+

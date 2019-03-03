@@ -1,0 +1,165 @@
+---
+title: "Analysis of covariance and mixed effects models"
+author: "Duncan Golicher"
+date: "1/12/2019"
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,message=FALSE,warnings=FALSE)
+library(dplyr)
+library(tidyr)
+library(readxl)
+library(reshape2)
+library(DT)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(DT)
+library(BayesianFirstAid)
+library(MASS)
+library(readr)
+library(kableExtra)
+theme_set(theme_bw())
+dt<-function(x) DT::datatable(x, 
+    filter = "top",                         
+    extensions = c('Buttons'), options = list(
+    dom = 'Blfrtip',
+    buttons = c('copy', 'csv', 'excel')))
+```
+
+## Analysis of covariance
+
+### Data
+
+Fixed effects analysis of covariance is useful when there are few groups. With many groups the groups of observations may be treated as a random effect. In this case the grouping variable is the individual whale.
+
+```{r}
+Whales<-read.csv("https://tinyurl.com/aqm-data/whaleteeth.csv")
+ylabel <-expression(paste(delta^{15}, "N"))
+xlabel<-"Estimated age"
+## Select just three whales
+Whales %>% filter(Whale %in% levels(Whales$Whale)[c(7,9,11)]) -> Whales3
+
+
+```
+
+### Plot the patterns grouped by individual 
+
+```{r}
+library(ggplot2)
+theme_set(theme_bw())
+g0<-ggplot(data=Whales3,aes(x=Age,y=X15N))
+g1<-g0+geom_point()+ labs(y = ylabel,x=xlabel)
+g1+facet_wrap("Whale") +geom_smooth(method="lm")
+```
+
+### Analysis of covariance
+
+A significant interaction shows that the slope of a linea model differs between individuals
+
+```{r}
+mod1 <-lm(data=Whales3,X15N~Age+Whale)
+mod2 <-lm(data=Whales3,X15N~Age*Whale)
+anova(mod1,mod2)
+```
+
+## Linear mixed effects
+
+### Intercept only
+
+```{r}
+library(lmerTest)
+intercept.mod<-lmer(X15N~Age+(1|Whale),data=Whales)
+intercept.mod
+anova(intercept.mod)
+```
+
+### Slope model
+
+```{r}
+slope.mod<-lmer(X15N~Age+(Age|Whale),data=Whales)
+slope.mod
+anova(slope.mod)
+```
+
+### Plot intercept model
+
+```{r}
+Whales$fixed<-predict(intercept.mod,re.form=NA)
+Whales$rand<-predict(intercept.mod)
+g0<-ggplot(Whales,aes(x=Age,y=X15N))
+g1<-g0+geom_point()
+g1<-g1+geom_line(aes(x=Age,y=fixed),colour=2,lwd=1) 
+g1<-g1+geom_line(aes(x=Age,y=rand),colour=4,lwd=1) 
+g1<-g1+labs(y = ylabel,x=xlabel,title="Fixed and random effects")
+g1+facet_wrap("Whale") 
+```
+
+### Plot slope model
+
+
+```{r}
+Whales$fixed<-predict(slope.mod,re.form=NA)
+Whales$rand<-predict(slope.mod)
+g0<-ggplot(Whales,aes(x=Age,y=X15N))
+g1<-g0+geom_point()
+g1<-g1+geom_line(aes(x=Age,y=fixed),colour=2,lwd=1) 
+g1<-g1+geom_line(aes(x=Age,y=rand),colour=4,lwd=1) 
+g1<-g1+labs(y = ylabel,x=xlabel,title="Fixed and random effects")
+g1+facet_wrap("Whale") 
+```
+
+## GAMM model
+
+### Fit GAMM model
+
+```{r}
+library(gamm4)
+gamm.mod<-gamm4(X15N~s(Age),data=Whales,random = ~ (Age|Whale))
+gamm.mod
+```
+
+### Plot GAMM model
+
+```{r}
+Whales$fixed<-predict(gamm.mod$gam)
+Whales$rand<-predict(gamm.mod$mer)
+g0<-ggplot(Whales,aes(x=Age,y=X15N))
+g1<-g0+geom_point()
+g1<-g1+geom_line(aes(x=Age,y=fixed),colour=2,lwd=1) 
+g1<-g1+geom_line(aes(x=Age,y=rand),colour=4,lwd=1) 
+g1<-g1+labs(y = ylabel,x=xlabel,title="Fixed and random splines")
+g1+facet_wrap("Whale") 
+```
+
+### Plot GAMM with CIs
+
+```{r}
+Whales$fixedse<-predict(gamm.mod$gam,se=T)$se
+g0<-ggplot(Whales,aes(x=Age,y=X15N))
+g1<-g0+geom_point()
+g1<-g1+geom_line(aes(x=Age,y=fixed),colour=2,lwd=1) 
+g1<-g1+geom_line(aes(x=Age,y=fixed+2*fixedse),colour=2,lty=2) 
+g1<-g1+geom_line(aes(x=Age,y=fixed-2*fixedse),colour=2,lty=2)
+g1<-g1+geom_line(aes(x=Age,y=rand),colour=4,lwd=1) 
+g1<-g1+labs(y = ylabel,x=xlabel,title="Fixed and random splines")
+g1+facet_wrap("Whale") 
+```
+
+### Plot fixed effects with CIS taking into account random effects
+
+```{r}
+g0<-ggplot(Whales,aes(x=Age,y=X15N,color=Whale))
+g1<-g0+geom_point()
+g1<-g1+geom_line(aes(x=Age,y=fixed),colour=1,lwd=1) 
+g1<-g1+geom_line(aes(x=Age,y=fixed+2*fixedse),colour=1,lty=2) 
+g1<-g1+geom_line(aes(x=Age,y=fixed-2*fixedse),colour=1,lty=2)
+g1<-g1+labs(y = ylabel,x=xlabel,title="Fixed effects spline with CIs")
+g1
+```
+
